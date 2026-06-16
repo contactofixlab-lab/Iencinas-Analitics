@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: linear-gradient(135deg, #0f172a 0%, #1a2942 25%, #1e3a5f 50%, #1a2942 75%, #0f172a 100%);
+  min-height: 100vh;
+  color: #e5e7eb;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.25;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* Real Estate Animations */
+@keyframes floatBuilding1 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  25% {
+    transform: translateY(-20px) translateX(8px);
+  }
+  50% {
+    transform: translateY(-15px) translateX(-5px);
+  }
+  75% {
+    transform: translateY(-25px) translateX(10px);
+  }
+}
+
+@keyframes floatBuilding2 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  25% {
+    transform: translateY(-25px) translateX(-8px);
+  }
+  50% {
+    transform: translateY(-18px) translateX(5px);
+  }
+  75% {
+    transform: translateY(-30px) translateX(-10px);
+  }
+}
+
+@keyframes orbitKeys {
+  0% {
+    transform: rotate(0deg) translateX(60px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(60px) rotate(-360deg);
+  }
+}
+
+@keyframes housePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes gridPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+/* ════════════ LIVELY ANIMATION SYSTEM ════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+  50%       { box-shadow: 0 0 24px 2px rgba(74,222,128,0.18); }
+}
+@keyframes shimmerSweep {
+  0%   { transform: translateX(-120%); }
+  100% { transform: translateX(220%); }
+}
+
+/* Staggered page entrance — direct children fade up in sequence */
+.page-enter > * {
+  opacity: 0;
+  animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.page-enter > *:nth-child(1)  { animation-delay: 0.03s; }
+.page-enter > *:nth-child(2)  { animation-delay: 0.10s; }
+.page-enter > *:nth-child(3)  { animation-delay: 0.17s; }
+.page-enter > *:nth-child(4)  { animation-delay: 0.24s; }
+.page-enter > *:nth-child(5)  { animation-delay: 0.31s; }
+.page-enter > *:nth-child(6)  { animation-delay: 0.38s; }
+.page-enter > *:nth-child(7)  { animation-delay: 0.45s; }
+.page-enter > *:nth-child(8)  { animation-delay: 0.52s; }
+.page-enter > *:nth-child(9)  { animation-delay: 0.59s; }
+.page-enter > *:nth-child(10) { animation-delay: 0.66s; }
+
+/* Grid item entrance — stagger cards within a grid */
+.stagger-grid > * {
+  opacity: 0;
+  animation: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.stagger-grid > *:nth-child(1)  { animation-delay: 0.05s; }
+.stagger-grid > *:nth-child(2)  { animation-delay: 0.11s; }
+.stagger-grid > *:nth-child(3)  { animation-delay: 0.17s; }
+.stagger-grid > *:nth-child(4)  { animation-delay: 0.23s; }
+.stagger-grid > *:nth-child(5)  { animation-delay: 0.29s; }
+.stagger-grid > *:nth-child(6)  { animation-delay: 0.35s; }
+.stagger-grid > *:nth-child(7)  { animation-delay: 0.41s; }
+.stagger-grid > *:nth-child(8)  { animation-delay: 0.47s; }
+.stagger-grid > *:nth-child(9)  { animation-delay: 0.53s; }
+.stagger-grid > *:nth-child(10) { animation-delay: 0.59s; }
+.stagger-grid > *:nth-child(11) { animation-delay: 0.65s; }
+.stagger-grid > *:nth-child(12) { animation-delay: 0.71s; }
+
+/* Reusable hover lift for cards */
+.lift {
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+  will-change: transform;
+}
+.lift:hover { transform: translateY(-5px); }
+
+/* Shimmer sweep on hover (buttons / highlights) */
+.shimmer-host { position: relative; overflow: hidden; }
+.shimmer-host::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.16) 50%, transparent 70%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+.shimmer-host:hover::after { animation: shimmerSweep 0.9s ease; }
+
+/* Dark dropdown options (native selects render light by default) */
+select option { background: #0f1b2e; color: #e5e7eb; }
+
+/* Respect reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .page-enter > *, .stagger-grid > * { animation: none; opacity: 1; }
+  .lift { transition: none; }
+}
+
+/* Glass effect utility */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-sm {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Selection */
+::selection {
+  background: rgba(74, 222, 128, 0.3);
+  color: #fff;
+}

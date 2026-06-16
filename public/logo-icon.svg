@@ -1,0 +1,22 @@
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue background -->
+  <rect width="120" height="120" fill="#0ea5e9"/>
+
+  <!-- Concentric circles forming spiral -->
+  <g fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2.5" stroke-linecap="round">
+    <!-- Outer circle -->
+    <circle cx="60" cy="60" r="50"/>
+
+    <!-- Inner concentric circles -->
+    <circle cx="60" cy="60" r="42"/>
+    <circle cx="60" cy="60" r="34"/>
+    <circle cx="60" cy="60" r="26"/>
+    <circle cx="60" cy="60" r="18"/>
+
+    <!-- Spiral lines creating the dynamic effect -->
+    <path d="M 60 12 Q 85 25, 92 50"/>
+    <path d="M 92 50 Q 85 75, 60 88"/>
+    <path d="M 60 108 Q 35 95, 28 70"/>
+    <path d="M 28 70 Q 35 45, 60 32"/>
+  </g>
+</svg>
