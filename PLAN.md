@@ -8,7 +8,7 @@ Repo: https://github.com/contactofixlab-lab/Iencinas-Analitics
 2. Commit + push automático a GitHub.
 3. Actualizar este PLAN.md y la memoria.
 
-## Estado actual
+## Estado actual (actualizado 2026-06-18)
 
 ### ✅ Completado
 - **Autenticación**: login (galaxy theme), AuthContext (localStorage), middleware redirect.
@@ -24,6 +24,7 @@ Repo: https://github.com/contactofixlab-lab/Iencinas-Analitics
 - **Layout flotante**: Navbar full-width fija arriba con el logo; Sidebar convertido en burbuja flotante (sticky, redondeada, con margen) que sigue el scroll; scroll de página natural.
 - **GlassDatePicker**: calendario personalizado en glass 3D (nuevo componente) integrado en FilterPanel y todas las páginas de Reportes con fechas. Portal-based, animado, con mes/día/navegación y botón "Hoy".
 - **Reportes rediseñados (4 módulos)**: Nuevo layout con previsualizador prominente arriba (tabla vacía, se llena al generar), sidebar chico izquierda (5 reportes prehechos en lista vertical), panel grande derecha (filtros + botones generar/descargar). Colores por módulo: verde/naranja/púrpura/ámbar. Framer-motion entrance animations.
+- **Errores de compilación resueltos (2026-06-18)**: ReportCard onClick, MetricCard onMouseLeaveCapture, finanzas dateRange, CrmDataSource getProyectos, datasource types — npm run build ✓ OK.
 
 ### 🔲 Pendiente
 - Deploy a Vercel (conectar repo Iencinas-Analitics).
