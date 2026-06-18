@@ -68,20 +68,23 @@ export default function Navbar({ title }: { title?: string }) {
         boxShadow: '0 28px 70px rgba(0,0,0,0.50), inset 0 1px 0 rgba(255,255,255,0.14), 0 0 30px rgba(74,222,128,0.06)',
       }}
     >
-      {/* Logo sobre píldora clara para contraste y énfasis de marca */}
-      <div
-        className="flex items-center px-4 py-2 rounded-2xl"
+      {/* Logo — marca prominente con vidrio oscuro */}
+      <motion.div
+        whileHover={{ scale: 1.05 }}
+        className="flex items-center px-5 py-3 rounded-2xl transition-all"
         style={{
-          background: 'linear-gradient(135deg, #ffffff 0%, #eaf2fb 100%)',
-          boxShadow: '0 8px 22px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.9)',
+          background: 'linear-gradient(160deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)',
+          border: '1px solid rgba(74,222,128,0.25)',
+          boxShadow: '0 8px 28px rgba(74,222,128,0.12), inset 0 1px 0 rgba(255,255,255,0.08)',
+          backdropFilter: 'blur(12px)',
         }}
       >
         <img
-          src="/logo original color.png"
+          src="/logo.svg"
           alt="Iencinas Analytics"
-          className="h-11 w-auto object-contain"
+          className="h-10 w-auto object-contain"
         />
-      </div>
+      </motion.div>
       {title && <h1 className="text-xl font-bold text-white">{title}</h1>}
 
       <div className="flex items-center gap-4">
