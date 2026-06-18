@@ -22,6 +22,7 @@ Repo: https://github.com/contactofixlab-lab/Iencinas-Analitics
   - Módulo Admin: usuarios, permisos, bbdd, crear, editar — paneles, modales e inputs al nuevo glass.
   - Reportes (4): tarjetas y panel "Reporte a Medida" al nuevo glass, inputs con `.field`.
 - **Layout flotante**: Navbar full-width fija arriba con el logo; Sidebar convertido en burbuja flotante (sticky, redondeada, con margen) que sigue el scroll; scroll de página natural.
+- **GlassDatePicker**: calendario personalizado en glass 3D (nuevo componente) integrado en FilterPanel y todas las páginas de Reportes con fechas. Portal-based, animado, con mes/día/navegación y botón "Hoy".
 
 ### 🔲 Pendiente
 - Deploy a Vercel (conectar repo Iencinas-Analitics).
