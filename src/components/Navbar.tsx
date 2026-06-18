@@ -50,25 +50,39 @@ export default function Navbar({ title }: { title?: string }) {
   const roleColor = ROLE_COLORS[user.role];
 
   return (
-    <header
-      className="h-20 sticky top-0 z-40 px-6 py-3 flex items-center justify-between"
+    <motion.header
+      initial={{ opacity: 0, y: -16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="sticky z-40 flex items-center justify-between"
       style={{
-        background: 'linear-gradient(135deg, rgba(13,24,40,0.78), rgba(16,28,48,0.70))',
+        top: 16,
+        margin: 16,
+        marginBottom: 0,
+        padding: '12px 18px',
+        borderRadius: 26,
+        background: 'linear-gradient(180deg, rgba(13,24,40,0.82) 0%, rgba(10,18,32,0.86) 100%)',
         backdropFilter: 'blur(28px) saturate(150%)',
         WebkitBackdropFilter: 'blur(28px) saturate(150%)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.10)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.10)',
+        border: '1px solid rgba(255, 255, 255, 0.12)',
+        boxShadow: '0 28px 70px rgba(0,0,0,0.50), inset 0 1px 0 rgba(255,255,255,0.14), 0 0 30px rgba(74,222,128,0.06)',
       }}
     >
-      {/* Logo */}
-      <div className="flex items-center gap-3">
+      {/* Logo sobre píldora clara para contraste y énfasis de marca */}
+      <div
+        className="flex items-center px-4 py-2 rounded-2xl"
+        style={{
+          background: 'linear-gradient(135deg, #ffffff 0%, #eaf2fb 100%)',
+          boxShadow: '0 8px 22px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.9)',
+        }}
+      >
         <img
           src="/logo original color.png"
-          alt="Iencinas"
-          className="h-14 w-auto object-contain drop-shadow-[0_2px_10px_rgba(74,222,128,0.18)]"
+          alt="Iencinas Analytics"
+          className="h-11 w-auto object-contain"
         />
-        {title && <h1 className="text-xl font-bold text-white">{title}</h1>}
       </div>
+      {title && <h1 className="text-xl font-bold text-white">{title}</h1>}
 
       <div className="flex items-center gap-4">
         {/* Notifications */}
@@ -174,6 +188,6 @@ export default function Navbar({ title }: { title?: string }) {
           </AnimatePresence>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }
