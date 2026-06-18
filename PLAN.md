@@ -8,7 +8,7 @@ Repo: https://github.com/contactofixlab-lab/Iencinas-Analitics
 2. Commit + push automático a GitHub.
 3. Actualizar este PLAN.md y la memoria.
 
-## Estado actual (actualizado 2026-06-18)
+## Estado actual (actualizado 2026-06-18 — QA Completo)
 
 ### ✅ Completado
 - **Autenticación**: login (galaxy theme), AuthContext (localStorage), middleware redirect.
@@ -29,6 +29,16 @@ Repo: https://github.com/contactofixlab-lab/Iencinas-Analitics
 
 - **Modelo de Base de Datos (2026-06-18)**: Diagrama ER visual con 5 entidades, página `/dashboard/modelo-datos` presentable, estructura normalizada 3NF, integridad referencial garantizada, escalable.
 - **13 Proyectos con 338 Registros (2026-06-18)**: Proyectos adicionales (Lastarria, Reñaca, San Isidro, Conchalí, Chicureo) + 38 transacciones, 29 ventas, 30 leads, 41 valuaciones. Datos variados para gráficas realistas.
+- **QA Completo (2026-06-18 Parte 2)**: 
+  - ✓ Compilación: `npm run build` exitosa sin errores
+  - ✓ Alineación de IDs: Reconciliación de proyecto IDs (`proj-001` a `proj-013`) en datasource, usuarios, y API
+  - ✓ Actualización de usuarios: Juan (proj-001, proj-002), María (proj-001, proj-009), Carlos (proj-001, proj-002, proj-009), Ana (administrador con acceso a todos)
+  - ✓ Datasource actualizado: getFinanzas, getComercial, getMarketing, getValorEmpresa usan IDs correctos
+  - ✓ Todas las páginas de dashboard usan `proj-001` como default
+  - ✓ API `/api/mis-proyectos` retorna proyectos correctos por usuario
+  - ✓ 31 componentes/páginas exportados correctamente
+  - ✓ Rutas API: 8 endpoints funcionales
+  - ✓ Rutas Dashboard: 20 rutas prerendereadas
 
 ### 🔲 Pendiente
 - Deploy a Vercel (conectar repo Iencinas-Analitics).
