@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import MetricCard from '@/components/MetricCard';
 import ProjectSelector from '@/components/ProjectSelector';
 import FilterPanel, { FilterConfig } from '@/components/FilterPanel';
+import ChartCard, { GlassTooltip } from '@/components/ChartCard';
 import { ComercialData } from '@/types/domain';
 import { Home, TrendingUp, Package, Star } from 'lucide-react';
 import {
@@ -111,7 +112,7 @@ export default function ComercialPage() {
         typeLabel="Tipo de Propiedad"
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 stagger-grid">
+      <div className="scene-3d grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 stagger-grid">
         {(data?.metrics || []).map((m, i) => (
           <MetricCard
             key={m.label}
@@ -126,51 +127,39 @@ export default function ComercialPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-2xl p-6 overflow-hidden" style={{
-          background: 'rgba(255, 255, 255, 0.08)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255, 255, 255, 0.12)',
-          boxShadow: '0 16px 48px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
-        }}>
-          <h3 className="text-sm font-semibold text-white mb-4">Propiedades Vendidas por Mes</h3>
+        <ChartCard title="Propiedades Vendidas por Mes" subtitle="Unidades cerradas" accent="green">
           {loading ? (
             <div className="h-60 flex items-center justify-center text-gray-400">Cargando...</div>
           ) : (
-            <ResponsiveContainer width="100%" height={240}>
-              <BarChart data={data?.ventas || []}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                <XAxis dataKey="mes" tick={{ fontSize: 12, fill: '#9ca3af' }} />
-                <YAxis tick={{ fontSize: 12, fill: '#9ca3af' }} />
-                <Tooltip
-                  contentStyle={{ background: 'rgba(0,0,0,0.8)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#fff' }}
-                />
-                <Bar dataKey="ventas" fill="#15803d" radius={[6, 6, 0, 0]} name="Ventas" />
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={data?.ventas || []} margin={{ top: 10, right: 8, left: -12, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="fillVentas" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#4ade80" stopOpacity={0.95} />
+                    <stop offset="100%" stopColor="#15803d" stopOpacity={0.4} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                <XAxis dataKey="mes" tick={{ fontSize: 12, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 12, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+                <Tooltip cursor={{ fill: 'rgba(255,255,255,0.04)' }} content={<GlassTooltip formatter={(v: number) => `Ventas: ${v}`} />} />
+                <Bar dataKey="ventas" fill="url(#fillVentas)" radius={[8, 8, 0, 0]} name="Ventas" maxBarSize={42} />
               </BarChart>
             </ResponsiveContainer>
           )}
-        </div>
+        </ChartCard>
 
-        <div className="rounded-2xl p-6 overflow-hidden" style={{
-          background: 'rgba(255, 255, 255, 0.08)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255, 255, 255, 0.12)',
-          boxShadow: '0 16px 48px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
-        }}>
-          <h3 className="text-sm font-semibold text-white mb-4">Pipeline de Ventas</h3>
+        <ChartCard title="Pipeline de Ventas" subtitle="Leads por etapa del embudo" accent="blue">
           {loading ? (
             <div className="h-60 flex items-center justify-center text-gray-400">Cargando...</div>
           ) : (
-            <ResponsiveContainer width="100%" height={240}>
-              <BarChart data={data?.pipeline || []} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                <XAxis type="number" tick={{ fontSize: 12, fill: '#9ca3af' }} />
-                <YAxis dataKey="etapa" type="category" tick={{ fontSize: 12, fill: '#9ca3af' }} width={100} />
-                <Tooltip
-                  contentStyle={{ background: 'rgba(0,0,0,0.8)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#fff' }}
-                />
-                <Bar dataKey="cantidad" radius={[0, 6, 6, 0]} name="Leads">
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={data?.pipeline || []} layout="vertical" margin={{ top: 4, right: 12, left: 8, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" horizontal={false} />
+                <XAxis type="number" tick={{ fontSize: 12, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+                <YAxis dataKey="etapa" type="category" tick={{ fontSize: 12, fill: '#9ca3af' }} width={100} axisLine={false} tickLine={false} />
+                <Tooltip cursor={{ fill: 'rgba(255,255,255,0.04)' }} content={<GlassTooltip formatter={(v: number) => `Leads: ${v}`} />} />
+                <Bar dataKey="cantidad" radius={[0, 8, 8, 0]} name="Leads" maxBarSize={28}>
                   {(data?.pipeline || []).map((_, idx) => (
                     <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
                   ))}
@@ -178,7 +167,7 @@ export default function ComercialPage() {
               </BarChart>
             </ResponsiveContainer>
           )}
-        </div>
+        </ChartCard>
       </div>
 
       <div className="rounded-2xl overflow-hidden" style={{

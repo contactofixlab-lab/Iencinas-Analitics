@@ -2,8 +2,9 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Proyecto } from '@/types/domain';
-import { ChevronDown } from 'lucide-react';
+import { Building2, ChevronDown, Check } from 'lucide-react';
 
 interface ProjectSelectorProps {
   value: string;
@@ -27,28 +28,21 @@ export default function ProjectSelector({ value, onChange }: ProjectSelectorProp
   }, []);
 
   useEffect(() => {
+    if (!open) return;
     function handleClickOutside(e: MouseEvent) {
       if (buttonRef.current && !buttonRef.current.contains(e.target as Node)) {
         const dropdown = document.getElementById('project-selector-dropdown');
-        if (dropdown && !dropdown.contains(e.target as Node)) {
-          setOpen(false);
-        }
+        if (dropdown && !dropdown.contains(e.target as Node)) setOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [open]);
 
   const handleToggle = () => {
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
-      setDropdownStyle({
-        position: 'fixed',
-        top: rect.bottom + 8,
-        left: rect.left,
-        width: rect.width,
-        zIndex: 2147483647,
-      });
+      setDropdownStyle({ position: 'fixed', top: rect.bottom + 8, left: rect.left, width: rect.width, zIndex: 2147483647 });
     }
     setOpen(prev => !prev);
   };
@@ -56,65 +50,78 @@ export default function ProjectSelector({ value, onChange }: ProjectSelectorProp
   const proyecto = proyectos.find(p => p.id === value);
 
   const dropdown = open && mounted ? createPortal(
-    <div
-      id="project-selector-dropdown"
-      style={{
-        ...dropdownStyle,
-        background: 'rgba(10, 18, 35, 0.98)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        border: '1px solid rgba(34, 197, 94, 0.35)',
-        borderRadius: '12px',
-        boxShadow: '0 24px 64px rgba(0,0,0,0.7)',
-        overflow: 'hidden',
-      }}
-    >
-      {proyectos.map((p, idx) => (
-        <button
-          key={p.id}
-          onClick={() => { onChange(p.id); setOpen(false); }}
-          style={{
-            display: 'block',
-            width: '100%',
-            padding: '12px 16px',
-            textAlign: 'left',
-            background: value === p.id ? 'rgba(34,197,94,0.2)' : 'transparent',
-            color: value === p.id ? '#4ade80' : '#d1d5db',
-            borderBottom: idx < proyectos.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
-            cursor: 'pointer',
-          }}
-          onMouseEnter={e => {
-            if (value !== p.id) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.07)';
-          }}
-          onMouseLeave={e => {
-            if (value !== p.id) (e.currentTarget as HTMLElement).style.background = 'transparent';
-          }}
-        >
-          <div style={{ fontWeight: 600, fontSize: '14px' }}>{p.nombre}</div>
-          <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)', marginTop: 2 }}>{p.ubicacion}</div>
-        </button>
-      ))}
-    </div>,
+    <AnimatePresence>
+      <motion.div
+        id="project-selector-dropdown"
+        initial={{ opacity: 0, y: -10, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: -10, scale: 0.96 }}
+        transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          ...dropdownStyle,
+          background: 'linear-gradient(135deg, rgba(10,18,35,0.97), rgba(16,28,48,0.95))',
+          backdropFilter: 'blur(24px) saturate(150%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(150%)',
+          border: '1px solid rgba(34, 197, 94, 0.35)',
+          borderRadius: '14px',
+          boxShadow: '0 24px 64px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.10)',
+          overflow: 'hidden',
+          padding: '6px',
+        }}
+      >
+        {proyectos.map((p) => {
+          const active = value === p.id;
+          return (
+            <button
+              key={p.id}
+              onClick={() => { onChange(p.id); setOpen(false); }}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                width: '100%', padding: '11px 14px', textAlign: 'left',
+                borderRadius: '10px',
+                background: active ? 'rgba(34,197,94,0.18)' : 'transparent',
+                color: active ? '#4ade80' : '#d1d5db',
+                cursor: 'pointer', transition: 'background 0.15s',
+              }}
+              onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
+              onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+            >
+              <span>
+                <span style={{ fontWeight: 600, fontSize: '14px', display: 'block' }}>{p.nombre}</span>
+                <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)' }}>{p.ubicacion}</span>
+              </span>
+              {active && <Check size={15} />}
+            </button>
+          );
+        })}
+      </motion.div>
+    </AnimatePresence>,
     document.body
   ) : null;
 
   return (
     <div className="relative w-full sm:w-72">
-      <button
+      <motion.button
         ref={buttonRef}
         onClick={handleToggle}
-        className="w-full px-4 py-2.5 rounded-xl flex items-center justify-between transition-all"
+        whileTap={{ scale: 0.98 }}
+        className="w-full px-4 py-3 rounded-xl flex items-center justify-between transition-all"
         style={{
-          background: 'rgba(34, 197, 94, 0.1)',
-          backdropFilter: 'blur(16px)',
-          border: open ? '1px solid rgba(34, 197, 94, 0.5)' : '1px solid rgba(34, 197, 94, 0.3)',
+          background: 'linear-gradient(135deg, rgba(34,197,94,0.16), rgba(34,197,94,0.06))',
+          backdropFilter: 'blur(18px)',
+          WebkitBackdropFilter: 'blur(18px)',
+          border: open ? '1px solid rgba(34, 197, 94, 0.55)' : '1px solid rgba(34, 197, 94, 0.3)',
+          boxShadow: open ? '0 0 22px rgba(34,197,94,0.25), inset 0 1px 0 rgba(255,255,255,0.12)' : 'inset 0 1px 0 rgba(255,255,255,0.10)',
         }}
       >
-        <span className="text-white text-sm font-semibold">
-          {loading ? 'Cargando...' : proyecto?.nombre || 'Seleccionar proyecto'}
+        <span className="flex items-center gap-2.5 min-w-0">
+          <Building2 size={16} className="text-green-400 shrink-0" />
+          <span className="text-white text-sm font-semibold truncate">
+            {loading ? 'Cargando...' : proyecto?.nombre || 'Seleccionar proyecto'}
+          </span>
         </span>
-        <ChevronDown size={16} className={`text-green-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
-      </button>
+        <ChevronDown size={16} className={`text-green-400 transition-transform duration-200 shrink-0 ${open ? 'rotate-180' : ''}`} />
+      </motion.button>
       {dropdown}
     </div>
   );

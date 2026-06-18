@@ -1,7 +1,9 @@
 'use client';
 
-import { Filter, X } from 'lucide-react';
+import { Filter, X, Search } from 'lucide-react';
 import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import GlassSelect from './GlassSelect';
 
 export interface FilterConfig {
   dateRange?: { from: string; to: string };
@@ -46,218 +48,154 @@ export default function FilterPanel({
     type: '',
   });
 
-  const handleFilterChange = (key: string, value: any) => {
-    const newFilters = { ...filters, [key]: value };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
+  const update = (key: string, value: any) => {
+    const next = { ...filters, [key]: value };
+    setFilters(next);
+    onFilterChange(next);
   };
 
-  const handleDateChange = (field: 'from' | 'to', value: string) => {
-    const newDateRange = { ...filters.dateRange, [field]: value };
-    const newFilters = { ...filters, dateRange: newDateRange };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
+  const updateDate = (field: 'from' | 'to', value: string) => {
+    const next = { ...filters, dateRange: { ...filters.dateRange, [field]: value } as { from: string; to: string } };
+    setFilters(next);
+    onFilterChange(next);
   };
 
-  const clearFilters = () => {
-    const cleared = {
-      dateRange: { from: '2026-01-01', to: '2026-12-31' },
-      search: '',
-      status: '',
-      type: '',
-    };
+  const clear = () => {
+    const cleared = { dateRange: { from: '2026-01-01', to: '2026-12-31' }, search: '', status: '', type: '' };
     setFilters(cleared);
     onFilterChange(cleared);
   };
 
-  const hasActiveFilters =
+  const hasActive =
     (filters.search && filters.search.length > 0) ||
     (filters.status && filters.status.length > 0) ||
     (filters.type && filters.type.length > 0);
 
-  const selectStyle: React.CSSProperties = {
-    background: 'rgba(255,255,255,0.08)',
-    border: '1px solid rgba(255,255,255,0.15)',
-    color: '#fff',
-    borderRadius: '12px',
-    padding: '10px 14px',
-    fontSize: '14px',
-    outline: 'none',
-    cursor: 'pointer',
-    transition: 'all 0.2s',
-  };
-
-  const inputStyle: React.CSSProperties = {
-    background: 'rgba(255,255,255,0.08)',
-    border: '1px solid rgba(255,255,255,0.15)',
-    color: '#fff',
-    borderRadius: '12px',
-    padding: '10px 14px',
-    fontSize: '14px',
-    outline: 'none',
-  };
+  const Label = ({ children }: { children: React.ReactNode }) => (
+    <label className="text-[11px] font-semibold text-gray-400 uppercase tracking-[0.08em]">{children}</label>
+  );
 
   return (
-    <div className="rounded-2xl p-6 overflow-hidden" style={{
-      background: 'rgba(255, 255, 255, 0.08)',
-      backdropFilter: 'blur(16px)',
-      border: '1px solid rgba(255, 255, 255, 0.12)',
-      boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
-    }}>
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      className="relative rounded-[20px] p-6 overflow-hidden"
+      style={{
+        background: 'linear-gradient(160deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 100%)',
+        backdropFilter: 'blur(22px) saturate(150%)',
+        WebkitBackdropFilter: 'blur(22px) saturate(150%)',
+        border: '1px solid rgba(255,255,255,0.13)',
+        boxShadow: '0 16px 50px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.18)',
+      }}
+    >
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+
       {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <Filter size={20} className="text-green-400" />
+      <div className="flex items-center gap-3 mb-5">
+        <div className="p-2 rounded-xl" style={{ background: 'rgba(74,222,128,0.15)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15)' }}>
+          <Filter size={16} className="text-green-400" />
+        </div>
         <h3 className="text-sm font-semibold text-white">Filtros</h3>
-        {hasActiveFilters && (
-          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-500/30 text-green-300">
-            Filtros Activos
-          </span>
-        )}
+        <AnimatePresence>
+          {hasActive && (
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              className="px-3 py-1 rounded-full text-[11px] font-bold text-green-300"
+              style={{ background: 'rgba(74,222,128,0.2)', border: '1px solid rgba(74,222,128,0.35)' }}
+            >
+              Activos
+            </motion.span>
+          )}
+        </AnimatePresence>
+
+        <div className="ml-auto">
+          <AnimatePresence>
+            {hasActive && (
+              <motion.button
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 10 }}
+                onClick={clear}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:scale-105"
+                style={{ background: 'rgba(239,68,68,0.18)', border: '1px solid rgba(239,68,68,0.3)', color: '#fca5a5' }}
+              >
+                <X size={14} /> Limpiar
+              </motion.button>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
-      {/* Filter Controls - Horizontal Layout */}
+      {/* Controls — horizontal grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Search */}
         {showSearch && (
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold text-gray-300 uppercase tracking-wide">Búsqueda</label>
-            <input
-              type="text"
-              placeholder="Buscar..."
-              value={filters.search}
-              onChange={e => handleFilterChange('search', e.target.value)}
-              className="w-full transition-all hover:border-green-500/40 focus:border-green-400"
-              style={inputStyle}
-              onFocus={(e) => {
-                e.target.style.borderColor = 'rgba(74, 222, 128, 0.5)';
-                e.target.style.boxShadow = '0 0 12px rgba(74, 222, 128, 0.2)';
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = 'rgba(255,255,255,0.15)';
-                e.target.style.boxShadow = 'none';
-              }}
-            />
+            <Label>Búsqueda</Label>
+            <div className="relative">
+              <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Buscar..."
+                value={filters.search}
+                onChange={e => update('search', e.target.value)}
+                className="field w-full"
+                style={{ paddingLeft: 38 }}
+              />
+            </div>
           </div>
         )}
 
-        {/* Date From */}
         {showDateRange && (
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold text-gray-300 uppercase tracking-wide">Desde</label>
+            <Label>Desde</Label>
             <input
               type="date"
               value={filters.dateRange?.from || '2026-01-01'}
-              onChange={e => handleDateChange('from', e.target.value)}
-              className="w-full transition-all hover:border-green-500/40 focus:border-green-400"
-              style={inputStyle}
-              onFocus={(e) => {
-                e.target.style.borderColor = 'rgba(74, 222, 128, 0.5)';
-                e.target.style.boxShadow = '0 0 12px rgba(74, 222, 128, 0.2)';
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = 'rgba(255,255,255,0.15)';
-                e.target.style.boxShadow = 'none';
-              }}
+              onChange={e => updateDate('from', e.target.value)}
+              className="field w-full"
+              style={{ colorScheme: 'dark' }}
             />
           </div>
         )}
 
-        {/* Date To */}
         {showDateRange && (
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold text-gray-300 uppercase tracking-wide">Hasta</label>
+            <Label>Hasta</Label>
             <input
               type="date"
               value={filters.dateRange?.to || '2026-12-31'}
-              onChange={e => handleDateChange('to', e.target.value)}
-              className="w-full transition-all hover:border-green-500/40 focus:border-green-400"
-              style={inputStyle}
-              onFocus={(e) => {
-                e.target.style.borderColor = 'rgba(74, 222, 128, 0.5)';
-                e.target.style.boxShadow = '0 0 12px rgba(74, 222, 128, 0.2)';
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = 'rgba(255,255,255,0.15)';
-                e.target.style.boxShadow = 'none';
-              }}
+              onChange={e => updateDate('to', e.target.value)}
+              className="field w-full"
+              style={{ colorScheme: 'dark' }}
             />
           </div>
         )}
 
-        {/* Status */}
         {showStatus && statusOptions.length > 0 && (
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold text-gray-300 uppercase tracking-wide">{statusLabel}</label>
-            <select
+            <Label>{statusLabel}</Label>
+            <GlassSelect
               value={filters.status || ''}
-              onChange={e => handleFilterChange('status', e.target.value)}
-              className="w-full transition-all hover:border-green-500/40 focus:border-green-400"
-              style={selectStyle}
-              onFocus={(e) => {
-                (e.target as HTMLSelectElement).style.borderColor = 'rgba(74, 222, 128, 0.5)';
-                (e.target as HTMLSelectElement).style.boxShadow = '0 0 12px rgba(74, 222, 128, 0.2)';
-              }}
-              onBlur={(e) => {
-                (e.target as HTMLSelectElement).style.borderColor = 'rgba(255,255,255,0.15)';
-                (e.target as HTMLSelectElement).style.boxShadow = 'none';
-              }}
-            >
-              <option value="" style={{ background: '#1a1a1a', color: '#999' }}>Todos</option>
-              {statusOptions.map(opt => (
-                <option key={opt.value} value={opt.value} style={{ background: '#1a1a1a', color: '#fff' }}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+              options={statusOptions}
+              onChange={v => update('status', v)}
+            />
           </div>
         )}
 
-        {/* Type */}
         {showType && typeOptions.length > 0 && (
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold text-gray-300 uppercase tracking-wide">{typeLabel}</label>
-            <select
+            <Label>{typeLabel}</Label>
+            <GlassSelect
               value={filters.type || ''}
-              onChange={e => handleFilterChange('type', e.target.value)}
-              className="w-full transition-all hover:border-green-500/40 focus:border-green-400"
-              style={selectStyle}
-              onFocus={(e) => {
-                (e.target as HTMLSelectElement).style.borderColor = 'rgba(74, 222, 128, 0.5)';
-                (e.target as HTMLSelectElement).style.boxShadow = '0 0 12px rgba(74, 222, 128, 0.2)';
-              }}
-              onBlur={(e) => {
-                (e.target as HTMLSelectElement).style.borderColor = 'rgba(255,255,255,0.15)';
-                (e.target as HTMLSelectElement).style.boxShadow = 'none';
-              }}
-            >
-              <option value="" style={{ background: '#1a1a1a', color: '#999' }}>Todos</option>
-              {typeOptions.map(opt => (
-                <option key={opt.value} value={opt.value} style={{ background: '#1a1a1a', color: '#fff' }}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
+              options={typeOptions}
+              onChange={v => update('type', v)}
+            />
           </div>
         )}
       </div>
-
-      {/* Clear Filters Button */}
-      {hasActiveFilters && (
-        <div className="mt-5 pt-5 border-t border-white/10">
-          <button
-            onClick={clearFilters}
-            className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all hover:scale-105"
-            style={{
-              background: 'rgba(239, 68, 68, 0.2)',
-              border: '1px solid rgba(239, 68, 68, 0.3)',
-              color: '#fca5a5',
-            }}
-          >
-            <X size={16} />
-            Limpiar filtros
-          </button>
-        </div>
-      )}
-    </div>
+    </motion.div>
   );
 }

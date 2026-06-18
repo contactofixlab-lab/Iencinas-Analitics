@@ -11,124 +11,59 @@ html {
 }
 
 body {
-  background: linear-gradient(135deg, #0f172a 0%, #1a2942 25%, #1e3a5f 50%, #1a2942 75%, #0f172a 100%);
+  background:
+    radial-gradient(1200px 800px at 15% -10%, rgba(34,197,94,0.10), transparent 55%),
+    radial-gradient(1000px 700px at 110% 10%, rgba(59,130,246,0.10), transparent 50%),
+    radial-gradient(900px 900px at 50% 120%, rgba(168,85,247,0.08), transparent 55%),
+    linear-gradient(135deg, #070d18 0%, #0d1828 28%, #102339 52%, #0d1828 76%, #070d18 100%);
+  background-attachment: fixed;
   min-height: 100vh;
   color: #e5e7eb;
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Smooth scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+/* Animated aurora layer that drifts behind everything */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(600px 400px at 20% 30%, rgba(34,197,94,0.06), transparent 60%),
+    radial-gradient(700px 500px at 80% 70%, rgba(56,189,248,0.05), transparent 60%);
+  filter: blur(40px);
+  animation: auroraDrift 24s ease-in-out infinite alternate;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+@keyframes auroraDrift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(3%, -2%, 0) scale(1.06); }
+  100% { transform: translate3d(-2%, 3%, 0) scale(1.02); }
 }
 
+/* ════════════ SCROLLBAR ════════════ */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.03); }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(74,222,128,0.35), rgba(255,255,255,0.12));
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: linear-gradient(180deg, rgba(74,222,128,0.55), rgba(255,255,255,0.22));
+  background-clip: padding-box;
 }
 
-/* Animations */
+/* ════════════ KEYFRAMES ════════════ */
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-12px); }
 }
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 0.15;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.25;
-    transform: scale(1.05);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-/* Real Estate Animations */
-@keyframes floatBuilding1 {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px);
-  }
-  25% {
-    transform: translateY(-20px) translateX(8px);
-  }
-  50% {
-    transform: translateY(-15px) translateX(-5px);
-  }
-  75% {
-    transform: translateY(-25px) translateX(10px);
-  }
-}
-
-@keyframes floatBuilding2 {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px);
-  }
-  25% {
-    transform: translateY(-25px) translateX(-8px);
-  }
-  50% {
-    transform: translateY(-18px) translateX(5px);
-  }
-  75% {
-    transform: translateY(-30px) translateX(-10px);
-  }
-}
-
-@keyframes orbitKeys {
-  0% {
-    transform: rotate(0deg) translateX(60px) rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg) translateX(60px) rotate(-360deg);
-  }
-}
-
-@keyframes housePulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.1);
-    opacity: 0.8;
-  }
-}
-
-@keyframes gridPulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.6;
-  }
-  50% {
-    transform: scale(1.15);
-    opacity: 1;
-  }
-}
-
-/* ════════════ LIVELY ANIMATION SYSTEM ════════════ */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(18px); }
+  from { opacity: 0; transform: translateY(22px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes fadeIn {
@@ -136,98 +71,181 @@ body {
   to   { opacity: 1; }
 }
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.94); }
-  to   { opacity: 1; transform: scale(1); }
+  from { opacity: 0; transform: scale(0.92) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 @keyframes glowPulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
-  50%       { box-shadow: 0 0 24px 2px rgba(74,222,128,0.18); }
+  50%      { box-shadow: 0 0 28px 3px rgba(74,222,128,0.22); }
 }
 @keyframes shimmerSweep {
   0%   { transform: translateX(-120%); }
   100% { transform: translateX(220%); }
 }
+@keyframes borderGlow {
+  0%, 100% { border-color: rgba(255,255,255,0.12); }
+  50%      { border-color: rgba(74,222,128,0.35); }
+}
 
-/* Staggered page entrance — direct children fade up in sequence */
+/* ════════════ STAGGERED ENTRANCES ════════════ */
 .page-enter > * {
   opacity: 0;
-  animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-.page-enter > *:nth-child(1)  { animation-delay: 0.03s; }
-.page-enter > *:nth-child(2)  { animation-delay: 0.10s; }
-.page-enter > *:nth-child(3)  { animation-delay: 0.17s; }
-.page-enter > *:nth-child(4)  { animation-delay: 0.24s; }
-.page-enter > *:nth-child(5)  { animation-delay: 0.31s; }
-.page-enter > *:nth-child(6)  { animation-delay: 0.38s; }
-.page-enter > *:nth-child(7)  { animation-delay: 0.45s; }
-.page-enter > *:nth-child(8)  { animation-delay: 0.52s; }
-.page-enter > *:nth-child(9)  { animation-delay: 0.59s; }
-.page-enter > *:nth-child(10) { animation-delay: 0.66s; }
+.page-enter > *:nth-child(1)  { animation-delay: 0.04s; }
+.page-enter > *:nth-child(2)  { animation-delay: 0.11s; }
+.page-enter > *:nth-child(3)  { animation-delay: 0.18s; }
+.page-enter > *:nth-child(4)  { animation-delay: 0.25s; }
+.page-enter > *:nth-child(5)  { animation-delay: 0.32s; }
+.page-enter > *:nth-child(6)  { animation-delay: 0.39s; }
+.page-enter > *:nth-child(7)  { animation-delay: 0.46s; }
+.page-enter > *:nth-child(8)  { animation-delay: 0.53s; }
+.page-enter > *:nth-child(9)  { animation-delay: 0.60s; }
+.page-enter > *:nth-child(10) { animation-delay: 0.67s; }
 
-/* Grid item entrance — stagger cards within a grid */
 .stagger-grid > * {
   opacity: 0;
-  animation: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: scaleIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-.stagger-grid > *:nth-child(1)  { animation-delay: 0.05s; }
-.stagger-grid > *:nth-child(2)  { animation-delay: 0.11s; }
-.stagger-grid > *:nth-child(3)  { animation-delay: 0.17s; }
-.stagger-grid > *:nth-child(4)  { animation-delay: 0.23s; }
-.stagger-grid > *:nth-child(5)  { animation-delay: 0.29s; }
-.stagger-grid > *:nth-child(6)  { animation-delay: 0.35s; }
-.stagger-grid > *:nth-child(7)  { animation-delay: 0.41s; }
-.stagger-grid > *:nth-child(8)  { animation-delay: 0.47s; }
-.stagger-grid > *:nth-child(9)  { animation-delay: 0.53s; }
-.stagger-grid > *:nth-child(10) { animation-delay: 0.59s; }
-.stagger-grid > *:nth-child(11) { animation-delay: 0.65s; }
-.stagger-grid > *:nth-child(12) { animation-delay: 0.71s; }
+.stagger-grid > *:nth-child(1)  { animation-delay: 0.06s; }
+.stagger-grid > *:nth-child(2)  { animation-delay: 0.13s; }
+.stagger-grid > *:nth-child(3)  { animation-delay: 0.20s; }
+.stagger-grid > *:nth-child(4)  { animation-delay: 0.27s; }
+.stagger-grid > *:nth-child(5)  { animation-delay: 0.34s; }
+.stagger-grid > *:nth-child(6)  { animation-delay: 0.41s; }
+.stagger-grid > *:nth-child(7)  { animation-delay: 0.48s; }
+.stagger-grid > *:nth-child(8)  { animation-delay: 0.55s; }
 
-/* Reusable hover lift for cards */
+/* ════════════ 3D PERSPECTIVE SYSTEM ════════════ */
+/* Wrap a grid in .scene-3d so children share a perspective origin */
+.scene-3d { perspective: 1400px; perspective-origin: 50% 30%; }
+
+/* Card that lifts toward the viewer and tilts subtly on hover */
+.card-3d {
+  transform-style: preserve-3d;
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+  will-change: transform;
+}
+.card-3d:hover {
+  transform: translateY(-6px) rotateX(4deg) rotateY(-3deg) scale(1.015);
+}
+
+/* Generic hover lift */
 .lift {
-  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease;
   will-change: transform;
 }
 .lift:hover { transform: translateY(-5px); }
 
-/* Shimmer sweep on hover (buttons / highlights) */
+/* ════════════ GLASS SYSTEM (more defined) ════════════ */
+.glass {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 100%);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.20);
+}
+
+/* Stronger, more 3D card — the new default for panels & charts */
+.glass-card {
+  position: relative;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.045) 45%, rgba(255,255,255,0.025) 100%);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.40),
+    0 4px 16px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -2px 8px rgba(0, 0, 0, 0.25);
+}
+/* Top sheen line on every glass-card */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+  border-radius: 20px 20px 0 0;
+  pointer-events: none;
+}
+
+.glass-strong {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.72), rgba(20, 35, 60, 0.66));
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.glass-sm {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ════════════ SHIMMER / GLOW ════════════ */
 .shimmer-host { position: relative; overflow: hidden; }
 .shimmer-host::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.16) 50%, transparent 70%);
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%);
   transform: translateX(-120%);
   pointer-events: none;
 }
-.shimmer-host:hover::after { animation: shimmerSweep 0.9s ease; }
+.shimmer-host:hover::after { animation: shimmerSweep 0.95s ease; }
 
-/* Dark dropdown options (native selects render light by default) */
-select option { background: #0f1b2e; color: #e5e7eb; }
+.glow-green { box-shadow: 0 0 0 1px rgba(74,222,128,0.25), 0 8px 30px rgba(74,222,128,0.18); }
 
-/* Respect reduced-motion */
+/* ════════════ CUSTOM SELECT / INPUT ════════════ */
+select option { background: #0a1322; color: #e5e7eb; }
+
+.field {
+  background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.14);
+  color: #fff;
+  border-radius: 14px;
+  padding: 11px 16px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, background 0.25s ease;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), inset 0 -2px 6px rgba(0,0,0,0.18);
+}
+.field:hover { border-color: rgba(74,222,128,0.35); }
+.field:focus {
+  border-color: rgba(74,222,128,0.6);
+  box-shadow:
+    0 0 0 3px rgba(74,222,128,0.15),
+    0 0 22px rgba(74,222,128,0.20),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+  transform: translateY(-1px);
+}
+
+/* ════════════ REDUCED MOTION ════════════ */
 @media (prefers-reduced-motion: reduce) {
   .page-enter > *, .stagger-grid > * { animation: none; opacity: 1; }
-  .lift { transition: none; }
+  .lift, .card-3d { transition: none; }
+  body::before { animation: none; }
 }
 
-/* Glass effect utility */
-.glass {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.glass-sm {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-/* Selection */
+/* ════════════ SELECTION ════════════ */
 ::selection {
   background: rgba(74, 222, 128, 0.3);
   color: #fff;
 }
+
+/* Ensure app content sits above the aurora */
+#__next, main, aside, header { position: relative; z-index: 1; }

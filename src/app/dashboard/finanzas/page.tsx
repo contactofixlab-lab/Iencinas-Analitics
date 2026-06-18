@@ -5,11 +5,12 @@ import { useSearchParams } from 'next/navigation';
 import MetricCard from '@/components/MetricCard';
 import ProjectSelector from '@/components/ProjectSelector';
 import FilterPanel, { FilterConfig } from '@/components/FilterPanel';
+import ChartCard, { GlassTooltip } from '@/components/ChartCard';
 import { FinanzasData, Metric } from '@/types/domain';
 import { BarChart2, DollarSign, TrendingUp, Wallet } from 'lucide-react';
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer,
+  Tooltip, ResponsiveContainer, Area, AreaChart,
 } from 'recharts';
 
 const icons = [
@@ -113,7 +114,7 @@ export default function FinanzasPage() {
         statusLabel="Tipo de Transacción"
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 stagger-grid">
+      <div className="scene-3d grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 stagger-grid">
         {(data?.metrics || []).map((m, i) => (
           <MetricCard
             key={m.label}
@@ -128,57 +129,50 @@ export default function FinanzasPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-2xl p-6 overflow-hidden" style={{
-          background: 'rgba(255, 255, 255, 0.08)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255, 255, 255, 0.12)',
-          boxShadow: '0 16px 48px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
-        }}>
-          <h3 className="text-sm font-semibold text-white mb-4">Evolución de Ingresos — Línea USD (M)</h3>
+        <ChartCard title="Evolución de Ingresos" subtitle="USD millones · área acumulada" accent="green">
           {loading ? (
             <div className="h-60 flex items-center justify-center text-gray-400">Cargando...</div>
           ) : (
-            <ResponsiveContainer width="100%" height={240}>
-              <LineChart data={combined}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                <XAxis dataKey="mes" tick={{ fontSize: 12, fill: '#9ca3af' }} />
-                <YAxis tick={{ fontSize: 12, fill: '#9ca3af' }} tickFormatter={v => `$${v}M`} />
-                <Tooltip
-                  contentStyle={{ background: 'rgba(0,0,0,0.8)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#fff' }}
-                  formatter={(v: number) => [`$${v.toFixed(1)}M`]}
-                />
-                <Line type="monotone" dataKey="ingresos" stroke="#4ade80" strokeWidth={3} dot={false} name="Ingresos" />
-              </LineChart>
+            <ResponsiveContainer width="100%" height={250}>
+              <AreaChart data={combined} margin={{ top: 10, right: 8, left: -12, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="fillIngresos" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#4ade80" stopOpacity={0.45} />
+                    <stop offset="100%" stopColor="#4ade80" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                <XAxis dataKey="mes" tick={{ fontSize: 12, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 12, fill: '#9ca3af' }} tickFormatter={v => `$${v}M`} axisLine={false} tickLine={false} />
+                <Tooltip content={<GlassTooltip formatter={(v: number) => `Ingresos: $${v.toFixed(1)}M`} />} />
+                <Area type="monotone" dataKey="ingresos" stroke="#4ade80" strokeWidth={3} fill="url(#fillIngresos)" name="Ingresos"
+                  dot={false} activeDot={{ r: 6, fill: '#4ade80', stroke: '#0a1322', strokeWidth: 2 }} />
+              </AreaChart>
             </ResponsiveContainer>
           )}
-        </div>
+        </ChartCard>
 
-        <div className="rounded-2xl p-6 overflow-hidden" style={{
-          background: 'rgba(255, 255, 255, 0.08)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255, 255, 255, 0.12)',
-          boxShadow: '0 16px 48px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
-        }}>
-          <h3 className="text-sm font-semibold text-white mb-4">Gastos Operativos por Mes — Barras USD (M)</h3>
+        <ChartCard title="Gastos Operativos por Mes" subtitle="USD millones · barras" accent="red">
           {loading ? (
             <div className="h-60 flex items-center justify-center text-gray-400">Cargando...</div>
           ) : (
-            <ResponsiveContainer width="100%" height={240}>
-              <BarChart data={combined}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                <XAxis dataKey="mes" tick={{ fontSize: 12, fill: '#9ca3af' }} />
-                <YAxis tick={{ fontSize: 12, fill: '#9ca3af' }} tickFormatter={v => `$${v}M`} />
-                <Tooltip
-                  contentStyle={{ background: 'rgba(0,0,0,0.8)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#fff' }}
-                  formatter={(v: number) => [`$${v.toFixed(1)}M`]}
-                />
-                <Bar dataKey="gastos" fill="#ef4444" radius={[6, 6, 0, 0]} name="Gastos" />
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={combined} margin={{ top: 10, right: 8, left: -12, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="fillGastos" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#f87171" stopOpacity={0.95} />
+                    <stop offset="100%" stopColor="#ef4444" stopOpacity={0.35} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                <XAxis dataKey="mes" tick={{ fontSize: 12, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 12, fill: '#9ca3af' }} tickFormatter={v => `$${v}M`} axisLine={false} tickLine={false} />
+                <Tooltip cursor={{ fill: 'rgba(255,255,255,0.04)' }} content={<GlassTooltip formatter={(v: number) => `Gastos: $${v.toFixed(1)}M`} />} />
+                <Bar dataKey="gastos" fill="url(#fillGastos)" radius={[8, 8, 0, 0]} name="Gastos" maxBarSize={42} />
               </BarChart>
             </ResponsiveContainer>
           )}
-        </div>
+        </ChartCard>
       </div>
 
       <div className="rounded-2xl overflow-hidden" style={{
