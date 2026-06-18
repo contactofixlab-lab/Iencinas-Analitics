@@ -46,6 +46,8 @@ function withMockFallback(primary: DataSource): DataSource {
 
   return {
     name: primary.name,
+    getProyectos: (): Promise<any[]> =>
+      guard('getProyectos', () => primary.getProyectos(), () => mock.getProyectos?.() || []),
     getFinanzas: (p?: QueryParams): Promise<FinanzasData> =>
       guard('getFinanzas', () => primary.getFinanzas(p), () => mock.getFinanzas()),
     getComercial: (p?: QueryParams): Promise<ComercialData> =>
@@ -54,8 +56,8 @@ function withMockFallback(primary: DataSource): DataSource {
       guard('getMarketing', () => primary.getMarketing(p), () => mock.getMarketing()),
     getValorEmpresa: (p?: QueryParams): Promise<ValorEmpresaData> =>
       guard('getValorEmpresa', () => primary.getValorEmpresa(p), () => mock.getValorEmpresa()),
-    getReportes: (modulo: ModuleKey): Promise<ReportInfo[]> =>
-      guard('getReportes', () => primary.getReportes(modulo), () => mock.getReportes(modulo)),
+    getReportes: (modulo: ModuleKey, params?: QueryParams): Promise<ReportInfo[]> =>
+      guard('getReportes', () => primary.getReportes(modulo, params), () => mock.getReportes(modulo)),
   };
 }
 

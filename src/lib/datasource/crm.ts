@@ -62,6 +62,10 @@ export class CrmDataSource implements DataSource {
     });
   }
 
+  async getProyectos(): Promise<any[]> {
+    throw new NotImplemented('getProyectos');
+  }
+
   async getFinanzas(params?: QueryParams): Promise<FinanzasData> {
     const raw = await this.http.get<unknown>(ENDPOINTS.finanzas, params);
     return mapFinanzas(raw);
@@ -82,8 +86,8 @@ export class CrmDataSource implements DataSource {
     return mapValorEmpresa(raw);
   }
 
-  async getReportes(modulo: ModuleKey): Promise<ReportInfo[]> {
-    const raw = await this.http.get<unknown>(ENDPOINTS.reportes, { module: modulo });
+  async getReportes(modulo: ModuleKey, params?: QueryParams): Promise<ReportInfo[]> {
+    const raw = await this.http.get<unknown>(ENDPOINTS.reportes, { module: modulo, ...params });
     return mapReportes(raw);
   }
 }

@@ -50,7 +50,6 @@ export default function MetricCard({ label, value, trend, up, color, icon }: Met
       ref={ref}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      onMouseLeaveCapture={handleLeave}
       style={{
         rotateX,
         rotateY,

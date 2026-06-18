@@ -72,10 +72,11 @@ export default function FinanzasPage() {
     }
 
     if (newFilters.dateRange) {
+      const dateRange = newFilters.dateRange;
       filtered = filtered.filter(t => {
         const fecha = new Date(t.fecha);
-        const from = new Date(newFilters.dateRange.from);
-        const to = new Date(newFilters.dateRange.to);
+        const from = new Date(dateRange.from);
+        const to = new Date(dateRange.to);
         return fecha >= from && fecha <= to;
       });
     }

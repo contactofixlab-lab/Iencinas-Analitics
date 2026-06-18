@@ -14,14 +14,14 @@ const ACCENT = {
   text: 'text-orange-400',
 };
 
-function ReportCard({ reporte }: { reporte: any; onClick?: () => void }) {
+function ReportCard({ reporte, onClick = () => {} }: { reporte: any; onClick?: () => void }) {
   const [downloading, setDownloading] = useState('');
 
   return (
     <motion.button
       initial={{ opacity: 0, x: -12 }}
       animate={{ opacity: 1, x: 0 }}
-      onClick={onClick || (() => {})}
+      onClick={onClick}
       className="w-full text-left p-3 rounded-lg transition-all hover:scale-105 active:scale-95"
       style={{
         background: 'rgba(255,255,255,0.06)',
