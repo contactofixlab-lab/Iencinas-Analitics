@@ -39,7 +39,6 @@ export default function FilterPanel({
   typeLabel = 'Tipo',
   statusLabel = 'Estado',
 }: FilterPanelProps) {
-  const [isOpen, setIsOpen] = useState(false);
   const [filters, setFilters] = useState<FilterConfig>({
     dateRange: { from: '2026-01-01', to: '2026-12-31' },
     search: '',
@@ -76,143 +75,188 @@ export default function FilterPanel({
     (filters.status && filters.status.length > 0) ||
     (filters.type && filters.type.length > 0);
 
-  const inputStyle: React.CSSProperties = {
-    background: 'rgba(255,255,255,0.07)',
-    border: '1px solid rgba(255,255,255,0.12)',
+  const selectStyle: React.CSSProperties = {
+    background: 'rgba(255,255,255,0.08)',
+    border: '1px solid rgba(255,255,255,0.15)',
     color: '#fff',
+    borderRadius: '12px',
+    padding: '10px 14px',
+    fontSize: '14px',
+    outline: 'none',
+    cursor: 'pointer',
+    transition: 'all 0.2s',
+  };
+
+  const inputStyle: React.CSSProperties = {
+    background: 'rgba(255,255,255,0.08)',
+    border: '1px solid rgba(255,255,255,0.15)',
+    color: '#fff',
+    borderRadius: '12px',
+    padding: '10px 14px',
+    fontSize: '14px',
+    outline: 'none',
   };
 
   return (
-    <div className="rounded-2xl overflow-hidden" style={{
-      background: 'rgba(255, 255, 255, 0.06)',
+    <div className="rounded-2xl p-6 overflow-hidden" style={{
+      background: 'rgba(255, 255, 255, 0.08)',
       backdropFilter: 'blur(16px)',
       border: '1px solid rgba(255, 255, 255, 0.12)',
+      boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
     }}>
       {/* Header */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-5 hover:bg-white/5 transition-colors"
-      >
-        <div className="flex items-center gap-3">
-          <Filter size={18} className="text-blue-400" />
-          <span className="font-semibold text-white">Filtros</span>
-          {hasActiveFilters && (
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/30 text-blue-300">
-              Activo
-            </span>
-          )}
-        </div>
-        <div className={`transition-transform ${isOpen ? 'rotate-180' : ''}`}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="text-gray-400">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </div>
-      </button>
+      <div className="flex items-center gap-3 mb-6">
+        <Filter size={20} className="text-green-400" />
+        <h3 className="text-sm font-semibold text-white">Filtros</h3>
+        {hasActiveFilters && (
+          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-500/30 text-green-300">
+            Filtros Activos
+          </span>
+        )}
+      </div>
 
-      {isOpen && (
-        <>
-          <div className="border-t border-white/10"></div>
-
-          {/* Filter Controls */}
-          <div className="p-5 space-y-4">
-            {/* Search */}
-            {showSearch && (
-              <div>
-                <label className="block text-xs font-medium text-gray-300 mb-2">Buscar</label>
-                <input
-                  type="text"
-                  placeholder="Escribe para filtrar..."
-                  value={filters.search}
-                  onChange={e => handleFilterChange('search', e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl text-sm outline-none"
-                  style={inputStyle}
-                />
-              </div>
-            )}
-
-            {/* Date Range */}
-            {showDateRange && (
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-gray-300 mb-2">Desde</label>
-                  <input
-                    type="date"
-                    value={filters.dateRange?.from || '2026-01-01'}
-                    onChange={e => handleDateChange('from', e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none"
-                    style={inputStyle}
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-300 mb-2">Hasta</label>
-                  <input
-                    type="date"
-                    value={filters.dateRange?.to || '2026-12-31'}
-                    onChange={e => handleDateChange('to', e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none"
-                    style={inputStyle}
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Status */}
-            {showStatus && statusOptions.length > 0 && (
-              <div>
-                <label className="block text-xs font-medium text-gray-300 mb-2">{statusLabel}</label>
-                <select
-                  value={filters.status || ''}
-                  onChange={e => handleFilterChange('status', e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl text-sm outline-none"
-                  style={inputStyle}
-                >
-                  <option value="">Todos</option>
-                  {statusOptions.map(opt => (
-                    <option key={opt.value} value={opt.value} className="bg-gray-800">
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-
-            {/* Type */}
-            {showType && typeOptions.length > 0 && (
-              <div>
-                <label className="block text-xs font-medium text-gray-300 mb-2">{typeLabel}</label>
-                <select
-                  value={filters.type || ''}
-                  onChange={e => handleFilterChange('type', e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl text-sm outline-none"
-                  style={inputStyle}
-                >
-                  <option value="">Todos</option>
-                  {typeOptions.map(opt => (
-                    <option key={opt.value} value={opt.value} className="bg-gray-800">
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-
-            {/* Action Buttons */}
-            {hasActiveFilters && (
-              <button
-                onClick={clearFilters}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors"
-                style={{
-                  background: 'rgba(239, 68, 68, 0.2)',
-                  border: '1px solid rgba(239, 68, 68, 0.3)',
-                  color: '#fca5a5',
-                }}
-              >
-                <X size={16} />
-                Limpiar filtros
-              </button>
-            )}
+      {/* Filter Controls - Horizontal Layout */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Search */}
+        {showSearch && (
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold text-gray-300 uppercase tracking-wide">Búsqueda</label>
+            <input
+              type="text"
+              placeholder="Buscar..."
+              value={filters.search}
+              onChange={e => handleFilterChange('search', e.target.value)}
+              className="w-full transition-all hover:border-green-500/40 focus:border-green-400"
+              style={inputStyle}
+              onFocus={(e) => {
+                e.target.style.borderColor = 'rgba(74, 222, 128, 0.5)';
+                e.target.style.boxShadow = '0 0 12px rgba(74, 222, 128, 0.2)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = 'rgba(255,255,255,0.15)';
+                e.target.style.boxShadow = 'none';
+              }}
+            />
           </div>
-        </>
+        )}
+
+        {/* Date From */}
+        {showDateRange && (
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold text-gray-300 uppercase tracking-wide">Desde</label>
+            <input
+              type="date"
+              value={filters.dateRange?.from || '2026-01-01'}
+              onChange={e => handleDateChange('from', e.target.value)}
+              className="w-full transition-all hover:border-green-500/40 focus:border-green-400"
+              style={inputStyle}
+              onFocus={(e) => {
+                e.target.style.borderColor = 'rgba(74, 222, 128, 0.5)';
+                e.target.style.boxShadow = '0 0 12px rgba(74, 222, 128, 0.2)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = 'rgba(255,255,255,0.15)';
+                e.target.style.boxShadow = 'none';
+              }}
+            />
+          </div>
+        )}
+
+        {/* Date To */}
+        {showDateRange && (
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold text-gray-300 uppercase tracking-wide">Hasta</label>
+            <input
+              type="date"
+              value={filters.dateRange?.to || '2026-12-31'}
+              onChange={e => handleDateChange('to', e.target.value)}
+              className="w-full transition-all hover:border-green-500/40 focus:border-green-400"
+              style={inputStyle}
+              onFocus={(e) => {
+                e.target.style.borderColor = 'rgba(74, 222, 128, 0.5)';
+                e.target.style.boxShadow = '0 0 12px rgba(74, 222, 128, 0.2)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = 'rgba(255,255,255,0.15)';
+                e.target.style.boxShadow = 'none';
+              }}
+            />
+          </div>
+        )}
+
+        {/* Status */}
+        {showStatus && statusOptions.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold text-gray-300 uppercase tracking-wide">{statusLabel}</label>
+            <select
+              value={filters.status || ''}
+              onChange={e => handleFilterChange('status', e.target.value)}
+              className="w-full transition-all hover:border-green-500/40 focus:border-green-400"
+              style={selectStyle}
+              onFocus={(e) => {
+                (e.target as HTMLSelectElement).style.borderColor = 'rgba(74, 222, 128, 0.5)';
+                (e.target as HTMLSelectElement).style.boxShadow = '0 0 12px rgba(74, 222, 128, 0.2)';
+              }}
+              onBlur={(e) => {
+                (e.target as HTMLSelectElement).style.borderColor = 'rgba(255,255,255,0.15)';
+                (e.target as HTMLSelectElement).style.boxShadow = 'none';
+              }}
+            >
+              <option value="" style={{ background: '#1a1a1a', color: '#999' }}>Todos</option>
+              {statusOptions.map(opt => (
+                <option key={opt.value} value={opt.value} style={{ background: '#1a1a1a', color: '#fff' }}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Type */}
+        {showType && typeOptions.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <label className="text-xs font-semibold text-gray-300 uppercase tracking-wide">{typeLabel}</label>
+            <select
+              value={filters.type || ''}
+              onChange={e => handleFilterChange('type', e.target.value)}
+              className="w-full transition-all hover:border-green-500/40 focus:border-green-400"
+              style={selectStyle}
+              onFocus={(e) => {
+                (e.target as HTMLSelectElement).style.borderColor = 'rgba(74, 222, 128, 0.5)';
+                (e.target as HTMLSelectElement).style.boxShadow = '0 0 12px rgba(74, 222, 128, 0.2)';
+              }}
+              onBlur={(e) => {
+                (e.target as HTMLSelectElement).style.borderColor = 'rgba(255,255,255,0.15)';
+                (e.target as HTMLSelectElement).style.boxShadow = 'none';
+              }}
+            >
+              <option value="" style={{ background: '#1a1a1a', color: '#999' }}>Todos</option>
+              {typeOptions.map(opt => (
+                <option key={opt.value} value={opt.value} style={{ background: '#1a1a1a', color: '#fff' }}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
+
+      {/* Clear Filters Button */}
+      {hasActiveFilters && (
+        <div className="mt-5 pt-5 border-t border-white/10">
+          <button
+            onClick={clearFilters}
+            className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all hover:scale-105"
+            style={{
+              background: 'rgba(239, 68, 68, 0.2)',
+              border: '1px solid rgba(239, 68, 68, 0.3)',
+              color: '#fca5a5',
+            }}
+          >
+            <X size={16} />
+            Limpiar filtros
+          </button>
+        </div>
       )}
     </div>
   );

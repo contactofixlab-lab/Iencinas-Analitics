@@ -72,6 +72,15 @@ export default function MarketingPage() {
         <ProjectSelector value={proyecto} onChange={handleProyectoChange} />
       </div>
 
+      {/* Filters - Ahora arriba */}
+      <FilterPanel
+        onFilterChange={handleFilterChange}
+        showDateRange={false}
+        showSearch={true}
+        showStatus={false}
+        showType={false}
+      />
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 stagger-grid">
         {(data?.metrics || []).map((m, i) => (
           <MetricCard key={m.label} label={m.label} value={m.value} trend={m.trend} up={m.up}
@@ -130,15 +139,6 @@ export default function MarketingPage() {
           )}
         </div>
       </div>
-
-      {/* Filters */}
-      <FilterPanel
-        onFilterChange={handleFilterChange}
-        showDateRange={false}
-        showSearch={true}
-        showStatus={false}
-        showType={false}
-      />
 
       <div className="rounded-2xl overflow-hidden" style={{
         background: 'rgba(255, 255, 255, 0.08)',

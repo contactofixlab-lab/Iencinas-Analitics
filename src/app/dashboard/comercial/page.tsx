@@ -90,6 +90,27 @@ export default function ComercialPage() {
         <ProjectSelector value={proyecto} onChange={handleProyectoChange} />
       </div>
 
+      {/* Filters - Ahora arriba */}
+      <FilterPanel
+        onFilterChange={handleFilterChange}
+        showDateRange={false}
+        showSearch={true}
+        showStatus={true}
+        showType={true}
+        statusOptions={[
+          { label: 'Vendida', value: 'Vendida' },
+          { label: 'En proceso', value: 'En proceso' },
+          { label: 'Disponible', value: 'Disponible' },
+        ]}
+        typeOptions={[
+          { label: 'Departamento', value: 'Departamento' },
+          { label: 'Casa', value: 'Casa' },
+          { label: 'Loft', value: 'Loft' },
+        ]}
+        statusLabel="Estado"
+        typeLabel="Tipo de Propiedad"
+      />
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 stagger-grid">
         {(data?.metrics || []).map((m, i) => (
           <MetricCard
@@ -159,27 +180,6 @@ export default function ComercialPage() {
           )}
         </div>
       </div>
-
-      {/* Filters */}
-      <FilterPanel
-        onFilterChange={handleFilterChange}
-        showDateRange={false}
-        showSearch={true}
-        showStatus={true}
-        showType={true}
-        statusOptions={[
-          { label: 'Vendida', value: 'Vendida' },
-          { label: 'En proceso', value: 'En proceso' },
-          { label: 'Disponible', value: 'Disponible' },
-        ]}
-        typeOptions={[
-          { label: 'Departamento', value: 'Departamento' },
-          { label: 'Casa', value: 'Casa' },
-          { label: 'Loft', value: 'Loft' },
-        ]}
-        statusLabel="Estado"
-        typeLabel="Tipo de Propiedad"
-      />
 
       <div className="rounded-2xl overflow-hidden" style={{
         background: 'rgba(255, 255, 255, 0.08)',
