@@ -40,6 +40,20 @@ Repo: https://github.com/contactofixlab-lab/Iencinas-Analitics
   - ✓ Rutas API: 8 endpoints funcionales
   - ✓ Rutas Dashboard: 20 rutas prerendereadas
 
+- **Bug Fixes Críticos (2026-06-18 Parte 3)**:
+  - ✓ AdvancedReportBuilder: Validar projectData antes de acceder propiedades (línea 141)
+  - ✓ Todas las páginas de dashboard: Validar res.ok antes de parsear JSON (finanzas, comercial, marketing, valor-empresa)
+  - ✓ ProjectSelector: Manejo de errores en fetch de proyectos
+  - ✓ API reportes: Garantizar que data siempre es un array
+  - ✓ Eliminado 7 bugs CRÍTICOS que causaban errores 500
+
+- **Rediseño de Report Builder (2026-06-18 Parte 3)**:
+  - ✓ Previsualizador prominente ARRIBA en tabla clara con scroll
+  - ✓ Selector de atributos con CHECKBOXES claros (izquierda, 2/3 del ancho)
+  - ✓ Panel de controles a DERECHA (1/3): atributos seleccionados, filtros fecha, botones
+  - ✓ Mejor jerarquía visual para workflow "conductor de reportes"
+  - ✓ Responsive: 1 col en mobile, 3 cols en desktop (lg+)
+
 ### 🔲 Pendiente
 - Deploy a Vercel (conectar repo Iencinas-Analitics).
 - Conexión real al CRM de ventas (datasource `crm.ts` ya preparado, hoy usa mock).
