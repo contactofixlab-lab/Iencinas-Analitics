@@ -51,16 +51,22 @@ export default function Navbar({ title }: { title?: string }) {
 
   return (
     <header
-      className="h-20 sticky top-0 z-30 px-6 py-4 flex items-center justify-between"
+      className="h-20 sticky top-0 z-40 px-6 py-3 flex items-center justify-between"
       style={{
-        background: 'linear-gradient(135deg, rgba(13,24,40,0.55), rgba(16,28,48,0.45))',
-        backdropFilter: 'blur(24px) saturate(150%)',
-        WebkitBackdropFilter: 'blur(24px) saturate(150%)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08)',
+        background: 'linear-gradient(135deg, rgba(13,24,40,0.78), rgba(16,28,48,0.70))',
+        backdropFilter: 'blur(28px) saturate(150%)',
+        WebkitBackdropFilter: 'blur(28px) saturate(150%)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.10)',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.10)',
       }}
     >
-      <div>
+      {/* Logo */}
+      <div className="flex items-center gap-3">
+        <img
+          src="/logo original color.png"
+          alt="Iencinas"
+          className="h-14 w-auto object-contain drop-shadow-[0_2px_10px_rgba(74,222,128,0.18)]"
+        />
         {title && <h1 className="text-xl font-bold text-white">{title}</h1>}
       </div>
 

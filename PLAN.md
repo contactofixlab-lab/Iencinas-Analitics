@@ -21,6 +21,7 @@ Repo: https://github.com/contactofixlab-lab/Iencinas-Analitics
   - Gráficos: áreas/barras con gradientes, tooltips glass, ejes limpios (los 4 módulos).
   - Módulo Admin: usuarios, permisos, bbdd, crear, editar — paneles, modales e inputs al nuevo glass.
   - Reportes (4): tarjetas y panel "Reporte a Medida" al nuevo glass, inputs con `.field`.
+- **Layout flotante**: Navbar full-width fija arriba con el logo; Sidebar convertido en burbuja flotante (sticky, redondeada, con margen) que sigue el scroll; scroll de página natural.
 
 ### 🔲 Pendiente
 - Deploy a Vercel (conectar repo Iencinas-Analitics).

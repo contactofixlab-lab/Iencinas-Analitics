@@ -96,28 +96,25 @@ export default function Sidebar() {
   const allowed = navItems.filter(item => user && item.roles.includes(user.role));
 
   return (
-    <aside
-      className="w-72 min-h-screen flex flex-col p-4 sticky top-0"
+    <motion.aside
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="w-64 flex flex-col p-4 sticky self-start shrink-0 overflow-y-auto"
       style={{
-        background: 'linear-gradient(180deg, rgba(13,24,40,0.72) 0%, rgba(10,18,32,0.78) 100%)',
+        top: 96,
+        margin: 16,
+        maxHeight: 'calc(100vh - 112px)',
+        borderRadius: 26,
+        background: 'linear-gradient(180deg, rgba(13,24,40,0.82) 0%, rgba(10,18,32,0.86) 100%)',
         backdropFilter: 'blur(28px) saturate(150%)',
         WebkitBackdropFilter: 'blur(28px) saturate(150%)',
-        borderRight: '1px solid rgba(255, 255, 255, 0.10)',
-        boxShadow: 'inset -1px 0 0 rgba(255,255,255,0.05), 8px 0 40px rgba(0,0,0,0.25)',
+        border: '1px solid rgba(255, 255, 255, 0.12)',
+        boxShadow: '0 28px 70px rgba(0,0,0,0.50), inset 0 1px 0 rgba(255,255,255,0.14), 0 0 30px rgba(74,222,128,0.06)',
       }}
     >
-      {/* Logo */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="flex items-center justify-center py-2"
-      >
-        <img src="/logo original color.png" alt="Iencinas" className="w-56 h-32 object-contain drop-shadow-[0_4px_16px_rgba(74,222,128,0.15)]" />
-      </motion.div>
-
       {/* Modules label */}
-      <div className="px-5 pt-4 pb-3">
+      <div className="px-3 pt-1 pb-3">
         <span className="text-gray-500 text-[11px] font-bold uppercase tracking-[0.18em]">Módulos</span>
       </div>
 
@@ -220,6 +217,6 @@ export default function Sidebar() {
       >
         <p className="text-gray-400 text-xs text-center font-medium">© 2026 Iencinas Analytics</p>
       </div>
-    </aside>
+    </motion.aside>
   );
 }
