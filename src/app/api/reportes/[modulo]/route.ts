@@ -15,7 +15,11 @@ export async function GET(req: NextRequest, { params }: { params: { modulo: stri
     }
     const proyecto = req.nextUrl.searchParams.get('proyecto') || undefined;
     const ds = getDataSource();
-    const data = await ds.getReportes(modulo, { proyecto });
+    let data = await ds.getReportes(modulo, { proyecto });
+    // Ensure data is always an array
+    if (!Array.isArray(data)) {
+      data = [];
+    }
     return ok(data, ds.name);
   } catch (err) {
     return fail(err);

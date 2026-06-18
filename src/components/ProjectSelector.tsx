@@ -22,8 +22,15 @@ export default function ProjectSelector({ value, onChange }: ProjectSelectorProp
   useEffect(() => {
     setMounted(true);
     fetch('/api/mis-proyectos')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then(data => setProyectos(data.data || []))
+      .catch(err => {
+        console.error('Error fetching proyectos:', err);
+        setProyectos([]);
+      })
       .finally(() => setLoading(false));
   }, []);
 

@@ -45,8 +45,15 @@ export default function FinanzasPage() {
   useEffect(() => {
     setLoading(true);
     fetch(`/api/finanzas?proyecto=${proyecto}`)
-      .then(res => res.json())
-      .then(res => setData(res.data))
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(res => setData(res.data || null))
+      .catch(err => {
+        console.error('Error fetching finanzas:', err);
+        setData(null);
+      })
       .finally(() => setLoading(false));
   }, [proyecto]);
 
