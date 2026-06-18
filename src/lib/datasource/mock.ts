@@ -8,7 +8,6 @@ import {
   marketingMetrics, marketingLeads, marketingCanales,
   valorEmpresaMetrics, valorHistorico,
   reportesFinanzas, reportesComercial, reportesMarketing, reportesValorEmpresa,
-  PROYECTOS,
   bdmFinanzasMetrics, bdmFinanzasIngresos, bdmFinanzasGastos,
   bdmComercialMetrics, bdmComercialVentas,
   bdmMarketingMetrics,
@@ -17,6 +16,7 @@ import {
   lastarriaFinanzasMetrics,
   lastarriaComercialMetrics,
 } from '@/lib/mockData';
+import { PROYECTOS } from '@/lib/mockDatabase';
 import { Metric } from '@/types/domain';
 
 /** mockData uses loose `color: string`; assert it into the typed union. */
