@@ -4,6 +4,14 @@ import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import GlassDatePicker from './GlassDatePicker';
 import { ChevronDown, Plus, Trash2, Eye, Download, Database } from 'lucide-react';
+import {
+  PROYECTOS,
+  TRANSACCIONES,
+  VENTAS,
+  LEADS,
+  VALUACIONES,
+  getProjectData,
+} from '@/lib/mockDatabase';
 
 // Mapeo de entidades disponibles y sus atributos
 const ENTITIES = {
@@ -114,7 +122,7 @@ export default function AdvancedReportBuilder({
     return grouped;
   }, [selectedAttributes]);
 
-  // Generar datos de prueba basados en atributos seleccionados
+  // Generar datos de prueba basados en atributos seleccionados (datos reales de la BD)
   const handleGenerate = () => {
     if (selectedAttributes.length === 0) {
       alert('Selecciona al menos un atributo');
@@ -123,66 +131,96 @@ export default function AdvancedReportBuilder({
 
     setGenerating(true);
     setTimeout(() => {
-      const mockData = Array.from({ length: 8 }).map((_, i) => {
-        const row: Record<string, any> = {};
-        selectedAttributes.forEach(({ entity, key, label }) => {
-          if (entity === 'proyectos') {
-            const values: Record<string, any> = {
-              id: `P-${1000 + i}`,
-              nombre: ['Bosques del Mar', 'Las Condes Park', 'Lo Barnechea Villas'][i % 3],
-              ubicacion: ['Punta Arenas', 'Las Condes', 'Lo Barnechea'][i % 3],
-              estado: ['activo', 'completado', 'inactivo'][i % 3],
-            };
-            row[label] = values[key];
-          } else if (entity === 'transacciones') {
-            const valores: Record<string, any> = {
-              id: `T-${2000 + i}`,
-              concepto: `Transacción #${i + 1}`,
-              tipo: i % 2 === 0 ? 'Ingreso' : 'Egreso',
-              monto: `$${(Math.random() * 500000).toFixed(0)}`,
-              fecha: new Date(2026, Math.floor(Math.random() * 6), Math.floor(Math.random() * 28) + 1).toLocaleDateString(),
-            };
-            row[label] = valores[key];
-          } else if (entity === 'ventas') {
-            const vals: Record<string, any> = {
-              id: `V-${3000 + i}`,
-              propiedad: `Propiedad #${i + 1}`,
-              etapa: ['Negociación', 'Oferta', 'Cerrada'][i % 3],
-              cantidad: i + 1,
-              valor: `$${(Math.random() * 1000000).toFixed(0)}`,
-              fecha: new Date(2026, Math.floor(Math.random() * 6), Math.floor(Math.random() * 28) + 1).toLocaleDateString(),
-            };
-            row[label] = vals[key];
-          } else if (entity === 'leads') {
-            const lvals: Record<string, any> = {
-              id: `L-${4000 + i}`,
-              nombre: `Lead #${i + 1}`,
-              canal: ['Web', 'Email', 'Redes Sociales', 'Referencia'][i % 4],
-              costo: `$${Math.floor(Math.random() * 5000)}`,
-              estado: ['Nuevo', 'En progreso', 'Convertido'][i % 3],
-              fecha: new Date(2026, Math.floor(Math.random() * 6), Math.floor(Math.random() * 28) + 1).toLocaleDateString(),
-            };
-            row[label] = lvals[key];
-          } else if (entity === 'valuaciones') {
-            const vvals: Record<string, any> = {
-              id: `VA-${5000 + i}`,
-              anio: 2020 + i,
-              valor: `$${(Math.random() * 10000000).toFixed(0)}`,
-              crecimiento: `${(Math.random() * 20).toFixed(1)}%`,
-              fecha: new Date(2020 + i, 6, 1).toLocaleDateString(),
-            };
-            row[label] = vvals[key];
+      const resultData: Record<string, any>[] = [];
+
+      // Obtener todos los proyectos disponibles
+      const projects = PROYECTOS;
+
+      // Para cada proyecto, obtener los datos relacionados
+      projects.forEach((proyecto) => {
+        const projectData = getProjectData(proyecto.id);
+
+        // Determinar qué entidades necesitamos
+        const needsProyectos = selectedAttributes.some((a) => a.entity === 'proyectos');
+        const needsTransacciones = selectedAttributes.some((a) => a.entity === 'transacciones');
+        const needsVentas = selectedAttributes.some((a) => a.entity === 'ventas');
+        const needsLeads = selectedAttributes.some((a) => a.entity === 'leads');
+        const needsValuaciones = selectedAttributes.some((a) => a.entity === 'valuaciones');
+
+        // Si solo necesita proyectos, agregar una fila por proyecto
+        if (needsProyectos && !needsTransacciones && !needsVentas && !needsLeads && !needsValuaciones) {
+          const row: Record<string, any> = {};
+          selectedAttributes.forEach(({ key, label }) => {
+            row[label] = (proyecto as any)[key];
+          });
+          resultData.push(row);
+        }
+        // Si necesita entidades relacionadas, hacer un join
+        else {
+          // Determinar cuántas filas máximo pueden ser (el máximo entre todas las entidades)
+          const maxRows = Math.max(
+            needsTransacciones ? projectData.transactions.length : 0,
+            needsVentas ? projectData.sales.length : 0,
+            needsLeads ? projectData.leads.length : 0,
+            needsValuaciones ? projectData.valuations.length : 0,
+            1
+          );
+
+          for (let i = 0; i < maxRows; i++) {
+            const row: Record<string, any> = {};
+
+            selectedAttributes.forEach(({ entity, key, label }) => {
+              if (entity === 'proyectos') {
+                row[label] = (proyecto as any)[key];
+              } else if (entity === 'transacciones' && projectData.transactions[i]) {
+                row[label] = (projectData.transactions[i] as any)[key];
+              } else if (entity === 'ventas' && projectData.sales[i]) {
+                row[label] = (projectData.sales[i] as any)[key];
+              } else if (entity === 'leads' && projectData.leads[i]) {
+                row[label] = (projectData.leads[i] as any)[key];
+              } else if (entity === 'valuaciones' && projectData.valuations[i]) {
+                row[label] = (projectData.valuations[i] as any)[key];
+              } else {
+                row[label] = '-';
+              }
+            });
+
+            // Solo agregar si tiene datos (no solo "-")
+            if (Object.values(row).some((v) => v !== '-')) {
+              resultData.push(row);
+            }
           }
-        });
-        return row;
+        }
       });
-      setPreviewData(mockData);
+
+      // Filtrar por fecha si es necesario
+      const filtered = resultData.filter((row) => {
+        const hasDateField = selectedAttributes.some((a) => ['fecha', 'fechaInicio', 'fechaFin'].includes(a.key));
+        if (!hasDateField) return true;
+
+        const dateField = selectedAttributes.find((a) => a.key === 'fecha');
+        if (!dateField) return true;
+
+        const rowDate = row[dateField.label];
+        if (!rowDate) return true;
+
+        try {
+          const date = new Date(rowDate);
+          const from = new Date(fechaInicio);
+          const to = new Date(fechaFin);
+          return date >= from && date <= to;
+        } catch {
+          return true;
+        }
+      });
+
+      setPreviewData(filtered.slice(0, 50)); // Limitar a 50 registros para visualización
       setGenerating(false);
       onGenerate?.({
         attributes: selectedAttributes,
         fechaInicio,
         fechaFin,
-        data: mockData,
+        data: filtered,
       });
     }, 1200);
   };
