@@ -27,6 +27,9 @@ Repo: https://github.com/contactofixlab-lab/Iencinas-Analitics
 - **Errores de compilación resueltos (2026-06-18)**: ReportCard onClick, MetricCard onMouseLeaveCapture, finanzas dateRange, CrmDataSource getProyectos, datasource types — npm run build ✓ OK.
 - **Generador de Reportes Avanzado (2026-06-18)**: Nuevo componente AdvancedReportBuilder que permite seleccionar atributos de múltiples entidades (Proyectos, Transacciones, Ventas, Leads, Valuaciones) con UI tree-based expandible, vista previa dinámica en tabla, generación de datos mock automática. Todas las 4 páginas de reportes actualizadas para usar este generador. Navbar mejorado: logo SVG con vidrio oscuro y glow verde.
 
+- **Modelo de Base de Datos (2026-06-18)**: Diagrama ER visual con 5 entidades, página `/dashboard/modelo-datos` presentable, estructura normalizada 3NF, integridad referencial garantizada, escalable.
+- **13 Proyectos con 338 Registros (2026-06-18)**: Proyectos adicionales (Lastarria, Reñaca, San Isidro, Conchalí, Chicureo) + 38 transacciones, 29 ventas, 30 leads, 41 valuaciones. Datos variados para gráficas realistas.
+
 ### 🔲 Pendiente
 - Deploy a Vercel (conectar repo Iencinas-Analitics).
 - Conexión real al CRM de ventas (datasource `crm.ts` ya preparado, hoy usa mock).
