@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProjectSelector from '@/components/ProjectSelector';
 import GlassDatePicker from '@/components/GlassDatePicker';
-import { FileText, Download, Eye, Calendar, Filter } from 'lucide-react';
+import { FileText, Download, Eye, Filter } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const ACCENT = {
   rgb: '249, 115, 22',
@@ -13,55 +14,30 @@ const ACCENT = {
   text: 'text-orange-400',
 };
 
-function ReportCard({ reporte }: { reporte: any }) {
+function ReportCard({ reporte }: { reporte: any; onClick?: () => void }) {
   const [downloading, setDownloading] = useState('');
-  function simulate(format: string) {
-    setDownloading(format);
-    setTimeout(() => setDownloading(''), 1200);
-  }
+
   return (
-    <div className="lift rounded-[20px] p-5 overflow-hidden" style={{
-      background: 'linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 100%)',
-      backdropFilter: 'blur(24px) saturate(150%)',
-      WebkitBackdropFilter: 'blur(24px) saturate(150%)',
-      border: '1px solid rgba(255, 255, 255, 0.14)',
-      boxShadow: '0 16px 48px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.18)',
-    }}>
-      <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{
-          background: `rgba(${ACCENT.rgb}, 0.18)`,
-          border: `1px solid rgba(${ACCENT.rgb}, 0.4)`,
-        }}>
-          <FileText size={22} className={ACCENT.text} />
-        </div>
-        <div className="min-w-0">
-          <h3 className="font-semibold text-white">{reporte.nombre}</h3>
-          <p className="text-sm text-gray-400 mt-0.5">{reporte.descripcion}</p>
-          <div className="flex items-center gap-3 mt-2 flex-wrap">
-            <span className="text-xs text-gray-500 flex items-center gap-1"><Calendar size={12} />{reporte.fecha}</span>
-            <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{
-              background: `rgba(${ACCENT.rgb}, 0.18)`, color: ACCENT.light, border: `1px solid rgba(${ACCENT.rgb}, 0.3)`,
-            }}>{reporte.tipo}</span>
-          </div>
+    <motion.button
+      initial={{ opacity: 0, x: -12 }}
+      animate={{ opacity: 1, x: 0 }}
+      onClick={onClick}
+      className="w-full text-left p-3 rounded-lg transition-all hover:scale-105 active:scale-95"
+      style={{
+        background: 'rgba(255,255,255,0.06)',
+        border: '1px solid rgba(255,255,255,0.1)',
+      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(249,115,22,0.15)'; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
+    >
+      <div className="flex items-start gap-2">
+        <FileText size={16} className={ACCENT.text} style={{ marginTop: '2px', flexShrink: 0 }} />
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold text-white truncate">{reporte.nombre}</p>
+          <p className="text-xs text-gray-500 mt-0.5">{reporte.fecha}</p>
         </div>
       </div>
-      <div className="flex items-center gap-2 mt-4 pt-4 border-t border-white/10">
-        <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-300 rounded-lg transition-colors hover:bg-white/10" style={{
-          background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
-        }}>
-          <Eye size={13} />Previsualizar
-        </button>
-        {['PDF', 'Excel', 'CSV'].map(fmt => (
-          <button key={fmt} onClick={() => simulate(fmt)}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-all"
-            style={downloading === fmt
-              ? { backgroundColor: ACCENT.solid, color: 'white', border: `1px solid rgba(${ACCENT.rgb}, 0.5)` }
-              : { backgroundColor: `rgba(${ACCENT.rgb}, 0.12)`, color: ACCENT.light, border: `1px solid rgba(${ACCENT.rgb}, 0.28)` }}>
-            <Download size={13} />{downloading === fmt ? 'Descargando...' : fmt}
-          </button>
-        ))}
-      </div>
-    </div>
+    </motion.button>
   );
 }
 
@@ -71,6 +47,10 @@ export default function ComercialReportesPage() {
   const [reportes, setReportes] = useState<any[]>([]);
   const [fechaInicio, setFechaInicio] = useState('2026-01-01');
   const [fechaFin, setFechaFin] = useState('2026-06-30');
+  const [metricas, setMetricas] = useState('todas');
+  const [formato, setFormato] = useState('PDF');
+  const [previewData, setPreviewData] = useState<any[]>([]);
+  const [generating, setGenerating] = useState(false);
 
   useEffect(() => {
     const urlProyecto = searchParams.get('proyecto');
@@ -89,6 +69,23 @@ export default function ComercialReportesPage() {
     window.history.replaceState({}, '', `?proyecto=${newProyecto}`);
   };
 
+  const handleGenerateReport = () => {
+    setGenerating(true);
+    setTimeout(() => {
+      setPreviewData([
+        { propiedad: 'Depto Las Condes', etapa: 'Contacto', cantidad: 5, fecha: '2026-06-10' },
+        { propiedad: 'Casa Lo Barnechea', etapa: 'Propuesta', cantidad: 3, fecha: '2026-06-09' },
+        { propiedad: 'Loft Vitacura', etapa: 'Cierre', cantidad: 1, fecha: '2026-06-08' },
+        { propiedad: 'Casa Providencia', etapa: 'Negociación', cantidad: 2, fecha: '2026-06-07' },
+      ]);
+      setGenerating(false);
+    }, 1200);
+  };
+
+  const handleDownload = () => {
+    alert(`Descargando reporte en ${formato}...`);
+  };
+
   const inputStyle: React.CSSProperties = {};
 
   return (
@@ -96,73 +93,177 @@ export default function ComercialReportesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">Reportes — Comercial</h1>
-          <p className="text-gray-400 text-sm mt-1">Descarga y previsualiza los reportes del área comercial</p>
+          <p className="text-gray-400 text-sm mt-1">Descarga reportes personalizados del área comercial</p>
         </div>
         <ProjectSelector value={proyecto} onChange={handleProyectoChange} />
       </div>
 
-      <div>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Reportes Predefinidos</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 stagger-grid">
-          {(reportes.length > 0 ? reportes : []).map(r => <ReportCard key={r.id} reporte={r} />)}
-        </div>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="rounded-[20px] overflow-hidden"
+        style={{
+          background: 'linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 100%)',
+          backdropFilter: 'blur(24px) saturate(150%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(150%)',
+          border: '1px solid rgba(255, 255, 255, 0.14)',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.18)',
+        }}
+      >
+        <div className="p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{
+              background: `rgba(${ACCENT.rgb}, 0.18)`, border: `1px solid rgba(${ACCENT.rgb}, 0.4)`,
+            }}>
+              <Eye size={18} className={ACCENT.text} />
+            </div>
+            <div>
+              <h2 className="font-semibold text-white">Previsualizador — Reporte a Medida</h2>
+              <p className="text-sm text-gray-400">{previewData.length > 0 ? `${previewData.length} registros` : 'Genera un reporte personalizado'}</p>
+            </div>
+          </div>
 
-      <div className="rounded-[20px] p-6 overflow-hidden" style={{
-        background: 'linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 100%)',
-        backdropFilter: 'blur(24px) saturate(150%)',
-        WebkitBackdropFilter: 'blur(24px) saturate(150%)',
-        border: '1px solid rgba(255, 255, 255, 0.14)',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.18)',
-      }}>
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{
-            background: `rgba(${ACCENT.rgb}, 0.18)`, border: `1px solid rgba(${ACCENT.rgb}, 0.4)`,
-          }}>
-            <Filter size={18} className={ACCENT.text} />
-          </div>
-          <div>
-            <h2 className="font-semibold text-white">Reporte a Medida</h2>
-            <p className="text-sm text-gray-400">Personaliza el período y métricas del reporte</p>
-          </div>
+          {previewData.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-white/10">
+                    {['Propiedad', 'Etapa', 'Cantidad', 'Fecha'].map(h => (
+                      <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/10">
+                  {previewData.map((row, i) => (
+                    <tr key={i}>
+                      <td className="px-4 py-3 text-gray-300">{row.propiedad}</td>
+                      <td className="px-4 py-3">
+                        <span className="px-2 py-1 rounded text-xs font-semibold bg-orange-500/20 text-orange-400">
+                          {row.etapa}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-orange-400 font-semibold">{row.cantidad}</td>
+                      <td className="px-4 py-3 text-gray-500">{row.fecha}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="h-40 flex items-center justify-center text-gray-500">
+              <p>Selecciona los filtros y genera un reporte para verlo aquí</p>
+            </div>
+          )}
         </div>
+      </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div>
-            <label className="block text-xs font-medium text-gray-300 mb-1.5">Fecha inicio</label>
-            <GlassDatePicker value={fechaInicio} onChange={setFechaInicio} placeholder="Seleccionar inicio" />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="rounded-[20px] p-5 overflow-hidden"
+          style={{
+            background: 'linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 100%)',
+            backdropFilter: 'blur(24px) saturate(150%)',
+            WebkitBackdropFilter: 'blur(24px) saturate(150%)',
+            border: '1px solid rgba(255, 255, 255, 0.14)',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.18)',
+            height: 'fit-content',
+          }}
+        >
+          <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+            <FileText size={16} className={ACCENT.text} />
+            Reportes Predefinidos
+          </h3>
+          <div className="space-y-2">
+            {(reportes.length > 0 ? reportes : []).slice(0, 5).map(r => (
+              <ReportCard key={r.id} reporte={r} />
+            ))}
           </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-300 mb-1.5">Fecha fin</label>
-            <GlassDatePicker value={fechaFin} onChange={setFechaFin} placeholder="Seleccionar fin" />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="lg:col-span-2 rounded-[20px] p-6 overflow-hidden"
+          style={{
+            background: 'linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 100%)',
+            backdropFilter: 'blur(24px) saturate(150%)',
+            WebkitBackdropFilter: 'blur(24px) saturate(150%)',
+            border: '1px solid rgba(255, 255, 255, 0.14)',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.18)',
+          }}
+        >
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{
+              background: `rgba(${ACCENT.rgb}, 0.18)`, border: `1px solid rgba(${ACCENT.rgb}, 0.4)`,
+            }}>
+              <Filter size={18} className={ACCENT.text} />
+            </div>
+            <div>
+              <h2 className="font-semibold text-white">Generador de Reporte</h2>
+              <p className="text-sm text-gray-400">Personaliza los parámetros de tu reporte</p>
+            </div>
           </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-300 mb-1.5">Métricas</label>
-            <select className="field w-full" style={inputStyle}>
-              <option>Todas las métricas</option>
-              <option>Solo ventas</option>
-              <option>Pipeline</option>
-              <option>Cartera</option>
-            </select>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+            <div>
+              <label className="block text-xs font-medium text-gray-300 mb-1.5">Fecha inicio</label>
+              <GlassDatePicker value={fechaInicio} onChange={setFechaInicio} placeholder="Seleccionar inicio" />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-300 mb-1.5">Fecha fin</label>
+              <GlassDatePicker value={fechaFin} onChange={setFechaFin} placeholder="Seleccionar fin" />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-300 mb-1.5">Métricas</label>
+              <select value={metricas} onChange={e => setMetricas(e.target.value)} className="field w-full" style={inputStyle}>
+                <option value="todas">Todas las métricas</option>
+                <option value="ventas">Solo ventas</option>
+                <option value="pipeline">Pipeline</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-300 mb-1.5">Formato</label>
+              <select value={formato} onChange={e => setFormato(e.target.value)} className="field w-full" style={inputStyle}>
+                <option value="PDF">PDF</option>
+                <option value="Excel">Excel</option>
+                <option value="CSV">CSV</option>
+              </select>
+            </div>
           </div>
-          <div>
-            <label className="block text-xs font-medium text-gray-300 mb-1.5">Formato</label>
-            <select className="field w-full" style={inputStyle}>
-              <option>PDF</option>
-              <option>Excel</option>
-              <option>CSV</option>
-            </select>
+
+          <div className="flex gap-3">
+            <motion.button
+              whileTap={{ scale: 0.98 }}
+              onClick={handleGenerateReport}
+              disabled={generating}
+              className="flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all flex items-center justify-center gap-2"
+              style={{
+                background: `linear-gradient(135deg, ${ACCENT.solid}, #ea580c)`,
+                boxShadow: `0 8px 24px rgba(${ACCENT.rgb},0.35)`,
+                opacity: generating ? 0.7 : 1,
+              }}
+            >
+              <Eye size={15} />
+              {generating ? 'Generando...' : 'Previsualizar'}
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.98 }}
+              onClick={handleDownload}
+              disabled={previewData.length === 0}
+              className="flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all flex items-center justify-center gap-2"
+              style={{
+                background: `linear-gradient(135deg, ${ACCENT.solid}, #ea580c)`,
+                boxShadow: `0 8px 24px rgba(${ACCENT.rgb},0.35)`,
+                opacity: previewData.length === 0 ? 0.5 : 1,
+              }}
+            >
+              <Download size={15} />
+              Descargar {formato}
+            </motion.button>
           </div>
-        </div>
-        <div className="flex gap-3 mt-5">
-          <button className="px-4 py-2.5 rounded-xl text-sm font-medium text-gray-300 transition-colors hover:bg-white/10" style={{
-            background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)',
-          }}>Previsualizar</button>
-          <button className="shimmer-host px-4 py-2.5 rounded-xl text-sm font-semibold text-white flex items-center gap-2 transition-transform hover:scale-[1.02]"
-            style={{ background: `linear-gradient(135deg, ${ACCENT.solid}, #c2410c)`, boxShadow: `0 8px 24px rgba(${ACCENT.rgb},0.35)` }}>
-            <Download size={15} />Generar y Descargar
-          </button>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
