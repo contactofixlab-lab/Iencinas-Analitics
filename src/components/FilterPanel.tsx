@@ -4,6 +4,7 @@ import { Filter, X, Search } from 'lucide-react';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import GlassSelect from './GlassSelect';
+import GlassDatePicker from './GlassDatePicker';
 
 export interface FilterConfig {
   dateRange?: { from: string; to: string };
@@ -151,12 +152,10 @@ export default function FilterPanel({
         {showDateRange && (
           <div className="flex flex-col gap-2">
             <Label>Desde</Label>
-            <input
-              type="date"
+            <GlassDatePicker
               value={filters.dateRange?.from || '2026-01-01'}
-              onChange={e => updateDate('from', e.target.value)}
-              className="field w-full"
-              style={{ colorScheme: 'dark' }}
+              onChange={v => updateDate('from', v)}
+              placeholder="Seleccionar fecha inicio"
             />
           </div>
         )}
@@ -164,12 +163,10 @@ export default function FilterPanel({
         {showDateRange && (
           <div className="flex flex-col gap-2">
             <Label>Hasta</Label>
-            <input
-              type="date"
+            <GlassDatePicker
               value={filters.dateRange?.to || '2026-12-31'}
-              onChange={e => updateDate('to', e.target.value)}
-              className="field w-full"
-              style={{ colorScheme: 'dark' }}
+              onChange={v => updateDate('to', v)}
+              placeholder="Seleccionar fecha fin"
             />
           </div>
         )}

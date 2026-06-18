@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProjectSelector from '@/components/ProjectSelector';
+import GlassDatePicker from '@/components/GlassDatePicker';
 import { FileText, Download, Eye, Calendar, Filter } from 'lucide-react';
 
 function ReportCard({ reporte }: { reporte: any }) {
@@ -57,6 +58,8 @@ export default function MarketingReportesPage() {
   const searchParams = useSearchParams();
   const [proyecto, setProyecto] = useState('bosques-del-mar');
   const [reportes, setReportes] = useState<any[]>([]);
+  const [fechaInicio, setFechaInicio] = useState('2026-01-01');
+  const [fechaFin, setFechaFin] = useState('2026-06-30');
 
   useEffect(() => {
     const urlProyecto = searchParams.get('proyecto');
@@ -111,9 +114,9 @@ export default function MarketingReportesPage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div><label className="block text-xs font-medium text-gray-300 mb-1.5">Fecha inicio</label>
-            <input type="date" defaultValue="2026-01-01" className="field w-full" /></div>
+            <GlassDatePicker value={fechaInicio} onChange={setFechaInicio} placeholder="Seleccionar inicio" /></div>
           <div><label className="block text-xs font-medium text-gray-300 mb-1.5">Fecha fin</label>
-            <input type="date" defaultValue="2026-06-30" className="field w-full" /></div>
+            <GlassDatePicker value={fechaFin} onChange={setFechaFin} placeholder="Seleccionar fin" /></div>
           <div><label className="block text-xs font-medium text-gray-300 mb-1.5">Canal</label>
             <select className="field w-full">
               <option>Todos los canales</option><option>Google Ads</option><option>Facebook</option><option>Instagram</option>

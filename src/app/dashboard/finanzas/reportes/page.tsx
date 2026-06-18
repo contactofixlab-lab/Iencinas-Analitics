@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProjectSelector from '@/components/ProjectSelector';
+import GlassDatePicker from '@/components/GlassDatePicker';
 import { FileText, Download, Eye, Calendar, Filter } from 'lucide-react';
 
 const ACCENT = {
@@ -132,13 +133,11 @@ export default function FinanzasReportesPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
             <label className="block text-xs font-medium text-gray-300 mb-1.5">Fecha inicio</label>
-            <input type="date" value={fechaInicio} onChange={e => setFechaInicio(e.target.value)}
-              className="field w-full" style={inputStyle} />
+            <GlassDatePicker value={fechaInicio} onChange={setFechaInicio} placeholder="Seleccionar inicio" />
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-300 mb-1.5">Fecha fin</label>
-            <input type="date" value={fechaFin} onChange={e => setFechaFin(e.target.value)}
-              className="field w-full" style={inputStyle} />
+            <GlassDatePicker value={fechaFin} onChange={setFechaFin} placeholder="Seleccionar fin" />
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-300 mb-1.5">Métricas</label>

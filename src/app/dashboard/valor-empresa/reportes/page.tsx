@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProjectSelector from '@/components/ProjectSelector';
+import GlassDatePicker from '@/components/GlassDatePicker';
 import { FileText, Download, Eye, Calendar, Filter } from 'lucide-react';
 
 const ACCENT = {
