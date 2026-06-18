@@ -201,26 +201,33 @@ export default function AdminPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 stagger-grid">
-        {(['finanzas', 'comercial', 'marketing', 'administrador'] as const).map(role => (
-          <div key={role} className="lift rounded-2xl p-4 border border-white/15" style={{
-            background: 'rgba(255, 255, 255, 0.08)',
-            backdropFilter: 'blur(16px)',
-          }}>
-            <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">{ROLE_LABELS[role]}</p>
-            <p className="text-2xl font-bold text-white mt-1">
-              {users.filter(u => u.role === role).length}
-            </p>
-            <p className="text-xs text-gray-500 mt-0.5">usuarios</p>
-          </div>
-        ))}
+      <div className="scene-3d grid grid-cols-2 sm:grid-cols-4 gap-4 stagger-grid">
+        {(['finanzas', 'comercial', 'marketing', 'administrador'] as const).map(role => {
+          const tint = role === 'finanzas' ? 'rgba(59,130,246,0.14)' : role === 'comercial' ? 'rgba(249,115,22,0.14)' : role === 'marketing' ? 'rgba(168,85,247,0.14)' : 'rgba(74,222,128,0.14)';
+          return (
+            <div key={role} className="lift relative rounded-[20px] p-5 overflow-hidden" style={{
+              background: 'linear-gradient(160deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 100%)',
+              backdropFilter: 'blur(24px) saturate(150%)',
+              border: '1px solid rgba(255,255,255,0.14)',
+              boxShadow: `0 16px 48px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.20), 0 0 24px ${tint}`,
+            }}>
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+              <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">{ROLE_LABELS[role]}</p>
+              <p className="text-3xl font-bold text-white mt-1.5">
+                {users.filter(u => u.role === role).length}
+              </p>
+              <p className="text-xs text-gray-500 mt-0.5">usuarios</p>
+            </div>
+          );
+        })}
       </div>
 
       {/* Search + Table */}
-      <div className="rounded-2xl overflow-hidden" style={{
-        background: 'rgba(255, 255, 255, 0.08)',
-        backdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
+      <div className="rounded-[20px] overflow-hidden" style={{
+        background: 'linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 100%)',
+        backdropFilter: 'blur(24px) saturate(150%)',
+        border: '1px solid rgba(255, 255, 255, 0.14)',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.18)',
       }}>
         <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between gap-4">
           <h3 className="text-sm font-semibold text-white">
@@ -233,8 +240,8 @@ export default function AdminPage() {
               placeholder="Buscar usuario..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="pl-9 pr-4 py-2 border border-white/20 rounded-xl text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 w-56"
-              style={{ background: 'rgba(255, 255, 255, 0.08)' }}
+              className="field w-56"
+              style={{ paddingLeft: 36 }}
             />
           </div>
         </div>
@@ -311,11 +318,13 @@ export default function AdminPage() {
 
       {/* Delete confirmation modal */}
       {confirmDelete && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="rounded-2xl p-6 max-w-sm w-full shadow-xl" style={{
-            background: 'rgba(255, 255, 255, 0.1)',
-            backdropFilter: 'blur(24px)',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
+        <div className="fixed inset-0 flex items-center justify-center z-50 p-4"
+          style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}>
+          <div className="rounded-[20px] p-6 max-w-sm w-full" style={{
+            background: 'linear-gradient(160deg, rgba(13,24,40,0.97), rgba(16,28,48,0.95))',
+            backdropFilter: 'blur(28px) saturate(150%)',
+            border: '1px solid rgba(239, 68, 68, 0.3)',
+            boxShadow: '0 30px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12)',
           }}>
             <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <Trash2 size={22} className="text-red-400" />
@@ -344,11 +353,13 @@ export default function AdminPage() {
 
       {/* Create/Edit User Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="rounded-2xl w-full max-w-2xl shadow-2xl my-8" style={{
-            background: 'rgba(15, 23, 42, 0.95)',
-            backdropFilter: 'blur(24px)',
-            border: '1px solid rgba(74, 222, 128, 0.2)',
+        <div className="fixed inset-0 flex items-center justify-center z-50 p-4 overflow-y-auto"
+          style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}>
+          <div className="rounded-[20px] w-full max-w-2xl my-8 overflow-hidden" style={{
+            background: 'linear-gradient(160deg, rgba(13,24,40,0.97), rgba(16,28,48,0.95))',
+            backdropFilter: 'blur(28px) saturate(150%)',
+            border: '1px solid rgba(74, 222, 128, 0.3)',
+            boxShadow: '0 30px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12)',
           }}>
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
@@ -377,24 +388,21 @@ export default function AdminPage() {
                     placeholder="Nombre"
                     value={formData.nombre}
                     onChange={e => setFormData({...formData, nombre: e.target.value})}
-                    className="px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-400 outline-none border border-white/15"
-                    style={{ background: 'rgba(255, 255, 255, 0.08)' }}
+                    className="field"
                   />
                   <input
                     type="text"
                     placeholder="Apellido Paterno"
                     value={formData.apellido1}
                     onChange={e => setFormData({...formData, apellido1: e.target.value})}
-                    className="px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-400 outline-none border border-white/15"
-                    style={{ background: 'rgba(255, 255, 255, 0.08)' }}
+                    className="field"
                   />
                   <input
                     type="text"
                     placeholder="Apellido Materno"
                     value={formData.apellido2}
                     onChange={e => setFormData({...formData, apellido2: e.target.value})}
-                    className="px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-400 outline-none border border-white/15"
-                    style={{ background: 'rgba(255, 255, 255, 0.08)' }}
+                    className="field"
                   />
                 </div>
               </div>
@@ -408,8 +416,7 @@ export default function AdminPage() {
                     placeholder="Correo electrónico"
                     value={formData.email}
                     onChange={e => setFormData({...formData, email: e.target.value})}
-                    className="px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-400 outline-none border border-white/15"
-                    style={{ background: 'rgba(255, 255, 255, 0.08)' }}
+                    className="field"
                   />
                   {!editingUser && (
                     <input
@@ -431,8 +438,7 @@ export default function AdminPage() {
                   <select
                     value={formData.area}
                     onChange={e => setFormData({...formData, area: e.target.value})}
-                    className="px-4 py-2.5 rounded-xl text-sm text-white outline-none border border-white/15"
-                    style={{ background: 'rgba(255, 255, 255, 0.08)' }}
+                    className="field"
                   >
                     {AREAS.map(area => (
                       <option key={area} value={area} className="bg-gray-800">{area}</option>
@@ -441,8 +447,7 @@ export default function AdminPage() {
                   <select
                     value={formData.role}
                     onChange={e => setFormData({...formData, role: e.target.value as any})}
-                    className="px-4 py-2.5 rounded-xl text-sm text-white outline-none border border-white/15"
-                    style={{ background: 'rgba(255, 255, 255, 0.08)' }}
+                    className="field"
                   >
                     <option value="finanzas" className="bg-gray-800">Finanzas</option>
                     <option value="comercial" className="bg-gray-800">Comercial</option>

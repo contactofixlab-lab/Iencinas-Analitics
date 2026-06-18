@@ -76,11 +76,8 @@ export default function CrearUsuarioPage() {
     setTimeout(() => router.push('/dashboard/admin'), 1500);
   }
 
-  const inputClass = 'w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-500 outline-none transition-all focus:ring-2 focus:ring-green-500/50';
-  const inputStyle: React.CSSProperties = {
-    background: 'rgba(255,255,255,0.07)',
-    border: '1px solid rgba(255,255,255,0.12)',
-  };
+  const inputClass = 'field w-full';
+  const inputStyle: React.CSSProperties = {};
 
   return (
     <div className="space-y-6 max-w-2xl page-enter">
@@ -103,12 +100,12 @@ export default function CrearUsuarioPage() {
         </div>
       )}
 
-      <div className="rounded-2xl p-6 overflow-hidden" style={{
-        background: 'rgba(255,255,255,0.06)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255,255,255,0.10)',
-        boxShadow: '0 16px 48px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08)',
+      <div className="rounded-[20px] p-6 overflow-hidden" style={{
+        background: 'linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 100%)',
+        backdropFilter: 'blur(24px) saturate(150%)',
+        WebkitBackdropFilter: 'blur(24px) saturate(150%)',
+        border: '1px solid rgba(255,255,255,0.14)',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.18)',
       }}>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

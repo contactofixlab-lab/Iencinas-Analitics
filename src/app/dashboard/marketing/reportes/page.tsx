@@ -9,12 +9,12 @@ function ReportCard({ reporte }: { reporte: any }) {
   const [downloading, setDownloading] = useState('');
   function simulate(format: string) { setDownloading(format); setTimeout(() => setDownloading(''), 1200); }
   return (
-    <div className="lift rounded-2xl p-5 overflow-hidden" style={{
-      background: 'rgba(255, 255, 255, 0.08)',
-      backdropFilter: 'blur(16px)',
-      WebkitBackdropFilter: 'blur(16px)',
-      border: '1px solid rgba(255, 255, 255, 0.12)',
-      boxShadow: '0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)',
+    <div className="lift rounded-[20px] p-5 overflow-hidden" style={{
+      background: 'linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 100%)',
+      backdropFilter: 'blur(24px) saturate(150%)',
+      WebkitBackdropFilter: 'blur(24px) saturate(150%)',
+      border: '1px solid rgba(255, 255, 255, 0.14)',
+      boxShadow: '0 16px 48px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.18)',
     }}>
       <div className="flex items-start gap-4">
         <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{
@@ -90,12 +90,12 @@ export default function MarketingReportesPage() {
           {(reportes.length > 0 ? reportes : []).map(r => <ReportCard key={r.id} reporte={r} />)}
         </div>
       </div>
-      <div className="rounded-2xl p-6 overflow-hidden" style={{
-        background: 'rgba(255, 255, 255, 0.08)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
-        boxShadow: '0 16px 48px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
+      <div className="rounded-[20px] p-6 overflow-hidden" style={{
+        background: 'linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 100%)',
+        backdropFilter: 'blur(24px) saturate(150%)',
+        WebkitBackdropFilter: 'blur(24px) saturate(150%)',
+        border: '1px solid rgba(255, 255, 255, 0.14)',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.18)',
       }}>
         <div className="flex items-center gap-3 mb-5">
           <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{
@@ -111,31 +111,15 @@ export default function MarketingReportesPage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div><label className="block text-xs font-medium text-gray-300 mb-1.5">Fecha inicio</label>
-            <input type="date" defaultValue="2026-01-01" className="w-full px-3 py-2.5 rounded-xl text-sm text-white" style={{
-              background: 'rgba(255,255,255,0.08)',
-              border: '1px solid rgba(255,255,255,0.12)',
-              color: '#fff',
-            }} /></div>
+            <input type="date" defaultValue="2026-01-01" className="field w-full" /></div>
           <div><label className="block text-xs font-medium text-gray-300 mb-1.5">Fecha fin</label>
-            <input type="date" defaultValue="2026-06-30" className="w-full px-3 py-2.5 rounded-xl text-sm text-white" style={{
-              background: 'rgba(255,255,255,0.08)',
-              border: '1px solid rgba(255,255,255,0.12)',
-              color: '#fff',
-            }} /></div>
+            <input type="date" defaultValue="2026-06-30" className="field w-full" /></div>
           <div><label className="block text-xs font-medium text-gray-300 mb-1.5">Canal</label>
-            <select className="w-full px-3 py-2.5 rounded-xl text-sm text-white" style={{
-              background: 'rgba(255,255,255,0.08)',
-              border: '1px solid rgba(255,255,255,0.12)',
-              color: '#fff',
-            }}>
+            <select className="field w-full">
               <option>Todos los canales</option><option>Google Ads</option><option>Facebook</option><option>Instagram</option>
             </select></div>
           <div><label className="block text-xs font-medium text-gray-300 mb-1.5">Formato</label>
-            <select className="w-full px-3 py-2.5 rounded-xl text-sm text-white" style={{
-              background: 'rgba(255,255,255,0.08)',
-              border: '1px solid rgba(255,255,255,0.12)',
-              color: '#fff',
-            }}>
+            <select className="field w-full">
               <option>PDF</option><option>Excel</option><option>CSV</option>
             </select></div>
         </div>

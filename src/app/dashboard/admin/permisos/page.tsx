@@ -129,10 +129,11 @@ export default function PermisosPage() {
       </div>
 
       {/* Tabla de Permisos */}
-      <div className="rounded-2xl overflow-hidden" style={{
-        background: 'rgba(255, 255, 255, 0.08)',
-        backdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
+      <div className="rounded-[20px] overflow-hidden" style={{
+        background: 'linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 100%)',
+        backdropFilter: 'blur(24px) saturate(150%)',
+        border: '1px solid rgba(255, 255, 255, 0.14)',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.18)',
       }}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -202,11 +203,13 @@ export default function PermisosPage() {
 
       {/* Modal para crear permiso */}
       {showCreateModal && !showEditModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="rounded-2xl w-full max-w-md shadow-2xl" style={{
-            background: 'rgba(15, 23, 42, 0.95)',
-            backdropFilter: 'blur(24px)',
-            border: '1px solid rgba(74, 222, 128, 0.2)',
+        <div className="fixed inset-0 flex items-center justify-center z-50 p-4"
+          style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}>
+          <div className="rounded-[20px] w-full max-w-md overflow-hidden" style={{
+            background: 'linear-gradient(160deg, rgba(13,24,40,0.97), rgba(16,28,48,0.95))',
+            backdropFilter: 'blur(28px) saturate(150%)',
+            border: '1px solid rgba(74, 222, 128, 0.3)',
+            boxShadow: '0 30px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12)',
           }}>
             <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
               <h2 className="text-xl font-bold text-white">Crear Permiso Personalizado</h2>
@@ -226,8 +229,7 @@ export default function PermisosPage() {
                   placeholder="Ej: Reportes Operacionales"
                   value={formData.nombre}
                   onChange={e => setFormData({...formData, nombre: e.target.value})}
-                  className="w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-400 outline-none border border-white/15"
-                  style={{ background: 'rgba(255, 255, 255, 0.08)' }}
+                  className="field w-full"
                 />
               </div>
 
@@ -238,8 +240,7 @@ export default function PermisosPage() {
                   placeholder="Ej: Acceso a reportes operacionales avanzados"
                   value={formData.descripcion}
                   onChange={e => setFormData({...formData, descripcion: e.target.value})}
-                  className="w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-400 outline-none border border-white/15"
-                  style={{ background: 'rgba(255, 255, 255, 0.08)' }}
+                  className="field w-full"
                 />
               </div>
 
@@ -284,11 +285,13 @@ export default function PermisosPage() {
 
       {/* Modal para editar permiso */}
       {showEditModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="rounded-2xl w-full max-w-md shadow-2xl" style={{
-            background: 'rgba(15, 23, 42, 0.95)',
-            backdropFilter: 'blur(24px)',
-            border: '1px solid rgba(74, 222, 128, 0.2)',
+        <div className="fixed inset-0 flex items-center justify-center z-50 p-4"
+          style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}>
+          <div className="rounded-[20px] w-full max-w-md overflow-hidden" style={{
+            background: 'linear-gradient(160deg, rgba(13,24,40,0.97), rgba(16,28,48,0.95))',
+            backdropFilter: 'blur(28px) saturate(150%)',
+            border: '1px solid rgba(74, 222, 128, 0.3)',
+            boxShadow: '0 30px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12)',
           }}>
             <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
               <h2 className="text-xl font-bold text-white">Editar Permiso</h2>
@@ -307,8 +310,7 @@ export default function PermisosPage() {
                   type="text"
                   value={formData.nombre}
                   onChange={e => setFormData({...formData, nombre: e.target.value})}
-                  className="w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-400 outline-none border border-white/15"
-                  style={{ background: 'rgba(255, 255, 255, 0.08)' }}
+                  className="field w-full"
                 />
               </div>
 
@@ -318,8 +320,7 @@ export default function PermisosPage() {
                   type="text"
                   value={formData.descripcion}
                   onChange={e => setFormData({...formData, descripcion: e.target.value})}
-                  className="w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-400 outline-none border border-white/15"
-                  style={{ background: 'rgba(255, 255, 255, 0.08)' }}
+                  className="field w-full"
                 />
               </div>
 

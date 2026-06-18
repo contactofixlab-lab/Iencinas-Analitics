@@ -29,11 +29,11 @@ export default function BBDDPage() {
       </div>
 
       {/* Main Canvas - Power BI Style */}
-      <div className="rounded-2xl overflow-hidden" style={{
-        background: 'rgba(15, 23, 42, 0.8)',
-        backdropFilter: 'blur(16px)',
-        border: '2px solid rgba(59, 130, 246, 0.3)',
-        boxShadow: '0 16px 48px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
+      <div className="rounded-[20px] overflow-hidden" style={{
+        background: 'linear-gradient(160deg, rgba(13,24,40,0.82), rgba(16,28,48,0.78))',
+        backdropFilter: 'blur(24px) saturate(150%)',
+        border: '1px solid rgba(59, 130, 246, 0.35)',
+        boxShadow: '0 24px 64px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.10), 0 0 30px rgba(59,130,246,0.12)',
         minHeight: '500px',
       }}>
         {!connected ? (
@@ -108,10 +108,11 @@ export default function BBDDPage() {
       </div>
 
       {/* Reference Section */}
-      <div className="rounded-2xl overflow-hidden" style={{
-        background: 'rgba(255, 255, 255, 0.06)',
-        backdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
+      <div className="rounded-[20px] overflow-hidden" style={{
+        background: 'linear-gradient(160deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 100%)',
+        backdropFilter: 'blur(24px) saturate(150%)',
+        border: '1px solid rgba(255, 255, 255, 0.14)',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.36), inset 0 1px 0 rgba(255,255,255,0.18)',
       }}>
         <button
           onClick={() => setShowReference(!showReference)}
