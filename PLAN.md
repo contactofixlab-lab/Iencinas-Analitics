@@ -25,6 +25,7 @@ Repo: https://github.com/contactofixlab-lab/Iencinas-Analitics
 - **GlassDatePicker**: calendario personalizado en glass 3D (nuevo componente) integrado en FilterPanel y todas las páginas de Reportes con fechas. Portal-based, animado, con mes/día/navegación y botón "Hoy".
 - **Reportes rediseñados (4 módulos)**: Nuevo layout con previsualizador prominente arriba (tabla vacía, se llena al generar), sidebar chico izquierda (5 reportes prehechos en lista vertical), panel grande derecha (filtros + botones generar/descargar). Colores por módulo: verde/naranja/púrpura/ámbar. Framer-motion entrance animations.
 - **Errores de compilación resueltos (2026-06-18)**: ReportCard onClick, MetricCard onMouseLeaveCapture, finanzas dateRange, CrmDataSource getProyectos, datasource types — npm run build ✓ OK.
+- **Generador de Reportes Avanzado (2026-06-18)**: Nuevo componente AdvancedReportBuilder que permite seleccionar atributos de múltiples entidades (Proyectos, Transacciones, Ventas, Leads, Valuaciones) con UI tree-based expandible, vista previa dinámica en tabla, generación de datos mock automática. Todas las 4 páginas de reportes actualizadas para usar este generador. Navbar mejorado: logo SVG con vidrio oscuro y glow verde.
 
 ### 🔲 Pendiente
 - Deploy a Vercel (conectar repo Iencinas-Analitics).
