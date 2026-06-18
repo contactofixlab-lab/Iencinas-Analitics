@@ -22,7 +22,7 @@ const icons = [
 
 export default function MarketingPage() {
   const searchParams = useSearchParams();
-  const [proyecto, setProyecto] = useState('bosques-del-mar');
+  const [proyecto, setProyecto] = useState('proj-001');
   const [data, setData] = useState<MarketingData | null>(null);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState<FilterConfig>({});

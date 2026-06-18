@@ -32,7 +32,7 @@ const COLORS = ['#15803d', '#16a34a', '#22c55e', '#4ade80', '#86efac'];
 
 export default function ComercialPage() {
   const searchParams = useSearchParams();
-  const [proyecto, setProyecto] = useState('bosques-del-mar');
+  const [proyecto, setProyecto] = useState('proj-001');
   const [data, setData] = useState<ComercialData | null>(null);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState<FilterConfig>({});

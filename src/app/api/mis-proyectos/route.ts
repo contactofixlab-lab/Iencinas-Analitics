@@ -22,22 +22,22 @@ export async function GET(req: NextRequest) {
     const INITIAL_USERS = [
       {
         id: '1',
-        proyectos: ['bosques-del-mar', 'alameda-central'],
+        proyectos: ['proj-001', 'proj-002'],
         email: 'juan@iencinas.cl',
       },
       {
         id: '2',
-        proyectos: ['bosques-del-mar', 'lastarria-residencias'],
+        proyectos: ['proj-001', 'proj-009'],
         email: 'maria@iencinas.cl',
       },
       {
         id: '3',
-        proyectos: ['bosques-del-mar', 'alameda-central', 'lastarria-residencias'],
+        proyectos: ['proj-001', 'proj-002', 'proj-009'],
         email: 'carlos@iencinas.cl',
       },
       {
         id: '4',
-        proyectos: ['bosques-del-mar', 'alameda-central', 'lastarria-residencias'],
+        proyectos: ['proj-001', 'proj-002', 'proj-009'],
         email: 'ana@iencinas.cl',
       },
     ];

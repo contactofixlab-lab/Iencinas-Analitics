@@ -16,7 +16,7 @@ const ACCENT = {
 
 export default function FinanzasReportesPage() {
   const searchParams = useSearchParams();
-  const [proyecto, setProyecto] = useState('bosques-del-mar');
+  const [proyecto, setProyecto] = useState('proj-001');
   const [previewData, setPreviewData] = useState<any[]>([]);
 
   useEffect(() => {

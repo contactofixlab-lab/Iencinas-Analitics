@@ -34,9 +34,9 @@ export class MockDataSource implements DataSource {
   }
 
   async getFinanzas(params?: QueryParams): Promise<FinanzasData> {
-    const proyecto = params?.proyecto || 'bosques-del-mar';
+    const proyecto = params?.proyecto || 'proj-001';
 
-    if (proyecto === 'alameda-central') {
+    if (proyecto === 'proj-002') {
       return {
         metrics: m(alamedaFinanzasMetrics),
         ingresos: alamedaFinanzasIngresos,
@@ -44,7 +44,7 @@ export class MockDataSource implements DataSource {
       };
     }
 
-    if (proyecto === 'lastarria-residencias') {
+    if (proyecto === 'proj-009') {
       return {
         metrics: m(lastarriaFinanzasMetrics),
         ingresos: [
@@ -86,9 +86,9 @@ export class MockDataSource implements DataSource {
   }
 
   async getComercial(params?: QueryParams): Promise<ComercialData> {
-    const proyecto = params?.proyecto || 'bosques-del-mar';
+    const proyecto = params?.proyecto || 'proj-001';
 
-    if (proyecto === 'alameda-central') {
+    if (proyecto === 'proj-002') {
       return {
         metrics: m(alamedaComercialMetrics),
         ventas: [
@@ -115,7 +115,7 @@ export class MockDataSource implements DataSource {
       };
     }
 
-    if (proyecto === 'lastarria-residencias') {
+    if (proyecto === 'proj-009') {
       return {
         metrics: m(lastarriaComercialMetrics),
         ventas: [
@@ -156,9 +156,9 @@ export class MockDataSource implements DataSource {
   }
 
   async getMarketing(params?: QueryParams): Promise<MarketingData> {
-    const proyecto = params?.proyecto || 'bosques-del-mar';
+    const proyecto = params?.proyecto || 'proj-001';
 
-    if (proyecto === 'alameda-central' || proyecto === 'lastarria-residencias') {
+    if (proyecto === 'proj-002' || proyecto === 'proj-009') {
       return {
         metrics: m(marketingMetrics.map(m => ({ ...m, value: String(parseInt(m.value) * 0.6) }))),
         leads: [
@@ -212,9 +212,9 @@ export class MockDataSource implements DataSource {
   }
 
   async getValorEmpresa(params?: QueryParams): Promise<ValorEmpresaData> {
-    const proyecto = params?.proyecto || 'bosques-del-mar';
+    const proyecto = params?.proyecto || 'proj-001';
 
-    if (proyecto === 'alameda-central') {
+    if (proyecto === 'proj-002') {
       return {
         metrics: m([
           { label: 'Valuación Total', value: '$85M', trend: '+16.5%', up: true, color: 'green' },
@@ -233,7 +233,7 @@ export class MockDataSource implements DataSource {
       };
     }
 
-    if (proyecto === 'lastarria-residencias') {
+    if (proyecto === 'proj-009') {
       return {
         metrics: m([
           { label: 'Valuación Total', value: '$42M', trend: '+22.1%', up: true, color: 'green' },

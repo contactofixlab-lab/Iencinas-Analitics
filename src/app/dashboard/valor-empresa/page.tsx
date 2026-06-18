@@ -30,7 +30,7 @@ const indicadores = [
 
 export default function ValorEmpresaPage() {
   const searchParams = useSearchParams();
-  const [proyecto, setProyecto] = useState('bosques-del-mar');
+  const [proyecto, setProyecto] = useState('proj-001');
   const [data, setData] = useState<ValorEmpresaData | null>(null);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState<FilterConfig>({});

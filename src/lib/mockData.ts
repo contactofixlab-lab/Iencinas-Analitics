@@ -11,7 +11,7 @@ export const INITIAL_USERS: User[] = [
     role: 'finanzas',
     departamento: 'Finanzas',
     permissions: ['finanzas', 'reportes'],
-    proyectos: ['bosques-del-mar', 'alameda-central'],
+    proyectos: ['proj-001', 'proj-002'],
     createdAt: '2026-01-15',
   },
   {
@@ -24,7 +24,7 @@ export const INITIAL_USERS: User[] = [
     role: 'comercial',
     departamento: 'Comercial',
     permissions: ['comercial', 'reportes'],
-    proyectos: ['bosques-del-mar', 'lastarria-residencias'],
+    proyectos: ['proj-001', 'proj-009'],
     createdAt: '2026-01-20',
   },
   {
@@ -37,7 +37,7 @@ export const INITIAL_USERS: User[] = [
     role: 'marketing',
     departamento: 'Marketing',
     permissions: ['marketing', 'reportes'],
-    proyectos: ['bosques-del-mar', 'alameda-central', 'lastarria-residencias'],
+    proyectos: ['proj-001', 'proj-002', 'proj-009'],
     createdAt: '2026-02-01',
   },
   {
@@ -50,7 +50,7 @@ export const INITIAL_USERS: User[] = [
     role: 'administrador',
     departamento: 'Administración',
     permissions: ['finanzas', 'comercial', 'marketing', 'valor-empresa', 'admin', 'reportes'],
-    proyectos: ['bosques-del-mar', 'alameda-central', 'lastarria-residencias'],
+    proyectos: ['proj-001', 'proj-002', 'proj-009'],
     createdAt: '2026-01-01',
   },
 ];
