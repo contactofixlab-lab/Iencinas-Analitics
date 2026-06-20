@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProjectSelector from '@/components/ProjectSelector';
 import AdvancedReportBuilder from '@/components/AdvancedReportBuilder';
+import PrebuiltReports from '@/components/PrebuiltReports';
 import { motion } from 'framer-motion';
 
 const ACCENT = {
@@ -24,6 +25,7 @@ export default function MarketingReportesPage() {
   }, [searchParams]);
 
   const handleProyectoChange = (newProyecto: string) => {
+const handleSelectReport = (reportType: string) => {    console.log('Selected prebuilt report:', reportType);  };
     setProyecto(newProyecto);
     window.history.replaceState({}, '', `?proyecto=${newProyecto}`);
   };

@@ -46,8 +46,15 @@ export default function ComercialPage() {
   useEffect(() => {
     setLoading(true);
     fetch(`/api/comercial?proyecto=${proyecto}`)
-      .then(res => res.json())
-      .then(res => setData(res.data))
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(res => setData(res.data || null))
+      .catch(err => {
+        console.error('Error fetching comercial:', err);
+        setData(null);
+      })
       .finally(() => setLoading(false));
   }, [proyecto]);
 

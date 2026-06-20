@@ -62,7 +62,11 @@ export function createHttp(opts: HttpOptions) {
       });
       const text = await res.text();
       if (!res.ok) throw new HttpError(res.status, url.toString(), text);
-      return (text ? JSON.parse(text) : null) as T;
+      try {
+        return (text ? JSON.parse(text) : null) as T;
+      } catch (e) {
+        throw new HttpError(500, url.toString(), `Invalid JSON: ${(e as Error).message}`);
+      }
     } finally {
       clearTimeout(timer);
     }

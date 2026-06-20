@@ -1796,10 +1796,12 @@ export function getValuationsByProject(proyectoId: string): Valuation[] {
 // Obtener datos combinados con relaciones
 export function getProjectData(proyectoId: string) {
   const project = getProjectById(proyectoId);
-  const transactions = getTransactionsByProject(proyectoId);
-  const sales = getSalesByProject(proyectoId);
-  const leads = getLeadsByProject(proyectoId);
-  const valuations = getValuationsByProject(proyectoId);
+  if (!project) return null; // Validar antes de retornar
+
+  const transactions = getTransactionsByProject(proyectoId) || [];
+  const sales = getSalesByProject(proyectoId) || [];
+  const leads = getLeadsByProject(proyectoId) || [];
+  const valuations = getValuationsByProject(proyectoId) || [];
 
   return {
     project,

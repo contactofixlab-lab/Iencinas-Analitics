@@ -56,7 +56,8 @@ export default function FilterPanel({
   };
 
   const updateDate = (field: 'from' | 'to', value: string) => {
-    const next = { ...filters, dateRange: { ...filters.dateRange, [field]: value } as { from: string; to: string } };
+    const dateRange = filters.dateRange ?? { from: '2026-01-01', to: '2026-12-31' };
+    const next = { ...filters, dateRange: { ...dateRange, [field]: value } };
     setFilters(next);
     onFilterChange(next);
   };

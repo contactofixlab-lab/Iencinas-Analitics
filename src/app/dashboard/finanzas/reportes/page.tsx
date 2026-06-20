@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProjectSelector from '@/components/ProjectSelector';
 import AdvancedReportBuilder from '@/components/AdvancedReportBuilder';
-import { FileText, Download, Eye } from 'lucide-react';
+import PrebuiltReports from '@/components/PrebuiltReports';
+import { FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const ACCENT = {
@@ -29,23 +30,33 @@ export default function FinanzasReportesPage() {
     window.history.replaceState({}, '', `?proyecto=${newProyecto}`);
   };
 
+  const handleSelectReport = (reportType: string) => {
+    console.log('Selected prebuilt report:', reportType);
+    // Aquí se cargaría el reporte prehechovez
+  };
+
   return (
     <div className="space-y-6 page-enter">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">Reportes — Finanzas</h1>
-          <p className="text-gray-400 text-sm mt-1">Crea reportes personalizados seleccionando los atributos que necesitas</p>
+          <p className="text-gray-400 text-sm mt-1">Crea reportes personalizados o elige uno de los prehechos</p>
         </div>
         <ProjectSelector value={proyecto} onChange={handleProyectoChange} />
       </div>
 
-      {/* Generador Avanzado de Reportes */}
+      {/* Generador Avanzado de Reportes (Previsualizador + Selector) */}
       <AdvancedReportBuilder
         accentColor={ACCENT}
         onGenerate={(config) => setPreviewData(config.data)}
       />
 
+      {/* Reportes Prehechos del Sistema */}
+      <PrebuiltReports
+        accentColor={ACCENT}
+        onSelectReport={handleSelectReport}
+      />
     </div>
   );
 }

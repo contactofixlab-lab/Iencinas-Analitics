@@ -96,7 +96,7 @@ export default function FinanzasPage() {
   const combined = (data?.ingresos || []).map((d, i) => ({
     mes: d.mes,
     ingresos: d.valor / 1000000,
-    gastos: (data?.gastos?.[i]?.valor || 0) / 1000000,
+    gastos: (data?.gastos?.[i]?.valor ?? 0) / 1000000,
   }));
 
   return (

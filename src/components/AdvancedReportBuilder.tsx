@@ -150,15 +150,15 @@ export default function AdvancedReportBuilder({
 
             selectedAttributes.forEach(({ entity, key, label }) => {
               if (entity === 'proyectos') {
-                row[label] = (proyecto as any)[key];
+                row[label] = (proyecto as any)?.[key] ?? '-';
               } else if (entity === 'transacciones' && projectData.transactions?.[i]) {
-                row[label] = (projectData.transactions[i] as any)[key];
+                row[label] = (projectData.transactions[i] as any)?.[key] ?? '-';
               } else if (entity === 'ventas' && projectData.sales?.[i]) {
-                row[label] = (projectData.sales[i] as any)[key];
+                row[label] = (projectData.sales[i] as any)?.[key] ?? '-';
               } else if (entity === 'leads' && projectData.leads?.[i]) {
-                row[label] = (projectData.leads[i] as any)[key];
+                row[label] = (projectData.leads[i] as any)?.[key] ?? '-';
               } else if (entity === 'valuaciones' && projectData.valuations?.[i]) {
-                row[label] = (projectData.valuations[i] as any)[key];
+                row[label] = (projectData.valuations[i] as any)?.[key] ?? '-';
               } else {
                 row[label] = '-';
               }
