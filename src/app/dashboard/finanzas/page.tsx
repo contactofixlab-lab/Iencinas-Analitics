@@ -93,11 +93,14 @@ export default function FinanzasPage() {
 
   if (!data && !loading) return null;
 
-  const combined = (data?.ingresos || []).map((d, i) => ({
-    mes: d.mes,
-    ingresos: d.valor / 1000000,
-    gastos: (data?.gastos?.[i]?.valor ?? 0) / 1000000,
-  }));
+  const combined = (data?.ingresos || []).map((d, i) => {
+    const gastoValue = (Array.isArray(data?.gastos) && data.gastos[i]) ? data.gastos[i].valor : 0;
+    return {
+      mes: d.mes,
+      ingresos: d.valor / 1000000,
+      gastos: gastoValue / 1000000,
+    };
+  });
 
   return (
     <div className="space-y-6 page-enter">

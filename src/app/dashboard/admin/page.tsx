@@ -64,9 +64,18 @@ export default function AdminPage() {
     setUsers(getUsers());
 
     fetch('/api/proyectos')
-      .then(res => res.json())
-      .then(data => setProyectos(data.data || []))
-      .catch(err => console.error('Error loading proyectos:', err));
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(data => {
+        if (Array.isArray(data.data)) setProyectos(data.data);
+        else setProyectos([]);
+      })
+      .catch(err => {
+        console.error('Error loading proyectos:', err);
+        setProyectos([]);
+      });
   }, [user, router]);
 
   function handleDelete(id: string) {

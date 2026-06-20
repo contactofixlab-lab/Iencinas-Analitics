@@ -37,7 +37,7 @@ export default function MarketingPage() {
     setLoading(true);
     fetch(`/api/marketing?proyecto=${proyecto}`)
       .then(res => res.json())
-      .then(res => setData(res.data))
+      .then(res => setData(res.data || null))
       .finally(() => setLoading(false));
   }, [proyecto]);
 

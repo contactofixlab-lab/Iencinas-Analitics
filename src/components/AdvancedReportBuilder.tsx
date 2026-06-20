@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import GlassDatePicker from './GlassDatePicker';
-import { ChevronDown, Trash2, Eye, Download, Database, CheckCircle2 } from 'lucide-react';
+import { ChevronDown, Trash2, Download, Database, CheckCircle2, Play } from 'lucide-react';
 import {
   PROYECTOS,
   TRANSACCIONES,
@@ -133,7 +133,7 @@ export default function AdvancedReportBuilder({
         if (needsProyectos && !needsTransacciones && !needsVentas && !needsLeads && !needsValuaciones) {
           const row: Record<string, any> = {};
           selectedAttributes.forEach(({ key, label }) => {
-            row[label] = (proyecto as any)[key];
+            row[label] = (proyecto as any)?.[key] ?? '-';
           });
           resultData.push(row);
         } else {
@@ -172,15 +172,12 @@ export default function AdvancedReportBuilder({
       });
 
       const filtered = resultData.filter((row) => {
-        const hasDateField = selectedAttributes.some((a) => ['fecha', 'fechaInicio', 'fechaFin'].includes(a.key));
+        const hasDateField = selectedAttributes.some((a) => ['fecha'].includes(a.key));
         if (!hasDateField) return true;
-
         const dateField = selectedAttributes.find((a) => a.key === 'fecha');
         if (!dateField) return true;
-
         const rowDate = row[dateField.label];
         if (!rowDate) return true;
-
         try {
           const date = new Date(rowDate);
           const from = new Date(fechaInicio);
@@ -206,82 +203,99 @@ export default function AdvancedReportBuilder({
 
   return (
     <div className="space-y-6">
-      {/* Previsualizador — Arriba Prominente */}
-      {previewData.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="rounded-[20px] p-6 overflow-hidden"
-          style={{
-            background: 'linear-gradient(160deg, rgba(34,197,94,0.12) 0%, rgba(34,197,94,0.03) 100%)',
-            backdropFilter: 'blur(24px)',
-            border: '1px solid rgba(34,197,94,0.25)',
-          }}
-        >
-          <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-            <Eye size={18} className={accentColor.text} />
-            Previsualizador ({previewData.length} registros)
-          </h3>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-white/10">
-                  {columns.map((col) => (
-                    <th key={col} className="px-4 py-2 text-left text-gray-300 font-medium">
-                      {col}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {previewData.map((row, idx) => (
-                  <tr key={idx} className="border-b border-white/5 hover:bg-white/5">
-                    {columns.map((col) => (
-                      <td key={`${idx}-${col}`} className="px-4 py-2 text-gray-300">
-                        {String(row[col] || '-').slice(0, 30)}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </motion.div>
-      )}
-
-      {/* Dos Columnas: Selector (Izq) + Controles (Der) */}
+      {/* Dos Columnas: Previsualizador (Izq 70%) + Selector (Der 30%) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Columna Izquierda: Selector de Atributos */}
-        <div className="lg:col-span-2 rounded-[20px] p-6 overflow-hidden" style={{
+        {/* COLUMNA IZQUIERDA: Previsualizador GRANDE */}
+        <div className="lg:col-span-2 space-y-4">
+          {/* Previsualizador - Tabla */}
+          {previewData.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-[20px] p-6 overflow-hidden"
+              style={{
+                background: 'linear-gradient(160deg, rgba(34,197,94,0.12) 0%, rgba(34,197,94,0.03) 100%)',
+                backdropFilter: 'blur(24px)',
+                border: '1px solid rgba(34,197,94,0.25)',
+              }}
+            >
+              <h3 className="text-white font-semibold mb-4 text-sm">Previsualizador ({previewData.length} registros)</h3>
+              <div className="overflow-x-auto max-h-96">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-white/10 sticky top-0 bg-black/20">
+                      {columns.map((col) => (
+                        <th key={col} className="px-4 py-2 text-left text-gray-300 font-medium whitespace-nowrap">
+                          {col}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {previewData.map((row, idx) => (
+                      <tr key={idx} className="border-b border-white/5 hover:bg-white/5">
+                        {columns.map((col) => (
+                          <td key={`${idx}-${col}`} className="px-4 py-2 text-gray-300 whitespace-nowrap">
+                            {String(row[col] || '-').slice(0, 30)}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Botón Generar Reporte - Debajo del Previsualizador */}
+          <motion.button
+            onClick={handleGenerate}
+            disabled={selectedAttributes.length === 0 || generating}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full py-4 rounded-xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            style={{
+              background: `linear-gradient(135deg, ${accentColor.solid}, rgb(${accentColor.rgb}))`,
+              color: 'white',
+            }}
+          >
+            <Play size={18} />
+            {generating ? 'Generando...' : 'Generar Reporte'}
+          </motion.button>
+        </div>
+
+        {/* COLUMNA DERECHA: Selector de Atributos PEQUEÑO */}
+        <div className="rounded-[20px] p-6 overflow-hidden h-fit" style={{
           background: 'linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 100%)',
           backdropFilter: 'blur(24px) saturate(150%)',
           border: '1px solid rgba(255, 255, 255, 0.14)',
         }}>
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{
               background: `rgba(${accentColor.rgb}, 0.18)`,
               border: `1px solid rgba(${accentColor.rgb}, 0.4)`,
             }}>
-              <Database size={18} className={accentColor.text} />
+              <Database size={16} className={accentColor.text} />
             </div>
-            <h2 className="font-semibold text-white">Selecciona Atributos</h2>
+            <h2 className="font-semibold text-white text-sm">Atributos</h2>
           </div>
 
-          <div className="space-y-2">
+          {/* Entidades Expandibles */}
+          <div className="space-y-2 max-h-96 overflow-y-auto">
             {Object.entries(ENTITIES).map(([entityKey, entity]) => (
               <div key={entityKey}>
                 <motion.button
                   onClick={() => setExpandedEntity(expandedEntity === entityKey ? null : entityKey)}
-                  className="w-full flex items-center justify-between p-3 rounded-lg transition-all"
+                  className="w-full flex items-center justify-between p-2 rounded-lg transition-all"
                   style={{
                     background: 'rgba(255,255,255,0.04)',
                     border: '1px solid rgba(255,255,255,0.08)',
                   }}
                   whileHover={{ background: 'rgba(255,255,255,0.08)' }}
                 >
-                  <span className="text-white font-medium">{entity.label}</span>
+                  <span className="text-white font-medium text-xs">{entity.label}</span>
                   <motion.div animate={{ rotate: expandedEntity === entityKey ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                    <ChevronDown size={18} className="text-gray-400" />
+                    <ChevronDown size={14} className="text-gray-400" />
                   </motion.div>
                 </motion.button>
 
@@ -293,7 +307,7 @@ export default function AdvancedReportBuilder({
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden"
                     >
-                      <div className="p-3 space-y-2 bg-black/20 rounded-lg mt-2">
+                      <div className="p-2 space-y-1 bg-black/20 rounded-lg mt-1">
                         {entity.attributes.map((attr) => {
                           const isSelected = selectedAttributes.some((s) => s.entity === entityKey && s.key === attr.key);
                           return (
@@ -301,21 +315,20 @@ export default function AdvancedReportBuilder({
                               key={attr.key}
                               onClick={() => !isSelected && addAttribute(entityKey, attr)}
                               disabled={isSelected}
-                              whileHover={{ x: 2 }}
-                              className={`w-full flex items-center gap-3 p-2.5 rounded transition-all ${
+                              className={`w-full flex items-center gap-2 p-1.5 rounded text-left text-xs transition-all ${
                                 isSelected
                                   ? 'bg-green-500/20 cursor-default'
                                   : 'hover:bg-white/5'
                               }`}
                             >
-                              <div className={`w-4 h-4 rounded border flex items-center justify-center ${
+                              <div className={`w-3 h-3 rounded border flex items-center justify-center ${
                                 isSelected
                                   ? 'bg-green-500 border-green-400'
                                   : 'border-gray-400'
                               }`}>
-                                {isSelected && <CheckCircle2 size={12} className="text-white" />}
+                                {isSelected && <CheckCircle2 size={8} className="text-white" />}
                               </div>
-                              <span className={`text-sm ${isSelected ? 'text-green-400' : 'text-gray-300'}`}>
+                              <span className={isSelected ? 'text-green-400' : 'text-gray-300'}>
                                 {attr.label}
                               </span>
                             </motion.button>
@@ -328,88 +341,58 @@ export default function AdvancedReportBuilder({
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Columna Derecha: Controles */}
-        <div className="space-y-4">
+          {/* Filtros de Fecha */}
+          <div className="mt-4 space-y-2 border-t border-white/10 pt-4">
+            <label className="text-xs font-medium text-gray-300">Fechas</label>
+            <GlassDatePicker value={fechaInicio} onChange={setFechaInicio} />
+            <GlassDatePicker value={fechaFin} onChange={setFechaFin} />
+          </div>
+
           {/* Atributos Seleccionados */}
-          <div className="rounded-[20px] p-4 overflow-hidden" style={{
-            background: 'linear-gradient(160deg, rgba(34,197,94,0.1) 0%, rgba(34,197,94,0.02) 100%)',
-            backdropFilter: 'blur(24px)',
-            border: '1px solid rgba(34,197,94,0.3)',
-          }}>
-            <h3 className="text-white font-semibold mb-3 text-sm flex items-center gap-2">
-              <CheckCircle2 size={16} className={accentColor.text} />
-              Seleccionados ({selectedAttributes.length})
-            </h3>
-            <div className="space-y-2 max-h-48 overflow-y-auto">
-              {selectedAttributes.length === 0 ? (
-                <p className="text-gray-400 text-xs">Selecciona atributos para empezar</p>
-              ) : (
-                selectedAttributes.map((attr) => (
+          {selectedAttributes.length > 0 && (
+            <div className="mt-4 border-t border-white/10 pt-4">
+              <p className="text-xs font-medium text-gray-300 mb-2">Seleccionados ({selectedAttributes.length})</p>
+              <div className="space-y-1 max-h-32 overflow-y-auto">
+                {selectedAttributes.map((attr) => (
                   <motion.div
                     key={`${attr.entity}-${attr.key}`}
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="flex items-center justify-between gap-2 p-2 rounded-lg text-xs"
+                    className="flex items-center justify-between gap-1 p-1 rounded-lg text-xs"
                     style={{
                       background: `rgba(${accentColor.rgb}, 0.15)`,
                       border: `1px solid rgba(${accentColor.rgb}, 0.3)`,
                     }}
                   >
-                    <div>
-                      <p className="text-gray-300 font-medium">{attr.label}</p>
-                      <p className="text-gray-500 text-xs">{ENTITIES[attr.entity as keyof typeof ENTITIES]?.label}</p>
-                    </div>
+                    <span className="text-gray-300 truncate">{attr.label}</span>
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => removeAttribute(attr.entity, attr.key)}
-                      className="p-1 rounded hover:bg-red-500/30 transition-colors"
+                      className="p-0.5 rounded hover:bg-red-500/30 transition-colors flex-shrink-0"
                     >
-                      <Trash2 size={12} className="text-red-400" />
+                      <Trash2 size={10} className="text-red-400" />
                     </motion.button>
                   </motion.div>
-                ))
-              )}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Filtros de Fecha */}
-          <div className="space-y-2">
-            <label className="block text-xs font-medium text-gray-300">Rango de Fechas</label>
-            <GlassDatePicker value={fechaInicio} onChange={setFechaInicio} />
-            <GlassDatePicker value={fechaFin} onChange={setFechaFin} />
-          </div>
-
-          {/* Botón Generar */}
-          <motion.button
-            onClick={handleGenerate}
-            disabled={selectedAttributes.length === 0 || generating}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full py-3 rounded-xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{
-              background: `linear-gradient(135deg, ${accentColor.solid}, rgb(${accentColor.rgb}))`,
-              color: 'white',
-            }}
-          >
-            {generating ? 'Generando...' : 'Generar Reporte'}
-          </motion.button>
-
-          {/* Botones Descargar */}
+          {/* Botón Descargar */}
           {previewData.length > 0 && (
             <motion.button
               whileHover={{ scale: 1.02 }}
-              className="w-full py-2 rounded-xl font-medium transition-all flex items-center justify-center gap-2"
+              className="w-full py-2 rounded-xl font-medium transition-all flex items-center justify-center gap-2 mt-4"
               style={{
                 background: 'rgba(255,255,255,0.08)',
                 border: '1px solid rgba(255,255,255,0.15)',
                 color: 'white',
               }}
             >
-              <Download size={16} />
-              Descargar CSV
+              <Download size={14} />
+              Descargar
             </motion.button>
           )}
         </div>

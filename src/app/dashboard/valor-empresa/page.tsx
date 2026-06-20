@@ -44,7 +44,7 @@ export default function ValorEmpresaPage() {
     setLoading(true);
     fetch(`/api/valor-empresa?proyecto=${proyecto}`)
       .then(res => res.json())
-      .then(res => setData(res.data))
+      .then(res => setData(res.data || null))
       .finally(() => setLoading(false));
   }, [proyecto]);
 
