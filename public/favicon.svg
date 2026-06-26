@@ -1,0 +1,26 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0ea5e9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0284c7;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="50" fill="url(#iconGradient)"/>
+
+  <!-- Concentric circles with spiral pattern -->
+  <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+  <circle cx="50" cy="50" r="34" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+  <circle cx="50" cy="50" r="26" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="2"/>
+  <circle cx="50" cy="50" r="18" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2"/>
+  <circle cx="50" cy="50" r="10" fill="none" stroke="rgba(255,255,255,0.65)" stroke-width="2"/>
+
+  <!-- Spiral lines for dynamic effect -->
+  <g fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round">
+    <path d="M 50 8 Q 72 20, 80 42"/>
+    <path d="M 80 42 Q 72 64, 50 76"/>
+    <path d="M 50 92 Q 28 80, 20 58"/>
+    <path d="M 20 58 Q 28 36, 50 24"/>
+  </g>
+</svg>
