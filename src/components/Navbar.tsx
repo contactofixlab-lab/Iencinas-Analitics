@@ -167,6 +167,10 @@ export default function Navbar({ title }: { title?: string }) {
                 {/* Menu items */}
                 <div className="px-4 py-3 space-y-2">
                   <button
+                    onClick={() => {
+                      router.push('/dashboard/perfil');
+                      setOpen(false);
+                    }}
                     className="w-full flex items-center gap-3 px-4 py-3 text-sm text-white rounded-xl transition-all duration-200 font-medium"
                     style={{ background: 'rgba(34, 197, 94, 0.18)', border: '1px solid rgba(34,197,94,0.3)' }}
                     onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(34, 197, 94, 0.3)'; }}
