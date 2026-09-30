@@ -38,8 +38,8 @@ export default function Navbar({ title }: { title?: string }) {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  function handleLogout() {
-    logout();
+  async function handleLogout() {
+    await logout();
     router.push('/login');
   }
 

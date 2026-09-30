@@ -32,14 +32,17 @@ export default function EditarUsuarioPage() {
       router.replace('/dashboard/finanzas');
       return;
     }
-    const users = getUsers();
-    const found = users.find((u: User) => u.id === id);
-    if (found) {
-      setForm({
-        nombre: found.nombre, apellido1: found.apellido1, apellido2: found.apellido2,
-        email: found.email, password: found.password, role: found.role, departamento: found.departamento,
-      });
-    }
+    getUsers()
+      .then((users: User[]) => {
+        const found = users.find(u => u.id === id);
+        if (found) {
+          setForm({
+            nombre: found.nombre, apellido1: found.apellido1, apellido2: found.apellido2,
+            email: found.email, password: '', role: found.role, departamento: found.departamento,
+          });
+        }
+      })
+      .catch(() => setError('No se pudo cargar el usuario.'));
   }, [id, currentUser, router]);
 
   function handleChange(field: string, value: string) {
@@ -50,16 +53,21 @@ export default function EditarUsuarioPage() {
     });
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
     if (!form.nombre || !form.apellido1 || !form.email) {
       setError('Por favor completa los campos obligatorios.');
       return;
     }
-    updateUser(id, form);
-    setSuccess(true);
-    setTimeout(() => router.push('/dashboard/admin'), 1500);
+    try {
+      const { password, ...rest } = form;
+      await updateUser(id, password ? { ...rest, password } : rest);
+      setSuccess(true);
+      setTimeout(() => router.push('/dashboard/admin'), 1500);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'No se pudo guardar el usuario.');
+    }
   }
 
   const inputClass = 'field w-full';

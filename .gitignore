@@ -42,3 +42,7 @@ Thumbs.db
 
 # Claude
 .claude/
+
+# Datos locales de usuarios (contienen hashes de contraseña)
+.data/
+*.tsbuildinfo

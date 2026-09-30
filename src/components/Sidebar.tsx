@@ -15,6 +15,7 @@ import {
   Database,
   Users,
   ShieldCheck,
+  ClipboardList,
 } from 'lucide-react';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -77,6 +78,7 @@ const navItems: NavItem[] = [
       { label: 'Usuarios', path: '/dashboard/admin', icon: <Users size={14} /> },
       { label: 'Permisos', path: '/dashboard/admin/permisos', icon: <ShieldCheck size={14} /> },
       { label: 'BBDD', path: '/dashboard/admin/bbdd', icon: <Database size={14} /> },
+      { label: 'Auditoría', path: '/dashboard/admin/auditoria', icon: <ClipboardList size={14} /> },
     ],
   },
 ];

@@ -1,9 +1,11 @@
 import { NextRequest } from 'next/server';
 import { getDataSource } from '@/lib/datasource';
-import { ok, fail } from '@/lib/api/server';
+import { ok, fail, parseParams } from '@/lib/api/server';
+import { authorizeModule } from '@/lib/server/guard';
 import { ModuleKey } from '@/types/domain';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 const VALID: ModuleKey[] = ['finanzas', 'comercial', 'marketing', 'valor-empresa'];
 
@@ -11,12 +13,12 @@ export async function GET(req: NextRequest, { params }: { params: { modulo: stri
   try {
     const modulo = params.modulo as ModuleKey;
     if (!VALID.includes(modulo)) {
-      return fail(new Error(`Módulo inválido: "${params.modulo}"`), 400);
+      return fail(new Error('Módulo inválido'), 400);
     }
-    const proyecto = req.nextUrl.searchParams.get('proyecto') || undefined;
+    const { proyecto } = parseParams(req);
+    await authorizeModule(req, modulo, proyecto);
     const ds = getDataSource();
     let data = await ds.getReportes(modulo, { proyecto });
-    // Ensure data is always an array
     if (!Array.isArray(data)) {
       data = [];
     }

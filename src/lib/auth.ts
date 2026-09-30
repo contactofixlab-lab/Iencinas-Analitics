@@ -1,62 +1,94 @@
-import { User } from '@/types';
-import { INITIAL_USERS } from './mockData';
+import { NewUserInput, User } from '@/types';
 
-const STORAGE_KEY = 'iencinas_users';
-const SESSION_KEY = 'iencinas_session';
+/**
+ * Cliente de autenticación. La sesión vive en una cookie HttpOnly firmada por el servidor:
+ * el navegador ya no guarda usuarios ni contraseñas (antes estaban en localStorage).
+ */
 
-export function getUsers(): User[] {
-  if (typeof window === 'undefined') return INITIAL_USERS;
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (!stored) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_USERS));
-    return INITIAL_USERS;
+export class ApiRequestError extends Error {
+  constructor(message: string, public status: number) {
+    super(message);
+    this.name = 'ApiRequestError';
   }
-  return JSON.parse(stored);
 }
 
-export function saveUsers(users: User[]): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
-}
-
-export function getCurrentUser(): User | null {
-  if (typeof window === 'undefined') return null;
-  const stored = localStorage.getItem(SESSION_KEY);
-  if (!stored) return null;
-  return JSON.parse(stored);
-}
-
-export function login(email: string, password: string): User | null {
-  const users = getUsers();
-  const user = users.find(u => u.email === email && u.password === password);
-  if (user) {
-    localStorage.setItem(SESSION_KEY, JSON.stringify(user));
-    return user;
+async function request<T>(url: string, init: RequestInit = {}): Promise<T> {
+  const res = await fetch(url, {
+    cache: 'no-store',
+    credentials: 'same-origin',
+    ...init,
+    headers: { 'Content-Type': 'application/json', ...(init.headers || {}) },
+  });
+  let json: { ok?: boolean; error?: string; [k: string]: unknown } | null = null;
+  try {
+    json = await res.json();
+  } catch {
+    /* respuesta sin cuerpo JSON */
   }
-  return null;
+  if (!res.ok || !json || json.ok === false) {
+    throw new ApiRequestError(json?.error || `Error ${res.status}`, res.status);
+  }
+  return json as T;
 }
 
-export function logout(): void {
-  localStorage.removeItem(SESSION_KEY);
+/** Usuario de la sesión actual, o null si no hay sesión válida. */
+export async function fetchCurrentUser(): Promise<User | null> {
+  const r = await request<{ user: User | null }>('/api/auth/me');
+  return r.user ?? null;
 }
 
-export function createUser(data: Omit<User, 'id' | 'createdAt'>): User {
-  const users = getUsers();
-  const newUser: User = {
-    ...data,
-    id: Date.now().toString(),
-    createdAt: new Date().toISOString().split('T')[0],
-  };
-  saveUsers([...users, newUser]);
-  return newUser;
+export async function login(email: string, password: string): Promise<User> {
+  const r = await request<{ user: User }>('/api/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+  });
+  return r.user;
 }
 
-export function updateUser(id: string, data: Partial<User>): void {
-  const users = getUsers();
-  const updated = users.map(u => u.id === id ? { ...u, ...data } : u);
-  saveUsers(updated);
+/** Solo desarrollo local: el servidor responde 404 en producción. */
+export async function devLogin(email: string): Promise<User> {
+  const r = await request<{ user: User }>('/api/auth/dev-login', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+  return r.user;
 }
 
-export function deleteUser(id: string): void {
-  const users = getUsers();
-  saveUsers(users.filter(u => u.id !== id));
+export async function logout(): Promise<void> {
+  try {
+    await request('/api/auth/logout', { method: 'POST' });
+  } catch {
+    /* si falla la red, igualmente se limpia el estado local */
+  }
+}
+
+export async function changePassword(currentPassword: string, newPassword: string): Promise<void> {
+  await request('/api/auth/password', {
+    method: 'POST',
+    body: JSON.stringify({ currentPassword, newPassword }),
+  });
+}
+
+/* ── Administración de usuarios (solo administradores; el servidor lo verifica) ── */
+
+export async function getUsers(): Promise<User[]> {
+  const r = await request<{ data: User[] }>('/api/usuarios');
+  return r.data;
+}
+
+export async function createUser(data: NewUserInput): Promise<User> {
+  const r = await request<{ data: User }>('/api/usuarios', { method: 'POST', body: JSON.stringify(data) });
+  return r.data;
+}
+
+export async function updateUser(id: string, data: Partial<NewUserInput>): Promise<User> {
+  const r = await request<{ data: User }>(`/api/usuarios/${encodeURIComponent(id)}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+  return r.data;
+}
+
+export async function deleteUser(id: string): Promise<void> {
+  await request(`/api/usuarios/${encodeURIComponent(id)}`, { method: 'DELETE' });
 }

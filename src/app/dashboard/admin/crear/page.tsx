@@ -64,16 +64,20 @@ export default function CrearUsuarioPage() {
     });
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
     if (!form.nombre || !form.apellido1 || !form.email || !form.password) {
       setError('Por favor completa todos los campos obligatorios.');
       return;
     }
-    createUser(form);
-    setSuccess(true);
-    setTimeout(() => router.push('/dashboard/admin'), 1500);
+    try {
+      await createUser({ ...form, proyectos: [] });
+      setSuccess(true);
+      setTimeout(() => router.push('/dashboard/admin'), 1500);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'No se pudo crear el usuario.');
+    }
   }
 
   const inputClass = 'field w-full';

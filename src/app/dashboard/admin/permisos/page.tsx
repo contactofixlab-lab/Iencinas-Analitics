@@ -39,7 +39,9 @@ export default function PermisosPage() {
 
   useEffect(() => {
     if (user && user.role !== 'administrador') router.replace('/dashboard/finanzas');
-    setUsers(getUsers());
+    if (user?.role === 'administrador') {
+      getUsers().then(setUsers).catch(() => setUsers([]));
+    }
   }, [user, router]);
 
   function getUsuariosConPermiso(id: string): number {

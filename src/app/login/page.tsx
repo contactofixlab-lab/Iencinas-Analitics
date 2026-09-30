@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { devLogin } from '@/lib/auth';
 import { Eye, EyeOff, Lock, Mail, LayoutDashboard, ChevronRight } from 'lucide-react';
 
 const DEFAULT_ROUTES: Record<string, string> = {
@@ -12,11 +13,13 @@ const DEFAULT_ROUTES: Record<string, string> = {
   administrador: '/dashboard/finanzas',
 };
 
+// Acceso rápido solo en desarrollo local (no contiene contraseñas; en producción no se muestra ni el servidor lo acepta).
+const SHOW_QUICK_ACCESS = process.env.NODE_ENV !== 'production';
 const DEMO_USERS = [
-  { label: 'Juan Díaz',       role: 'Finanzas',  email: 'juan@iencinas.cl',   password: '123456', color: '#3b82f6' },
-  { label: 'María Rodríguez', role: 'Comercial', email: 'maria@iencinas.cl',  password: '123456', color: '#f97316' },
-  { label: 'Carlos Cortés',   role: 'Marketing', email: 'carlos@iencinas.cl', password: '123456', color: '#a855f7' },
-  { label: 'Ana Silva',       role: 'Admin',     email: 'ana@iencinas.cl',    password: '123456', color: '#22c55e' },
+  { label: 'Juan Díaz',       role: 'Finanzas',  email: 'juan@iencinas.cl',   color: '#3b82f6' },
+  { label: 'María Rodríguez', role: 'Comercial', email: 'maria@iencinas.cl',  color: '#f97316' },
+  { label: 'Carlos Cortés',   role: 'Marketing', email: 'carlos@iencinas.cl', color: '#a855f7' },
+  { label: 'Ana Silva',       role: 'Admin',     email: 'ana@iencinas.cl',    color: '#22c55e' },
 ];
 
 // Stars: [x%, y%, size-px, delay-s]
@@ -287,7 +290,7 @@ function HeroStar({ xp, yp, size, color, delay }: {
 
 // ── Page ────────────────────────────────────────────────────────────────────
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, setSessionUser } = useAuth();
   const router = useRouter();
   const [email, setEmail]           = useState('');
   const [password, setPassword]     = useState('');
@@ -296,19 +299,30 @@ export default function LoginPage() {
   const [loading, setLoading]       = useState(false);
   const [focused, setFocused]       = useState<string | null>(null);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
     setLoading(true);
-    setTimeout(() => {
-      const user = login(email, password);
-      if (user) {
-        router.push(DEFAULT_ROUTES[user.role] || '/dashboard/finanzas');
-      } else {
-        setError('Correo o contraseña incorrectos');
-        setLoading(false);
-      }
-    }, 700);
+    try {
+      const user = await login(email, password);
+      router.push(DEFAULT_ROUTES[user.role] || '/dashboard/finanzas');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'No se pudo iniciar sesión. Intenta nuevamente.');
+      setLoading(false);
+    }
+  }
+
+  async function handleQuickAccess(demoEmail: string) {
+    setError('');
+    setLoading(true);
+    try {
+      const user = await devLogin(demoEmail);
+      setSessionUser(user);
+      router.push(DEFAULT_ROUTES[user.role] || '/dashboard/finanzas');
+    } catch {
+      setError('El acceso rápido no está disponible en este entorno.');
+      setLoading(false);
+    }
   }
 
   return (
@@ -693,6 +707,7 @@ export default function LoginPage() {
             </button>
           </form>
 
+          {SHOW_QUICK_ACCESS && (<>
           {/* Divider */}
           <div className="flex items-center gap-3 my-5">
             <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
@@ -706,7 +721,8 @@ export default function LoginPage() {
           <div className="grid grid-cols-2 gap-2">
             {DEMO_USERS.map(u => (
               <button key={u.email}
-                onClick={() => { setEmail(u.email); setPassword(u.password); setError(''); }}
+                type="button" disabled={loading}
+                onClick={() => handleQuickAccess(u.email)}
                 className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left transition-all duration-200"
                 style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}
                 onMouseEnter={e => {
@@ -728,6 +744,7 @@ export default function LoginPage() {
               </button>
             ))}
           </div>
+          </>)}
 
           <p className="text-center text-xs mt-5" style={{ color: 'rgba(255,255,255,0.11)' }}>
             © 2026 Iencinas Analytics · Todos los derechos reservados

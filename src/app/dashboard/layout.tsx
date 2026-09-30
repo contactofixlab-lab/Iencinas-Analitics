@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { logout as authLogout } from '@/lib/auth';
 import Sidebar from '@/components/Sidebar';
 import Navbar from '@/components/Navbar';
 
@@ -12,7 +13,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace('/login');
+      // Sin usuario válido: se borra la cookie en el servidor (evita bucles con sesiones inválidas) y se va al login.
+      void authLogout().finally(() => router.replace('/login'));
     }
   }, [user, loading, router]);
 

@@ -3,7 +3,9 @@
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Calendar, Building2, FileText, Edit2, LogOut, Briefcase } from 'lucide-react';
+import { Mail, Phone, MapPin, Calendar, Building2, FileText, Edit2, LogOut, Briefcase, KeyRound } from 'lucide-react';
+import { useState } from 'react';
+import { changePassword } from '@/lib/auth';
 
 const ROLE_LABELS: Record<string, string> = {
   finanzas: 'Gerente de Finanzas',
@@ -21,6 +23,79 @@ const ROLE_COLORS: Record<string, { gradient: string; badge: string }> = {
 
 function getInitials(nombre: string, apellido1: string) {
   return `${nombre[0]}${apellido1[0]}`.toUpperCase();
+}
+
+function ChangePasswordCard() {
+  const [current, setCurrent] = useState('');
+  const [next, setNext] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<{ type: 'ok' | 'error'; text: string } | null>(null);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setMsg(null);
+    if (next !== confirm) {
+      setMsg({ type: 'error', text: 'Las contraseñas nuevas no coinciden.' });
+      return;
+    }
+    setBusy(true);
+    try {
+      await changePassword(current, next);
+      setMsg({ type: 'ok', text: 'Contraseña actualizada. Se cerraron tus sesiones abiertas en otros equipos.' });
+      setCurrent('');
+      setNext('');
+      setConfirm('');
+    } catch (err) {
+      setMsg({ type: 'error', text: err instanceof Error ? err.message : 'No se pudo cambiar la contraseña.' });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  const inputCls = 'w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-400 outline-none border border-white/15 focus:border-green-400/60';
+  const inputStyle = { background: 'rgba(255, 255, 255, 0.08)' };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.55 }}
+      className="rounded-3xl p-8 backdrop-blur-xl border border-white/10"
+      style={{
+        background: 'linear-gradient(135deg, rgba(10,18,35,0.8), rgba(16,28,48,0.8))',
+        boxShadow: '0 24px 64px rgba(0,0,0,0.3), inset 0 1px 0 rgba(74, 222, 128, 0.1)',
+      }}
+    >
+      <div className="flex items-center gap-3 mb-2">
+        <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-500/20 to-orange-500/20">
+          <KeyRound size={24} className="text-yellow-400" />
+        </div>
+        <h3 className="text-2xl font-bold text-white">Seguridad de la cuenta</h3>
+      </div>
+      <p className="text-gray-400 text-sm mb-5">
+        Cambia tu contraseña periódicamente. Mínimo 10 caracteres, combinando letras y números. No la compartas con nadie.
+      </p>
+      <form onSubmit={submit} className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <input type="password" autoComplete="current-password" required placeholder="Contraseña actual"
+          value={current} onChange={e => setCurrent(e.target.value)} className={inputCls} style={inputStyle} />
+        <input type="password" autoComplete="new-password" required placeholder="Nueva contraseña"
+          value={next} onChange={e => setNext(e.target.value)} className={inputCls} style={inputStyle} />
+        <input type="password" autoComplete="new-password" required placeholder="Repite la nueva contraseña"
+          value={confirm} onChange={e => setConfirm(e.target.value)} className={inputCls} style={inputStyle} />
+        <div className="md:col-span-3 flex items-center gap-4 flex-wrap">
+          <button type="submit" disabled={busy}
+            className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white disabled:opacity-60 transition-all"
+            style={{ background: 'rgba(34,197,94,0.25)', border: '1px solid rgba(34,197,94,0.4)' }}>
+            {busy ? 'Guardando...' : 'Cambiar contraseña'}
+          </button>
+          {msg && (
+            <span className={`text-sm ${msg.type === 'ok' ? 'text-green-300' : 'text-red-300'}`} role="status">{msg.text}</span>
+          )}
+        </div>
+      </form>
+    </motion.div>
+  );
 }
 
 export default function PerfilPage() {
@@ -45,8 +120,8 @@ export default function PerfilPage() {
     estadoDispositivo: 'En línea',
   };
 
-  function handleLogout() {
-    logout();
+  async function handleLogout() {
+    await logout();
     router.push('/login');
   }
 
@@ -230,6 +305,8 @@ export default function PerfilPage() {
             ))}
           </div>
         </motion.div>
+
+        <ChangePasswordCard />
 
         {/* Logout Button */}
         <motion.div

@@ -61,7 +61,7 @@ export default function AdminPage() {
       router.replace('/dashboard/finanzas');
       return;
     }
-    setUsers(getUsers());
+    getUsers().then(setUsers).catch(err => console.error('Error loading usuarios:', err));
 
     fetch('/api/proyectos')
       .then(res => {
@@ -78,10 +78,14 @@ export default function AdminPage() {
       });
   }, [user, router]);
 
-  function handleDelete(id: string) {
+  async function handleDelete(id: string) {
     if (id === user?.id) return;
-    deleteUser(id);
-    setUsers(getUsers());
+    try {
+      await deleteUser(id);
+      setUsers(await getUsers());
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'No se pudo eliminar el usuario');
+    }
     setConfirmDelete(null);
   }
 
@@ -99,44 +103,53 @@ export default function AdminPage() {
     setEditingUser(null);
   }
 
-  function handleCreateUser() {
+  async function handleCreateUser() {
     if (!formData.nombre || !formData.apellido1 || !formData.email || !formData.password) {
       alert('Por favor completa todos los campos requeridos');
       return;
     }
-    createUser({
-      nombre: formData.nombre,
-      apellido1: formData.apellido1,
-      apellido2: formData.apellido2,
-      email: formData.email,
-      password: formData.password,
-      departamento: formData.area,
-      role: formData.role,
-      proyectos: formData.proyectos,
-    });
-    setUsers(getUsers());
-    setShowCreateModal(false);
-    resetForm();
+    try {
+      await createUser({
+        nombre: formData.nombre,
+        apellido1: formData.apellido1,
+        apellido2: formData.apellido2,
+        email: formData.email,
+        password: formData.password,
+        departamento: formData.area,
+        role: formData.role,
+        proyectos: formData.proyectos,
+      });
+      setUsers(await getUsers());
+      setShowCreateModal(false);
+      resetForm();
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'No se pudo crear el usuario');
+    }
   }
 
-  function handleEditUser() {
+  async function handleEditUser() {
     if (!editingUser) return;
     if (!formData.nombre || !formData.apellido1 || !formData.email) {
       alert('Por favor completa todos los campos requeridos');
       return;
     }
-    updateUser(editingUser.id, {
-      nombre: formData.nombre,
-      apellido1: formData.apellido1,
-      apellido2: formData.apellido2,
-      email: formData.email,
-      departamento: formData.area,
-      role: formData.role,
-      proyectos: formData.proyectos,
-    });
-    setUsers(getUsers());
-    setShowCreateModal(false);
-    resetForm();
+    try {
+      await updateUser(editingUser.id, {
+        nombre: formData.nombre,
+        apellido1: formData.apellido1,
+        apellido2: formData.apellido2,
+        email: formData.email,
+        departamento: formData.area,
+        role: formData.role,
+        proyectos: formData.proyectos,
+        ...(formData.password ? { password: formData.password } : {}),
+      });
+      setUsers(await getUsers());
+      setShowCreateModal(false);
+      resetForm();
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'No se pudo actualizar el usuario');
+    }
   }
 
   function openEditModal(userToEdit: User) {
@@ -146,7 +159,7 @@ export default function AdminPage() {
       apellido1: userToEdit.apellido1,
       apellido2: userToEdit.apellido2,
       email: userToEdit.email,
-      password: userToEdit.password,
+      password: '',
       area: userToEdit.departamento,
       role: userToEdit.role,
       proyectos: userToEdit.proyectos || [],
@@ -427,17 +440,20 @@ export default function AdminPage() {
                     onChange={e => setFormData({...formData, email: e.target.value})}
                     className="field"
                   />
-                  {!editingUser && (
-                    <input
-                      type="password"
-                      placeholder="Contraseña"
-                      value={formData.password}
-                      onChange={e => setFormData({...formData, password: e.target.value})}
-                      className="px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-400 outline-none border border-white/15"
-                      style={{ background: 'rgba(255, 255, 255, 0.08)' }}
-                    />
-                  )}
+                  <input
+                    type="password"
+                    autoComplete="new-password"
+                    placeholder={editingUser ? 'Nueva contraseña (opcional)' : 'Contraseña'}
+                    value={formData.password}
+                    onChange={e => setFormData({...formData, password: e.target.value})}
+                    className="px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-400 outline-none border border-white/15"
+                    style={{ background: 'rgba(255, 255, 255, 0.08)' }}
+                  />
                 </div>
+                <p className="text-xs text-gray-400 mt-2">
+                  Mínimo 10 caracteres, combinando letras y números.
+                  {editingUser && ' Déjala en blanco para no cambiarla.'}
+                </p>
               </div>
 
               {/* Área y Perfil */}
