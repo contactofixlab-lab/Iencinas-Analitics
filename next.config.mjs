@@ -31,6 +31,8 @@ const nextConfig = {
   poweredByHeader: false,
   // No usamos next/image; desactivar el optimizador elimina esa superficie de ataque.
   images: { unoptimized: true },
+  // Importa solo los íconos/gráficos usados (menos módulos que compilar y menos JS descargado).
+  experimental: { optimizePackageImports: ['lucide-react', 'recharts', 'framer-motion'] },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },

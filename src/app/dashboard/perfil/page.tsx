@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { m as motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Calendar, Building2, FileText, Edit2, LogOut, Briefcase, KeyRound } from 'lucide-react';
 import { useState } from 'react';
 import { changePassword } from '@/lib/auth';
@@ -166,13 +166,13 @@ export default function PerfilPage() {
         </motion.div>
 
         {/* Main Section con Avatar Flotante */}
-        <div className="relative">
+        <div className="relative pt-20">
           {/* Avatar Flotante - Fuera del cuadro */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="absolute -top-20 left-0 z-10"
+            className="absolute top-0 left-0 z-10"
           >
             <motion.div
               whileHover={{ scale: 1.08, rotate: 5 }}
@@ -183,14 +183,13 @@ export default function PerfilPage() {
             >
               {initials}
             </motion.div>
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
+            <div
+              style={{ animation: 'bobSoft 3s ease-in-out infinite' }}
               className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/20 text-green-300 text-xs font-semibold border border-green-500/30 mt-4 ml-2"
             >
               <div className="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse"></div>
               {profileData.estadoDispositivo}
-            </motion.div>
+            </div>
           </motion.div>
 
           {/* Content Card */}

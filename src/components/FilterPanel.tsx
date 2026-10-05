@@ -2,7 +2,7 @@
 
 import { Filter, X, Search } from 'lucide-react';
 import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m as motion } from 'framer-motion';
 import GlassSelect from './GlassSelect';
 import GlassDatePicker from './GlassDatePicker';
 

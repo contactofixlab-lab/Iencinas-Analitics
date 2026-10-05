@@ -1,7 +1,7 @@
 'use client';
 
 import DatabaseDiagram from '@/components/DatabaseDiagram';
-import { motion } from 'framer-motion';
+import { m as motion } from 'framer-motion';
 
 export default function ModeloDatosPage() {
   return (

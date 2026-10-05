@@ -3,7 +3,7 @@
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m as motion } from 'framer-motion';
 import { Bell, LogOut, User as UserIcon, ChevronDown } from 'lucide-react';
 
 const ROLE_LABELS: Record<string, string> = {

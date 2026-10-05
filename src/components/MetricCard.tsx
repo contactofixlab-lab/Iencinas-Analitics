@@ -1,7 +1,7 @@
 'use client';
 
 import { TrendingUp, TrendingDown } from 'lucide-react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { m as motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 
 interface MetricCardProps {

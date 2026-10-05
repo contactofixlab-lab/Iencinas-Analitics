@@ -24,9 +24,9 @@ const AuthContext = createContext<AuthContextType>({
 const RECHECK_MS = 5 * 60 * 1000;
 const IDLE_TIMEOUT_MS = 30 * 60 * 1000;
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+export function AuthProvider({ children, initialUser = null }: { children: ReactNode; initialUser?: User | null }) {
+  const [user, setUser] = useState<User | null>(initialUser);
+  const [loading] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -38,11 +38,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch {
       /* almacenamiento no disponible */
     }
-
-    fetchCurrentUser()
-      .then(u => { if (alive) setUser(u); })
-      .catch(() => { if (alive) setUser(null); })
-      .finally(() => { if (alive) setLoading(false); });
 
     // Revalida la sesión cada 5 min y al volver a la pestaña: si expiró o el usuario fue
     // eliminado/cambiado de rol, la interfaz lo refleja sin esperar a recargar.

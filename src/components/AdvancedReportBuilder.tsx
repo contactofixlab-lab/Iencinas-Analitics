@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 import GlassDatePicker from './GlassDatePicker';
+import { useAuth } from '@/context/AuthContext';
 import { ChevronDown, Trash2, Download, Database, CheckCircle2, Play } from 'lucide-react';
 import {
   PROYECTOS,
@@ -82,6 +83,8 @@ export default function AdvancedReportBuilder({
   accentColor = { rgb: '34, 197, 94', solid: '#22c55e', text: 'text-green-400' },
   onGenerate,
 }: AdvancedReportBuilderProps) {
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'administrador';
   const [selectedAttributes, setSelectedAttributes] = useState<SelectedAttribute[]>([]);
   const [expandedEntity, setExpandedEntity] = useState<string | null>(null);
   const [fechaInicio, setFechaInicio] = useState('2026-01-01');
@@ -118,7 +121,8 @@ export default function AdvancedReportBuilder({
     setGenerating(true);
     setTimeout(() => {
       const resultData: Record<string, any>[] = [];
-      const projects = PROYECTOS;
+      // Solo los proyectos asignados al usuario (los administradores ven todos).
+      const projects = PROYECTOS.filter(p => isAdmin || (user?.proyectos ?? []).includes(p.id));
 
       projects.forEach((proyecto) => {
         const projectData = getProjectData(proyecto.id);
@@ -282,7 +286,7 @@ export default function AdvancedReportBuilder({
 
           {/* Entidades Expandibles */}
           <div className="space-y-2 max-h-96 overflow-y-auto">
-            {Object.entries(ENTITIES).map(([entityKey, entity]) => (
+            {Object.entries(ENTITIES).filter(([entityKey]) => isAdmin || entityKey !== 'valuaciones').map(([entityKey, entity]) => (
               <div key={entityKey}>
                 <motion.button
                   onClick={() => setExpandedEntity(expandedEntity === entityKey ? null : entityKey)}

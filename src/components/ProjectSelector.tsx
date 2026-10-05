@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m as motion } from 'framer-motion';
 import { Proyecto } from '@/types/domain';
 import { Building2, ChevronDown, Check } from 'lucide-react';
 

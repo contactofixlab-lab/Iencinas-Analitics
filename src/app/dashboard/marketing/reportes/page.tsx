@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import ProjectSelector from '@/components/ProjectSelector';
 import AdvancedReportBuilder from '@/components/AdvancedReportBuilder';
 import PrebuiltReports from '@/components/PrebuiltReports';
-import { motion } from 'framer-motion';
+import { m as motion } from 'framer-motion';
 
 const ACCENT = {
   rgb: '168, 85, 247',

@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m as motion } from 'framer-motion';
 import { FileText, TrendingUp, BarChart3, PieChart, Activity } from 'lucide-react';
 
 interface PrebuiltReportsProps {

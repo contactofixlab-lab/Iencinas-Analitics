@@ -1,7 +1,7 @@
 'use client';
 
 import DatabaseIntegrationFlow from '@/components/DatabaseIntegrationFlow';
-import { motion } from 'framer-motion';
+import { m as motion } from 'framer-motion';
 import { Database, CheckCircle, Zap, Shield } from 'lucide-react';
 
 export default function IntegracionBDPage() {

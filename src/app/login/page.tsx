@@ -258,7 +258,6 @@ function HeroStar({ xp, yp, size, color, delay }: {
     background: `linear-gradient(to bottom, transparent, ${color} 50%, transparent)`,
     transform: `translate(-50%, -50%) rotate(${rot}deg)`,
     transformOrigin: '50% 50%',
-    filter: 'blur(0.4px)',
     opacity: op,
   });
   const L = size * 13;
@@ -344,8 +343,9 @@ export default function LoginPage() {
               borderRadius: '50%',
               background: `radial-gradient(circle, #ffffff 0%, ${c} 45%, transparent 78%)`,
               boxShadow: s >= 1.5 ? `0 0 ${s * 2.5}px ${hexToRgba(c, 0.6)}` : 'none',
-              animation: `shine${(i % 3) + 1} ${2.2 + (i % 5) * 0.7}s ease-in-out infinite`,
-              animationDelay: `${d}s`,
+              ...(i % 3 === 0
+                ? { animation: `shine${(Math.floor(i / 3) % 3) + 1} ${2.2 + (i % 5) * 0.7}s ease-in-out infinite`, animationDelay: `${d}s` }
+                : { opacity: 0.6 }),
             }} />
           );
         })}
@@ -365,7 +365,6 @@ export default function LoginPage() {
               position: 'absolute', width: '1280px', height: '1280px',
               left: '-640px', top: '-640px', borderRadius: '50%',
               background: 'radial-gradient(circle, rgba(255,244,224,0.06) 0%, rgba(167,139,250,0.05) 26%, rgba(99,102,241,0.035) 46%, transparent 66%)',
-              filter: 'blur(30px)',
             }} />
             {/* Emission nebula — pink/red Hα cloud */}
             <div style={{
@@ -373,7 +372,6 @@ export default function LoginPage() {
               left: '-120px', top: '-280px',
               borderRadius: '60% 40% 55% 45% / 55% 60% 40% 45%',
               background: 'radial-gradient(ellipse at 40% 45%, rgba(244,114,182,0.16) 0%, rgba(219,39,119,0.09) 40%, transparent 72%)',
-              filter: 'blur(34px)',
             }} />
             {/* Reflection nebula — blue cloud */}
             <div style={{
@@ -381,7 +379,6 @@ export default function LoginPage() {
               left: '-420px', top: '40px',
               borderRadius: '45% 55% 50% 50% / 60% 45% 55% 40%',
               background: 'radial-gradient(ellipse at 55% 50%, rgba(96,165,250,0.15) 0%, rgba(59,130,246,0.08) 42%, transparent 72%)',
-              filter: 'blur(38px)',
             }} />
             {/* OIII teal cloud */}
             <div style={{
@@ -389,7 +386,6 @@ export default function LoginPage() {
               left: '40px', top: '120px',
               borderRadius: '55% 45% 60% 40% / 45% 55% 45% 55%',
               background: 'radial-gradient(ellipse at 45% 50%, rgba(45,212,191,0.12) 0%, rgba(20,184,166,0.06) 45%, transparent 72%)',
-              filter: 'blur(34px)',
             }} />
             {/* Dark dust lanes (obscuring bands across the arms) */}
             <div style={{
@@ -397,7 +393,6 @@ export default function LoginPage() {
               left: '-450px', top: '-40px',
               borderRadius: '50%',
               background: 'radial-gradient(ellipse at 50% 50%, rgba(6,6,16,0.55) 0%, rgba(6,6,16,0.25) 45%, transparent 72%)',
-              filter: 'blur(22px)',
               transform: 'rotate(18deg)',
             }} />
             <div style={{
@@ -405,7 +400,6 @@ export default function LoginPage() {
               left: '-300px', top: '80px',
               borderRadius: '50%',
               background: 'radial-gradient(ellipse at 50% 50%, rgba(6,6,16,0.5) 0%, rgba(6,6,16,0.2) 45%, transparent 72%)',
-              filter: 'blur(20px)',
               transform: 'rotate(-26deg)',
             }} />
             {/* Bright central bulge */}
@@ -413,7 +407,6 @@ export default function LoginPage() {
               position: 'absolute', width: '300px', height: '300px',
               left: '-150px', top: '-150px', borderRadius: '50%',
               background: 'radial-gradient(circle, rgba(255,250,235,0.9) 0%, rgba(255,236,190,0.5) 18%, rgba(253,200,120,0.22) 40%, rgba(245,158,11,0.08) 62%, transparent 80%)',
-              filter: 'blur(8px)',
             }} />
             {/* Stars along the spiral arms (soft glow) */}
             {GALAXY_STARS.map((st, i) => (
@@ -425,8 +418,9 @@ export default function LoginPage() {
                 background: `radial-gradient(circle, #ffffff 0%, ${st.c} 45%, transparent 80%)`,
                 boxShadow: st.s > 1.8 ? `0 0 ${st.s * 3}px ${st.g}` : 'none',
                 transform: 'translate(-50%, -50%)',
-                animation: `gShine${(i % 3) + 1} ${st.tw}s ease-in-out infinite`,
-                animationDelay: `${(i % 9) * 0.35}s`,
+                ...(i % 12 === 0
+                  ? { animation: `gShine${(Math.floor(i / 12) % 3) + 1} ${st.tw}s ease-in-out infinite`, animationDelay: `${(i % 9) * 0.35}s` }
+                  : { opacity: 0.65 }),
               }} />
             ))}
           </div>
@@ -475,26 +469,22 @@ export default function LoginPage() {
               position: 'absolute', left: '50%', top: '50%', width: '2px', height: '440px',
               transform: 'translate(-50%, -50%)',
               background: 'linear-gradient(to bottom, transparent, rgba(253,230,138,0.55) 50%, transparent)',
-              filter: 'blur(0.5px)',
             }} />
             <div style={{
               position: 'absolute', left: '50%', top: '50%', width: '440px', height: '2px',
               transform: 'translate(-50%, -50%)',
               background: 'linear-gradient(to right, transparent, rgba(253,230,138,0.55) 50%, transparent)',
-              filter: 'blur(0.5px)',
             }} />
             {/* shorter diagonals */}
             <div style={{
               position: 'absolute', left: '50%', top: '50%', width: '1.2px', height: '220px',
               transform: 'translate(-50%, -50%) rotate(45deg)',
               background: 'linear-gradient(to bottom, transparent, rgba(255,240,200,0.30) 50%, transparent)',
-              filter: 'blur(0.5px)',
             }} />
             <div style={{
               position: 'absolute', left: '50%', top: '50%', width: '1.2px', height: '220px',
               transform: 'translate(-50%, -50%) rotate(135deg)',
               background: 'linear-gradient(to bottom, transparent, rgba(255,240,200,0.30) 50%, transparent)',
-              filter: 'blur(0.5px)',
             }} />
           </div>
           {/* Star core */}
@@ -519,28 +509,24 @@ export default function LoginPage() {
           position: 'absolute', left: '-160px', top: '0%',
           width: '620px', height: '620px',
           background: 'radial-gradient(ellipse at 45% 40%, rgba(129,140,248,0.10) 0%, rgba(99,102,241,0.05) 38%, transparent 70%)',
-          filter: 'blur(90px)',
           animation: 'nebulaPulse 16s ease-in-out infinite',
         }} />
         <div style={{
           position: 'absolute', right: '-130px', top: '38%',
           width: '560px', height: '560px',
           background: 'radial-gradient(ellipse at 55% 50%, rgba(244,114,182,0.07) 0%, rgba(217,70,239,0.045) 40%, transparent 70%)',
-          filter: 'blur(95px)',
           animation: 'nebulaPulse 20s ease-in-out infinite 3s',
         }} />
         <div style={{
           position: 'absolute', left: '20%', bottom: '-90px',
           width: '720px', height: '380px',
           background: 'radial-gradient(ellipse at 50% 50%, rgba(45,212,191,0.06) 0%, rgba(56,189,248,0.04) 45%, transparent 72%)',
-          filter: 'blur(85px)',
           animation: 'nebulaPulse 18s ease-in-out infinite 6s',
         }} />
         <div style={{
           position: 'absolute', right: '12%', top: '-80px',
           width: '420px', height: '420px',
           background: 'radial-gradient(ellipse at 50% 50%, rgba(251,146,60,0.05) 0%, transparent 68%)',
-          filter: 'blur(80px)',
           animation: 'nebulaPulse 22s ease-in-out infinite 2s',
         }} />
 
@@ -614,8 +600,8 @@ export default function LoginPage() {
         style={{
           zIndex: 10,
           background: 'rgba(5, 7, 24, 0.82)',
-          backdropFilter: 'blur(32px)',
-          WebkitBackdropFilter: 'blur(32px)',
+          backdropFilter: 'blur(14px)',
+          WebkitBackdropFilter: 'blur(14px)',
           border: '1px solid rgba(255,255,255,0.09)',
           borderRadius: '28px',
           boxShadow: [
@@ -635,7 +621,7 @@ export default function LoginPage() {
         <div className="p-8">
           {/* Logo */}
           <div className="flex flex-col items-center mb-8">
-            <img src="/logo original color.png" alt="Iencinas" className="w-64 h-24 mb-4 object-contain" />
+            <img src="/logo-login.webp" alt="Iencinas" width={256} height={96} decoding="async" className="w-64 h-24 mb-4 object-contain" />
             <p className="text-sm" style={{ color: 'rgba(255,255,255,0.35)' }}>Ingresa para continuar</p>
           </div>
 

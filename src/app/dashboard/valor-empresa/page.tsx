@@ -1,17 +1,26 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import MetricCard from '@/components/MetricCard';
 import ProjectSelector from '@/components/ProjectSelector';
 import FilterPanel, { FilterConfig } from '@/components/FilterPanel';
-import ChartCard, { GlassTooltip } from '@/components/ChartCard';
 import { ValorEmpresaData } from '@/types/domain';
 import { Building2, TrendingUp, BarChart2, Award } from 'lucide-react';
-import {
-  Area, AreaChart, BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer
-} from 'recharts';
+
+const ValorEmpresaCharts = dynamic(() => import('@/components/charts/ValorEmpresaCharts'), {
+  ssr: false,
+  loading: () => (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" aria-hidden="true">
+      {[0, 1].map(i => (
+        <div key={i} className="rounded-2xl h-[330px]" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }} />
+      ))}
+    </div>
+  ),
+});
+// Empieza a descargar los gráficos de inmediato, en paralelo con la carga de datos.
+if (typeof window !== 'undefined') void import('@/components/charts/ValorEmpresaCharts');
 
 const icons = [
   <Building2 size={22} key="b" />,
@@ -85,52 +94,7 @@ export default function ValorEmpresaPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ChartCard title="Evolución de Valuación" subtitle="USD millones · histórico" accent="green">
-          {loading ? (
-            <div className="h-60 flex items-center justify-center text-gray-400">Cargando...</div>
-          ) : (
-            <ResponsiveContainer width="100%" height={250}>
-              <AreaChart data={data?.historico || []} margin={{ top: 10, right: 8, left: -12, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="fillValor" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#4ade80" stopOpacity={0.45} />
-                    <stop offset="100%" stopColor="#4ade80" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                <XAxis dataKey="year" tick={{ fontSize: 12, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 12, fill: '#9ca3af' }} tickFormatter={v => `$${v}M`} axisLine={false} tickLine={false} />
-                <Tooltip content={<GlassTooltip formatter={(v: number) => `Valuación: $${v}M`} />} />
-                <Area type="monotone" dataKey="valor" stroke="#4ade80" strokeWidth={3} fill="url(#fillValor)" name="Valuación"
-                  dot={{ fill: '#4ade80', r: 4, strokeWidth: 0 }} activeDot={{ r: 6, fill: '#4ade80', stroke: '#0a1322', strokeWidth: 2 }} />
-              </AreaChart>
-            </ResponsiveContainer>
-          )}
-        </ChartCard>
-
-        <ChartCard title="Crecimiento Anual de Valuación" subtitle="USD millones · barras" accent="blue">
-          {loading ? (
-            <div className="h-60 flex items-center justify-center text-gray-400">Cargando...</div>
-          ) : (
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={data?.historico || []} margin={{ top: 10, right: 8, left: -12, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="fillValorBar" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#60a5fa" stopOpacity={0.95} />
-                    <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.4} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                <XAxis dataKey="year" tick={{ fontSize: 12, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 12, fill: '#9ca3af' }} tickFormatter={v => `$${v}M`} axisLine={false} tickLine={false} />
-                <Tooltip cursor={{ fill: 'rgba(255,255,255,0.04)' }} content={<GlassTooltip formatter={(v: number) => `Valuación: $${v}M`} />} />
-                <Bar dataKey="valor" fill="url(#fillValorBar)" radius={[8, 8, 0, 0]} name="Valuación" maxBarSize={48} />
-              </BarChart>
-            </ResponsiveContainer>
-          )}
-        </ChartCard>
-      </div>
+      <ValorEmpresaCharts data={data} loading={loading} />
 
       <div className="rounded-2xl overflow-hidden" style={{
         background: 'rgba(255, 255, 255, 0.08)',
