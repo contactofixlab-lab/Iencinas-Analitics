@@ -61,12 +61,12 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 py-10">
-      {/* Luces de fondo (degradados estáticos: sin filtros pesados) */}
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
-        <div className="absolute" style={{ width: 640, height: 640, left: '-10%', top: '-14%', background: 'radial-gradient(circle, rgb(var(--brand) / 0.42), transparent 66%)' }} />
-        <div className="absolute" style={{ width: 720, height: 720, right: '-12%', bottom: '-22%', background: 'radial-gradient(circle, rgb(var(--brand-soft) / 0.95), transparent 66%)' }} />
-        <div className="absolute" style={{ width: 460, height: 460, right: '14%', top: '6%', background: 'radial-gradient(circle, rgb(255 255 255 / 0.49), transparent 68%)' }} />
-      </div>
+      {/* Imagen de fondo del ingreso */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+        style={{ backgroundImage: "url('/login-bg.webp')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
+      />
 
       <div className="glass-strong relative w-full max-w-md" style={{ borderRadius: 28, zIndex: 10 }}>
         <div className="sheen" />
