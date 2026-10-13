@@ -55,7 +55,7 @@ export default function Navbar({ title }: { title?: string }) {
       {/* Logo */}
       <div
         className="flex items-center px-4 py-2 rounded-2xl"
-        style={{ background: 'rgb(255 255 255 / 0.65)', border: '1px solid var(--glass-border)', boxShadow: 'var(--shadow-sm), var(--inner-sheen)' }}
+        style={{ background: 'rgb(255 255 255 / 0.38)', border: '1px solid var(--glass-border)', boxShadow: 'var(--shadow-sm), var(--inner-sheen)' }}
       >
         <img src="/logo.svg" alt="Iencinas Analytics" className="h-9 w-auto object-contain" />
       </div>
@@ -69,7 +69,7 @@ export default function Navbar({ title }: { title?: string }) {
           className="btn btn-secondary btn-icon relative"
         >
           <Bell size={19} strokeWidth={1.8} />
-          <span className="absolute top-2 right-2.5 w-2 h-2 rounded-full" style={{ background: 'rgb(var(--brand-hover))', boxShadow: '0 0 0 3px rgb(255 255 255 / 0.9)' }} />
+          <span className="absolute top-2 right-2.5 w-2 h-2 rounded-full" style={{ background: 'rgb(var(--brand-hover))', boxShadow: '0 0 0 3px rgb(255 255 255 / 0.52)' }} />
         </button>
 
         {/* Menú de usuario */}
@@ -80,14 +80,14 @@ export default function Navbar({ title }: { title?: string }) {
             aria-expanded={open}
             className="flex items-center gap-3 pl-2 pr-3 py-1.5 rounded-2xl transition-all"
             style={{
-              background: open ? 'rgb(var(--brand-soft) / 0.85)' : 'rgb(255 255 255 / 0.65)',
+              background: open ? 'rgb(var(--brand-soft) / 0.85)' : 'rgb(255 255 255 / 0.38)',
               border: open ? '1px solid rgb(var(--brand))' : '1px solid var(--glass-border)',
               boxShadow: 'var(--shadow-sm), var(--inner-sheen)',
             }}
           >
             <div
               className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm"
-              style={{ background: ROLE_AVATAR[user.role], boxShadow: '0 4px 12px -4px rgb(92 124 158 / 0.5), inset 0 1px 0 rgb(255 255 255 / 0.5)', textShadow: '0 1px 2px rgb(52 73 94 / 0.25)' }}
+              style={{ background: ROLE_AVATAR[user.role], boxShadow: '0 4px 12px -4px rgb(92 124 158 / 0.5), inset 0 1px 0 rgb(255 255 255 / 0.30)', textShadow: '0 1px 2px rgb(52 73 94 / 0.25)' }}
             >
               {initials}
             </div>
@@ -112,7 +112,7 @@ export default function Navbar({ title }: { title?: string }) {
                   <div className="flex items-center gap-3">
                     <div
                       className="w-12 h-12 rounded-2xl flex items-center justify-center text-white font-bold text-lg"
-                      style={{ background: ROLE_AVATAR[user.role], boxShadow: '0 6px 16px -6px rgb(92 124 158 / 0.55), inset 0 1px 0 rgb(255 255 255 / 0.5)', textShadow: '0 1px 2px rgb(52 73 94 / 0.25)' }}
+                      style={{ background: ROLE_AVATAR[user.role], boxShadow: '0 6px 16px -6px rgb(92 124 158 / 0.55), inset 0 1px 0 rgb(255 255 255 / 0.30)', textShadow: '0 1px 2px rgb(52 73 94 / 0.25)' }}
                     >
                       {initials}
                     </div>

@@ -161,8 +161,8 @@ export default function PerfilPage() {
               className="w-36 h-36 sm:w-40 sm:h-40 rounded-[2rem] flex items-center justify-center text-white font-bold text-5xl sm:text-6xl"
               style={{
                 background: ROLE_AVATAR[user.role],
-                border: '4px solid rgb(255 255 255 / 0.9)',
-                boxShadow: '0 24px 50px -16px rgb(92 124 158 / 0.55), inset 0 1px 0 rgb(255 255 255 / 0.5)',
+                border: '4px solid rgb(255 255 255 / 0.52)',
+                boxShadow: '0 24px 50px -16px rgb(92 124 158 / 0.55), inset 0 1px 0 rgb(255 255 255 / 0.30)',
                 textShadow: '0 2px 6px rgb(52 73 94 / 0.25)',
               }}
             >
@@ -199,7 +199,7 @@ export default function PerfilPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.25 + idx * 0.05 }}
                     className="glass-card glass-card--compact flex items-center gap-4"
-                    style={{ padding: '16px 18px', background: 'rgb(255 255 255 / 0.62)' }}
+                    style={{ padding: '16px 18px', background: 'rgb(255 255 255 / 0.36)' }}
                   >
                     <div className="w-11 h-11 rounded-full grid place-items-center shrink-0" style={{ background: item.tint, color: item.fg, border: '1px solid var(--glass-border)', boxShadow: 'var(--inner-sheen)' }}>
                       <Icon size={20} strokeWidth={1.8} />

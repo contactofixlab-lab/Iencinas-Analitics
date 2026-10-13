@@ -447,7 +447,7 @@ export default function AdminPage() {
                         aria-pressed={formData.proyectos.includes(p.id)}
                         className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl transition-colors"
                         style={{
-                          background: formData.proyectos.includes(p.id) ? 'rgb(var(--brand-soft) / 0.85)' : 'rgb(255 255 255 / 0.60)',
+                          background: formData.proyectos.includes(p.id) ? 'rgb(var(--brand-soft) / 0.85)' : 'rgb(255 255 255 / 0.35)',
                           border: formData.proyectos.includes(p.id) ? '1px solid rgb(var(--brand))' : '1px solid rgb(var(--line) / 0.30)',
                         }}
                       >

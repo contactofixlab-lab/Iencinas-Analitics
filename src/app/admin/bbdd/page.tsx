@@ -30,10 +30,10 @@ export default function BBDDPage() {
 
       {/* Main Canvas - Power BI Style */}
       <div className="rounded-2xl overflow-hidden" style={{
-        background: 'rgb(255 255 255 / 0.84)',
+        background: 'rgb(255 255 255 / 0.49)',
         backdropFilter: 'blur(16px)',
         border: '2px solid rgba(120,168,215,0.26)',
-        boxShadow: '0 16px 48px rgb(92 124 158 / 0.23), inset 0 1px 0 rgb(255 255 255 / 0.85)',
+        boxShadow: '0 16px 48px rgb(92 124 158 / 0.23), inset 0 1px 0 rgb(255 255 255 / 0.49)',
         minHeight: '500px',
       }}>
         {!connected ? (
@@ -86,7 +86,7 @@ export default function BBDDPage() {
 
       {/* Reference Section */}
       <div className="rounded-2xl overflow-hidden" style={{
-        background: 'rgb(255 255 255 / 0.59)',
+        background: 'rgb(255 255 255 / 0.34)',
         backdropFilter: 'blur(16px)',
         border: '1px solid rgb(var(--line) / 0.30)',
       }}>

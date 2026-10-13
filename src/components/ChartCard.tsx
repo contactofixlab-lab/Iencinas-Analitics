@@ -31,7 +31,7 @@ export default function ChartCard({ title, subtitle, children, accent = 'blue' }
     >
       <div className="sheen" />
       <div className="flex items-center gap-2.5 mb-5">
-        <span className="w-2.5 h-2.5 rounded-full" style={{ background: accentDot[accent], boxShadow: '0 0 0 3px rgb(255 255 255 / 0.8)' }} />
+        <span className="w-2.5 h-2.5 rounded-full" style={{ background: accentDot[accent], boxShadow: '0 0 0 3px rgb(255 255 255 / 0.46)' }} />
         <div>
           <h3 className="text-sm font-semibold text-ink tracking-wide">{title}</h3>
           {subtitle && <p className="text-xs text-soft mt-0.5">{subtitle}</p>}
@@ -63,7 +63,7 @@ export function GlassTooltip({ active, payload, label, formatter }: any) {
       {label && <p style={{ color: '#8195A8', fontSize: 11, marginBottom: 6, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</p>}
       {payload.map((entry: any, i: number) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: i > 0 ? 4 : 0 }}>
-          <span style={{ width: 8, height: 8, borderRadius: 999, background: entry.color || entry.fill, boxShadow: '0 0 0 2px rgb(255 255 255 / 0.9)' }} />
+          <span style={{ width: 8, height: 8, borderRadius: 999, background: entry.color || entry.fill, boxShadow: '0 0 0 2px rgb(255 255 255 / 0.52)' }} />
           <span style={{ color: '#34495E', fontSize: 13, fontWeight: 600 }}>
             {formatter ? formatter(entry.value, entry.name) : `${entry.name}: ${entry.value}`}
           </span>

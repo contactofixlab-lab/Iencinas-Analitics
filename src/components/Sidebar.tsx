@@ -145,7 +145,7 @@ export default function Sidebar() {
                 style={{
                   background: isActive ? 'rgb(var(--brand-soft) / 0.85)' : 'transparent',
                   color: isActive ? 'rgb(var(--brand-deep))' : 'rgb(var(--ink-2))',
-                  border: isActive ? '1px solid rgb(255 255 255 / 0.9)' : '1px solid transparent',
+                  border: isActive ? '1px solid rgb(255 255 255 / 0.52)' : '1px solid transparent',
                   boxShadow: isActive ? 'var(--shadow-sm), var(--inner-sheen)' : 'none',
                   transition: 'background var(--t), color var(--t), box-shadow var(--t)',
                 }}
@@ -156,7 +156,7 @@ export default function Sidebar() {
                   <span
                     className="grid place-items-center w-9 h-9 rounded-xl"
                     style={{
-                      background: isActive ? 'rgb(255 255 255 / 0.85)' : 'rgb(255 255 255 / 0.5)',
+                      background: isActive ? 'rgb(255 255 255 / 0.49)' : 'rgb(255 255 255 / 0.30)',
                       color: isActive ? 'rgb(var(--brand-deep))' : 'rgb(var(--ink-2))',
                       boxShadow: isActive ? 'var(--shadow-sm)' : 'none',
                     }}
@@ -212,7 +212,7 @@ export default function Sidebar() {
 
       <div
         className="px-4 py-3 rounded-2xl mt-auto"
-        style={{ background: 'rgb(255 255 255 / 0.55)', border: '1px solid rgb(255 255 255 / 0.85)' }}
+        style={{ background: 'rgb(255 255 255 / 0.32)', border: '1px solid rgb(255 255 255 / 0.49)' }}
       >
         <p className="text-mute text-xs text-center font-medium">© 2026 Iencinas Analytics</p>
       </div>

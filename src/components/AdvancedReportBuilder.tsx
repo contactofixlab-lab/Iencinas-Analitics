@@ -289,7 +289,7 @@ export default function AdvancedReportBuilder({
                   aria-expanded={expandedEntity === entityKey}
                   className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-colors"
                   style={{
-                    background: expandedEntity === entityKey ? 'rgb(var(--brand-soft) / 0.85)' : 'rgb(255 255 255 / 0.62)',
+                    background: expandedEntity === entityKey ? 'rgb(var(--brand-soft) / 0.85)' : 'rgb(255 255 255 / 0.36)',
                     border: '1px solid rgb(var(--line) / 0.30)',
                   }}
                 >
@@ -368,7 +368,7 @@ export default function AdvancedReportBuilder({
                       type="button"
                       onClick={() => removeAttribute(attr.entity, attr.key)}
                       aria-label={`Quitar ${attr.label}`}
-                      className="p-0.5 rounded-full hover:bg-white/70 transition-colors shrink-0"
+                      className="p-0.5 rounded-full hover:bg-white/40 transition-colors shrink-0"
                     >
                       <Trash2 size={11} strokeWidth={1.8} />
                     </button>

@@ -14,7 +14,7 @@ const ValorEmpresaCharts = dynamic(() => import('@/components/charts/ValorEmpres
   loading: () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" aria-hidden="true">
       {[0, 1].map(i => (
-        <div key={i} className="rounded-2xl h-[330px]" style={{ background: 'rgb(255 255 255 / 0.56)', border: '1px solid rgb(var(--line) / 0.30)' }} />
+        <div key={i} className="rounded-2xl h-[330px]" style={{ background: 'rgb(255 255 255 / 0.32)', border: '1px solid rgb(var(--line) / 0.30)' }} />
       ))}
     </div>
   ),

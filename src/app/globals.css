@@ -39,14 +39,14 @@
   --violet-ink: 96 74 156;
 
   /* Superficies de vidrio */
-  --glass-1: rgb(255 255 255 / 0.42);
-  --glass-2: rgb(255 255 255 / 0.58);
-  --glass-3: rgb(255 255 255 / 0.78);
-  --glass-border: rgb(255 255 255 / 0.82);
+  --glass-1: rgb(255 255 255 / 0.22);
+  --glass-2: rgb(255 255 255 / 0.28);
+  --glass-3: rgb(255 255 255 / 0.46);
+  --glass-border: rgb(255 255 255 / 0.75);
   --glass-border-soft: rgb(var(--line) / 0.30);
 
   /* Desenfoque */
-  --blur: 18px;
+  --blur: 22px;
   --blur-sm: 14px;
   --blur-lg: 22px;
 
@@ -94,9 +94,11 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(420px 320px at 18% 32%, rgb(var(--brand) / 0.30), transparent 70%),
-    radial-gradient(520px 380px at 84% 68%, rgb(var(--brand-soft) / 0.80), transparent 70%),
-    radial-gradient(360px 280px at 62% 12%, rgb(255 255 255 / 0.70), transparent 70%);
+    radial-gradient(520px 420px at 14% 26%, rgb(var(--brand) / 0.65), transparent 68%),
+    radial-gradient(560px 440px at 86% 22%, rgb(130 180 232 / 0.50), transparent 70%),
+    radial-gradient(640px 480px at 78% 82%, rgb(var(--brand) / 0.55), transparent 70%),
+    radial-gradient(520px 400px at 26% 88%, rgb(170 205 242 / 0.70), transparent 70%),
+    radial-gradient(380px 300px at 52% 8%, rgb(255 255 255 / 0.85), transparent 70%);
 }
 
 ::selection { background: rgb(var(--brand) / 0.40); color: rgb(var(--ink)); }
@@ -157,9 +159,9 @@ main { position: relative; }
   /* Tarjeta base (contenido, gráficos, KPI) */
   .glass-card, .glass {
     position: relative;
-    background: linear-gradient(155deg, rgb(255 255 255 / 0.66) 0%, rgb(255 255 255 / 0.40) 100%);
-    -webkit-backdrop-filter: blur(var(--blur)) saturate(140%);
-    backdrop-filter: blur(var(--blur)) saturate(140%);
+    background: linear-gradient(155deg, rgb(255 255 255 / 0.38) 0%, rgb(255 255 255 / 0.10) 100%);
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(175%);
+    backdrop-filter: blur(var(--blur)) saturate(165%);
     border: 1px solid var(--glass-border);
     border-radius: var(--r-card);
     box-shadow: var(--shadow-card), var(--inner-sheen);
@@ -169,14 +171,14 @@ main { position: relative; }
   .glass-card--compact { border-radius: 20px; --pad-card: 18px; box-shadow: var(--shadow-sm), var(--inner-sheen); }
   /* Destacada: más opaca y elevada */
   .glass-card--featured {
-    background: linear-gradient(155deg, rgb(255 255 255 / 0.86) 0%, rgb(255 255 255 / 0.62) 100%);
+    background: linear-gradient(155deg, rgb(255 255 255 / 0.54) 0%, rgb(255 255 255 / 0.26) 100%);
     box-shadow: var(--shadow-lg), var(--inner-sheen);
   }
   /* Secundaria: más sutil */
   .glass-card--muted {
-    background: rgb(255 255 255 / 0.34);
+    background: rgb(255 255 255 / 0.16);
     box-shadow: none;
-    border-color: rgb(255 255 255 / 0.65);
+    border-color: rgb(255 255 255 / 0.55);
   }
   /* Interactiva */
   .glass-card--interactive { transition: transform var(--t), box-shadow var(--t), border-color var(--t); cursor: pointer; }
@@ -184,8 +186,8 @@ main { position: relative; }
 
   /* Paneles de alta legibilidad: modales, menús, tablas, popovers */
   .glass-strong {
-    background: linear-gradient(155deg, rgb(255 255 255 / 0.90) 0%, rgb(255 255 255 / 0.74) 100%);
-    -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(150%);
+    background: linear-gradient(155deg, rgb(255 255 255 / 0.62) 0%, rgb(255 255 255 / 0.42) 100%);
+    -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(175%);
     backdrop-filter: blur(var(--blur-lg)) saturate(150%);
     border: 1px solid var(--glass-border);
     border-radius: var(--r-card);
@@ -202,8 +204,8 @@ main { position: relative; }
   }
   /* Panel de navegación (barra superior y menú lateral) */
   .glass-nav {
-    background: linear-gradient(180deg, rgb(255 255 255 / 0.70) 0%, rgb(255 255 255 / 0.50) 100%);
-    -webkit-backdrop-filter: blur(var(--blur)) saturate(150%);
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.42) 0%, rgb(255 255 255 / 0.20) 100%);
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(175%);
     backdrop-filter: blur(var(--blur)) saturate(150%);
     border: 1px solid var(--glass-border);
     box-shadow: 0 16px 44px -16px rgb(92 124 158 / 0.34), var(--inner-sheen);
@@ -220,13 +222,13 @@ main { position: relative; }
     overflow: hidden;
   }
   .table-glass thead th {
-    background: rgb(255 255 255 / 0.62);
+    background: rgb(255 255 255 / 0.40);
     color: rgb(var(--ink-2));
     font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
   }
   .table-glass tbody tr { border-bottom: 1px solid rgb(var(--line) / 0.16); transition: background var(--t); }
   .table-glass tbody tr:last-child { border-bottom: 0; }
-  .table-glass tbody tr:hover { background: rgb(var(--brand-soft) / 0.55); }
+  .table-glass tbody tr:hover { background: rgb(var(--brand-soft) / 0.45); }
   .table-glass td { color: rgb(var(--ink)); }
 
   /* ───────── Botones ───────── */
@@ -360,7 +362,7 @@ main { position: relative; }
 
   /* ───────── Menús desplegables y tooltips ───────── */
   .menu-panel {
-    background: var(--glass-3);
+    background: rgb(255 255 255 / 0.66);
     -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(150%);
     backdrop-filter: blur(var(--blur-lg)) saturate(150%);
     border: 1px solid var(--glass-border);
@@ -377,7 +379,7 @@ main { position: relative; }
   .menu-item:hover { background: rgb(var(--brand-soft) / 0.7); color: rgb(var(--ink)); }
   .menu-item[aria-selected="true"], .menu-item--active { background: rgb(var(--brand-soft)); color: rgb(var(--brand-deep)); font-weight: 600; }
   .tooltip-glass {
-    background: rgb(255 255 255 / 0.92);
+    background: rgb(255 255 255 / 0.78);
     -webkit-backdrop-filter: blur(var(--blur-sm));
     backdrop-filter: blur(var(--blur-sm));
     border: 1px solid var(--glass-border);
@@ -388,10 +390,10 @@ main { position: relative; }
   }
 
   /* ───────── Modales ───────── */
-  .modal-overlay { background: rgb(var(--bg-2) / 0.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+  .modal-overlay { background: rgb(var(--bg-2) / 0.38); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
   .modal-panel {
-    background: linear-gradient(155deg, rgb(255 255 255 / 0.92), rgb(255 255 255 / 0.78));
-    -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(150%);
+    background: linear-gradient(155deg, rgb(255 255 255 / 0.78), rgb(255 255 255 / 0.58));
+    -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(165%);
     backdrop-filter: blur(var(--blur-lg)) saturate(150%);
     border: 1px solid var(--glass-border);
     border-radius: 28px;

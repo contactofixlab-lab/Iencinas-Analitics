@@ -251,7 +251,7 @@ export default function DatabaseDiagram() {
         <div
           className="glass-card glass-card--compact"
           style={{
-            background: 'linear-gradient(160deg, rgb(255 255 255 / 0.66) 0%, rgb(255 255 255 / 0.46) 100%)',
+            background: 'linear-gradient(160deg, rgb(255 255 255 / 0.38) 0%, rgb(255 255 255 / 0.46) 100%)',
           }}
         >
           <h4 className="font-bold text-ink mb-2 text-sm">Integridad Referencial</h4>
@@ -262,7 +262,7 @@ export default function DatabaseDiagram() {
         <div
           className="glass-card glass-card--compact"
           style={{
-            background: 'linear-gradient(160deg, rgb(255 255 255 / 0.66) 0%, rgb(255 255 255 / 0.46) 100%)',
+            background: 'linear-gradient(160deg, rgb(255 255 255 / 0.38) 0%, rgb(255 255 255 / 0.46) 100%)',
           }}
         >
           <h4 className="font-bold text-ink mb-2 text-sm">Escalabilidad</h4>
@@ -273,7 +273,7 @@ export default function DatabaseDiagram() {
         <div
           className="glass-card glass-card--compact"
           style={{
-            background: 'linear-gradient(160deg, rgb(255 255 255 / 0.66) 0%, rgb(255 255 255 / 0.46) 100%)',
+            background: 'linear-gradient(160deg, rgb(255 255 255 / 0.38) 0%, rgb(255 255 255 / 0.46) 100%)',
           }}
         >
           <h4 className="font-bold text-ink mb-2 text-sm">Flexibilidad</h4>

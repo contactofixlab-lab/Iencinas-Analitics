@@ -147,7 +147,7 @@ export default function GlassDatePicker({ value, onChange, placeholder = 'Selecc
                 style={{
                   background: isSelected ? 'rgb(var(--brand))' : 'transparent',
                   color: isSelected ? '#fff' : isToday ? 'rgb(var(--brand-deep))' : 'rgb(var(--ink-2))',
-                  border: isSelected ? '1px solid rgb(255 255 255 / 0.6)' : isToday ? '1px solid rgb(var(--brand))' : '1px solid transparent',
+                  border: isSelected ? '1px solid rgb(255 255 255 / 0.35)' : isToday ? '1px solid rgb(var(--brand))' : '1px solid transparent',
                   boxShadow: isSelected ? 'var(--shadow-brand), inset 0 1px 0 rgb(255 255 255 / 0.4)' : 'none',
                   fontWeight: isSelected ? 700 : 500,
                   transition: 'background var(--t), color var(--t)',
