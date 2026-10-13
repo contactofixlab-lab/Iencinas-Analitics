@@ -454,3 +454,24 @@ main { position: relative; }
   .btn { height: 46px; }                 /* objetivo táctil cómodo */
   .field, .input { min-height: 48px; }
 }
+
+
+/* Fondo de la pantalla de ingreso: en pantallas anchas se muestra completo (con sus burbujas y cápsulas de las esquinas)
+   y se funde arriba y abajo con el fondo general; en pantallas altas (móvil) cubre todo el espacio. */
+.login-bg {
+  background-image: url('/login-bg.webp');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+@media (min-aspect-ratio: 5/4) and (max-aspect-ratio: 5/2) {
+  .login-bg {
+    inset: auto 0;
+    top: 50%;
+    height: 40vw; /* proporción de la imagen (1983 x 793) */
+    transform: translateY(-50%);
+    background-size: 100% 100%;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  }
+}

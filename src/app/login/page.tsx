@@ -62,11 +62,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 py-10">
       {/* Imagen de fondo del ingreso */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
-        style={{ backgroundImage: "url('/login-bg.webp')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
-      />
+      <div aria-hidden="true" className="login-bg absolute inset-0 pointer-events-none" />
 
       <div className="glass-strong relative w-full max-w-md" style={{ borderRadius: 28, zIndex: 10 }}>
         <div className="sheen" />
