@@ -1,13 +1,12 @@
 import { DataSource } from './types';
 import {
-  FinanzasData, ComercialData, MarketingData, ValorEmpresaData, ReportInfo, ModuleKey, Proyecto, QueryParams,
+  FinanzasData, ComercialData, MarketingData, GeneralData, ConstructoraData, ReportInfo, ModuleKey, Proyecto, QueryParams,
 } from '@/types/domain';
 import {
   finanzasMetrics, finanzasIngresos, finanzasGastos,
   comercialMetrics, comercialVentas, comercialPipeline,
   marketingMetrics, marketingLeads, marketingCanales,
-  valorEmpresaMetrics, valorHistorico,
-  reportesFinanzas, reportesComercial, reportesMarketing, reportesValorEmpresa,
+  reportesFinanzas, reportesComercial, reportesMarketing, reportesGeneral, reportesConstructora,
   bdmFinanzasMetrics, bdmFinanzasIngresos, bdmFinanzasGastos,
   bdmComercialMetrics, bdmComercialVentas,
   bdmMarketingMetrics,
@@ -18,6 +17,8 @@ import {
 } from '@/lib/mockData';
 import { PROYECTOS } from '@/lib/mockDatabase';
 import { Metric } from '@/types/domain';
+import { buildGeneral } from './general';
+import { buildConstructora } from './constructora';
 
 /** mockData uses loose `color: string`; assert it into the typed union. */
 const m = (arr: { label: string; value: string; trend: string; up: boolean; color: string }[]): Metric[] =>
@@ -211,51 +212,12 @@ export class MockDataSource implements DataSource {
     };
   }
 
-  async getValorEmpresa(params?: QueryParams): Promise<ValorEmpresaData> {
-    const proyecto = params?.proyecto || 'proj-001';
+  async getGeneral(_params?: QueryParams): Promise<GeneralData> {
+    return buildGeneral();
+  }
 
-    if (proyecto === 'proj-002') {
-      return {
-        metrics: m([
-          { label: 'Valuación Total', value: '$85M', trend: '+16.5%', up: true, color: 'green' },
-          { label: 'EBITDA', value: '$19.2M', trend: '+10.8%', up: true, color: 'blue' },
-          { label: 'Margen EBITDA', value: '22.6%', trend: '+1.9%', up: true, color: 'purple' },
-          { label: 'ROE', value: '20.5%', trend: '+3.2%', up: true, color: 'green' },
-        ]),
-        historico: [
-          { year: '2021', valor: 50 },
-          { year: '2022', valor: 58 },
-          { year: '2023', valor: 68 },
-          { year: '2024', valor: 76 },
-          { year: '2025', valor: 82 },
-          { year: '2026', valor: 85 },
-        ],
-      };
-    }
-
-    if (proyecto === 'proj-009') {
-      return {
-        metrics: m([
-          { label: 'Valuación Total', value: '$42M', trend: '+22.1%', up: true, color: 'green' },
-          { label: 'EBITDA', value: '$9.8M', trend: '+18.4%', up: true, color: 'blue' },
-          { label: 'Margen EBITDA', value: '23.3%', trend: '+3.1%', up: true, color: 'purple' },
-          { label: 'ROE', value: '25.2%', trend: '+5.6%', up: true, color: 'green' },
-        ]),
-        historico: [
-          { year: '2021', valor: 22 },
-          { year: '2022', valor: 26 },
-          { year: '2023', valor: 30 },
-          { year: '2024', valor: 34 },
-          { year: '2025', valor: 38 },
-          { year: '2026', valor: 42 },
-        ],
-      };
-    }
-
-    return {
-      metrics: m(valorEmpresaMetrics),
-      historico: valorHistorico,
-    };
+  async getConstructora(_params?: QueryParams): Promise<ConstructoraData> {
+    return buildConstructora();
   }
 
   async getReportes(modulo: ModuleKey, params?: QueryParams): Promise<ReportInfo[]> {
@@ -263,7 +225,8 @@ export class MockDataSource implements DataSource {
       case 'finanzas': return reportesFinanzas;
       case 'comercial': return reportesComercial;
       case 'marketing': return reportesMarketing;
-      case 'valor-empresa': return reportesValorEmpresa;
+      case 'general': return reportesGeneral;
+      case 'constructora': return reportesConstructora;
       default: return [];
     }
   }

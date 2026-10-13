@@ -2,7 +2,7 @@ import { DataSource } from './types';
 import { createHttp, Http } from './http';
 import { config } from '@/lib/config';
 import {
-  FinanzasData, ComercialData, MarketingData, ValorEmpresaData, ReportInfo, ModuleKey, QueryParams,
+  FinanzasData, ComercialData, MarketingData, GeneralData, ConstructoraData, ReportInfo, ModuleKey, QueryParams,
 } from '@/types/domain';
 
 /**
@@ -37,7 +37,8 @@ const ENDPOINTS = {
   finanzas: '/finance/summary',
   comercial: '/sales/summary',
   marketing: '/marketing/summary',
-  valorEmpresa: '/valuation/summary',
+  general: '/company/summary',
+  constructora: '/construction/summary',
   reportes: '/reports',           // se usará como `${reportes}?module=comercial`
 } as const;
 
@@ -81,9 +82,14 @@ export class CrmDataSource implements DataSource {
     return mapMarketing(raw);
   }
 
-  async getValorEmpresa(params?: QueryParams): Promise<ValorEmpresaData> {
-    const raw = await this.http.get<unknown>(ENDPOINTS.valorEmpresa, params);
-    return mapValorEmpresa(raw);
+  async getGeneral(params?: QueryParams): Promise<GeneralData> {
+    const raw = await this.http.get<unknown>(ENDPOINTS.general, params);
+    return mapGeneral(raw);
+  }
+
+  async getConstructora(params?: QueryParams): Promise<ConstructoraData> {
+    const raw = await this.http.get<unknown>(ENDPOINTS.constructora, params);
+    return mapConstructora(raw);
   }
 
   async getReportes(modulo: ModuleKey, params?: QueryParams): Promise<ReportInfo[]> {
@@ -112,5 +118,6 @@ export class CrmDataSource implements DataSource {
 function mapFinanzas(_raw: unknown): FinanzasData { throw new NotImplemented('mapFinanzas'); }
 function mapComercial(_raw: unknown): ComercialData { throw new NotImplemented('mapComercial'); }
 function mapMarketing(_raw: unknown): MarketingData { throw new NotImplemented('mapMarketing'); }
-function mapValorEmpresa(_raw: unknown): ValorEmpresaData { throw new NotImplemented('mapValorEmpresa'); }
+function mapGeneral(_raw: unknown): GeneralData { throw new NotImplemented('mapGeneral'); }
+function mapConstructora(_raw: unknown): ConstructoraData { throw new NotImplemented('mapConstructora'); }
 function mapReportes(_raw: unknown): ReportInfo[] { throw new NotImplemented('mapReportes'); }

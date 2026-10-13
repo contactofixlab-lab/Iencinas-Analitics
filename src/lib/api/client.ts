@@ -1,6 +1,6 @@
 import { ApiResponse } from './types';
 import {
-  FinanzasData, ComercialData, MarketingData, ValorEmpresaData, ReportInfo, ModuleKey, QueryParams,
+  FinanzasData, ComercialData, MarketingData, GeneralData, ConstructoraData, ReportInfo, ModuleKey, QueryParams,
 } from '@/types/domain';
 
 /**
@@ -43,7 +43,8 @@ export const api = {
   finanzas: (p?: QueryParams) => get<FinanzasData>(`/api/finanzas${qs(p)}`),
   comercial: (p?: QueryParams) => get<ComercialData>(`/api/comercial${qs(p)}`),
   marketing: (p?: QueryParams) => get<MarketingData>(`/api/marketing${qs(p)}`),
-  valorEmpresa: (p?: QueryParams) => get<ValorEmpresaData>(`/api/valor-empresa${qs(p)}`),
+  general: (p?: QueryParams) => get<GeneralData>(`/api/general${qs(p)}`),
+  constructora: (p?: QueryParams) => get<ConstructoraData>(`/api/constructora${qs(p)}`),
   reportes: (modulo: ModuleKey) => get<ReportInfo[]>(`/api/reportes/${modulo}`),
 
   // Throwing versions (return data directly)
@@ -51,7 +52,8 @@ export const api = {
     finanzas: (p?: QueryParams) => getData<FinanzasData>(`/api/finanzas${qs(p)}`),
     comercial: (p?: QueryParams) => getData<ComercialData>(`/api/comercial${qs(p)}`),
     marketing: (p?: QueryParams) => getData<MarketingData>(`/api/marketing${qs(p)}`),
-    valorEmpresa: (p?: QueryParams) => getData<ValorEmpresaData>(`/api/valor-empresa${qs(p)}`),
+    general: (p?: QueryParams) => getData<GeneralData>(`/api/general${qs(p)}`),
+    constructora: (p?: QueryParams) => getData<ConstructoraData>(`/api/constructora${qs(p)}`),
     reportes: (modulo: ModuleKey) => getData<ReportInfo[]>(`/api/reportes/${modulo}`),
   },
 };

@@ -28,9 +28,10 @@ export interface ProyectoStatus {
 export interface Metric {
   label: string;
   value: string;   // already formatted for display, e.g. "$7.1M", "8.7%"
-  trend: string;   // e.g. "+12.4%"
+  trend: string;   // e.g. "+12.4%" (vacío = sin comparación)
   up: boolean;     // true = positive/green arrow
   color: MetricColor;
+  caption?: string; // texto bajo la tendencia; por defecto "vs mes anterior"
 }
 
 export interface MonthValue {
@@ -66,12 +67,48 @@ export interface MarketingData {
   canales: { canal: string; leads: number; inversion: number }[];
 }
 
-export interface ValorEmpresaData {
+/** Resumen de toda la empresa (todas las áreas y proyectos). */
+export interface GeneralData {
   metrics: Metric[];
-  historico: { year: string; valor: number }[];
+  ingresosEgresosPorProyecto: { proyecto: string; ingresos: number; egresos: number }[]; // USD
+  ventasPorEtapa: { etapa: string; cantidad: number }[];
+  leadsPorCanal: { canal: string; leads: number }[];
+  proyectosPorEstado: { estado: string; cantidad: number }[];
+  resumenProyectos: {
+    proyecto: string;
+    ubicacion: string;
+    estado: string;
+    ingresos: number;
+    egresos: number;
+    ventasCerradas: number;
+    leads: number;
+  }[];
 }
 
-export type ModuleKey = 'finanzas' | 'comercial' | 'marketing' | 'valor-empresa';
+/** Panel ejecutivo de la constructora (indicadores de obra). Montos en millones de pesos (MM$). */
+export interface ObraResumen {
+  obra: string;
+  estado: string;
+  avanceReal: number;     // %
+  avancePlan: number;     // %
+  presupuesto: number;    // MM$
+  costoReal: number;      // MM$
+  spi: number;
+  cpi: number;
+  ocPendientes: number;
+  incidenciasAbiertas: number;
+}
+
+export interface ConstructoraData {
+  metrics: Metric[];
+  obras: ObraResumen[];
+  curvaS: { mes: string; plan: number; real: number | null }[];
+  comprasMensuales: { mes: string; monto: number }[];
+  ordenesPorEstado: { estado: string; cantidad: number }[];
+  incidenciasPorObra: { obra: string; alta: number; media: number; baja: number }[];
+}
+
+export type ModuleKey = 'general' | 'finanzas' | 'comercial' | 'marketing' | 'constructora';
 
 /** Optional query filters every datasource method accepts (date ranges, etc.). */
 export interface QueryParams {

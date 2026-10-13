@@ -2,7 +2,8 @@ import {
   FinanzasData,
   ComercialData,
   MarketingData,
-  ValorEmpresaData,
+  GeneralData,
+  ConstructoraData,
   ReportInfo,
   ModuleKey,
   QueryParams,
@@ -28,6 +29,7 @@ export interface DataSource {
   getFinanzas(params?: QueryParams): Promise<FinanzasData>;
   getComercial(params?: QueryParams): Promise<ComercialData>;
   getMarketing(params?: QueryParams): Promise<MarketingData>;
-  getValorEmpresa(params?: QueryParams): Promise<ValorEmpresaData>;
+  getGeneral(params?: QueryParams): Promise<GeneralData>;
+  getConstructora(params?: QueryParams): Promise<ConstructoraData>;
   getReportes(modulo: ModuleKey, params?: QueryParams): Promise<ReportInfo[]>;
 }

@@ -10,6 +10,7 @@ interface MetricCardProps {
   up: boolean;
   color: 'green' | 'blue' | 'red' | 'purple' | 'orange';
   icon?: React.ReactNode;
+  caption?: string;
 }
 
 // Tinte suave del icono según la métrica (pastel, sin saturar)
@@ -21,7 +22,7 @@ const tintMap = {
   orange: { bg: 'rgb(214 150 80 / 0.18)',  fg: 'rgb(150 90 24)' },
 };
 
-export default function MetricCard({ label, value, trend, up, color, icon }: MetricCardProps) {
+export default function MetricCard({ label, value, trend, up, color, icon, caption }: MetricCardProps) {
   const c = tintMap[color];
 
   return (
@@ -47,11 +48,15 @@ export default function MetricCard({ label, value, trend, up, color, icon }: Met
         )}
       </div>
       <div className="flex items-center gap-1.5 mt-3 whitespace-nowrap">
-        {up
-          ? <TrendingUp size={14} strokeWidth={2} style={{ color: 'rgb(34 106 76)' }} />
-          : <TrendingDown size={14} strokeWidth={2} style={{ color: 'rgb(160 52 64)' }} />}
-        <span className="text-xs font-bold" style={{ color: up ? 'rgb(34 106 76)' : 'rgb(160 52 64)' }}>{trend}</span>
-        <span className="text-xs text-mute ml-0.5">vs mes anterior</span>
+        {trend ? (
+          <>
+            {up
+              ? <TrendingUp size={14} strokeWidth={2} style={{ color: 'rgb(34 106 76)' }} />
+              : <TrendingDown size={14} strokeWidth={2} style={{ color: 'rgb(160 52 64)' }} />}
+            <span className="text-xs font-bold" style={{ color: up ? 'rgb(34 106 76)' : 'rgb(160 52 64)' }}>{trend}</span>
+          </>
+        ) : null}
+        <span className={`text-xs text-mute ${trend ? 'ml-0.5' : ''}`}>{caption ?? 'vs mes anterior'}</span>
       </div>
     </motion.div>
   );

@@ -9,9 +9,9 @@ export const runtime = 'nodejs';
 export async function GET(req: NextRequest) {
   try {
     const params = parseParams(req);
-    await authorizeModule(req, 'valor-empresa', params.proyecto);
+    await authorizeModule(req, 'constructora', params.proyecto);
     const ds = getDataSource();
-    const data = await ds.getValorEmpresa(params);
+    const data = await ds.getConstructora(params);
     return ok(data, ds.name);
   } catch (err) {
     return fail(err);

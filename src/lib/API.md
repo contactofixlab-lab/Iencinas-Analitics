@@ -25,7 +25,8 @@ no código de UI.
 | GET    | `/api/finanzas`              | `FinanzasData`      |
 | GET    | `/api/comercial`             | `ComercialData`     |
 | GET    | `/api/marketing`             | `MarketingData`     |
-| GET    | `/api/valor-empresa`         | `ValorEmpresaData`  |
+| GET    | `/api/general`               | `GeneralData`       |
+| GET    | `/api/constructora`          | `ConstructoraData`  |
 | GET    | `/api/reportes/{modulo}`     | `ReportInfo[]`      |
 | GET    | `/api/health`                | diagnóstico         |
 

@@ -1,11 +1,12 @@
 'use client';
 
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import { AnimatePresence, m as motion } from 'framer-motion';
 import { Bell, LogOut, Menu, User as UserIcon, ChevronDown } from 'lucide-react';
 import { ROLE_AVATAR, ROLE_CHIP, ROLE_LABELS } from '@/lib/ui';
+import { moduleForPath, sectionForPath } from '@/lib/nav';
 
 function getInitials(nombre: string, apellido1: string) {
   return `${nombre[0]}${apellido1[0]}`.toUpperCase();
@@ -14,6 +15,7 @@ function getInitials(nombre: string, apellido1: string) {
 export default function Navbar({ title }: { title?: string }) {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -34,6 +36,9 @@ export default function Navbar({ title }: { title?: string }) {
 
   const initials = getInitials(user.nombre, user.apellido1);
   const fullName = `${user.nombre} ${user.apellido1} ${user.apellido2}`;
+  const mod = moduleForPath(pathname);
+  const section = mod ? sectionForPath(mod, pathname) : null;
+  const ModIcon = mod?.icon;
 
   return (
     <motion.header
@@ -41,7 +46,7 @@ export default function Navbar({ title }: { title?: string }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className="glass-nav sticky z-40 flex items-center justify-between"
-      style={{ top: 16, margin: 16, marginBottom: 0, padding: '10px 16px', borderRadius: 'var(--r-panel)' }}
+      style={{ top: 16, margin: '16px 16px 0 16px', padding: '10px 16px', borderRadius: 'var(--r-panel)' }}
     >
       <button
         type="button"
@@ -52,14 +57,23 @@ export default function Navbar({ title }: { title?: string }) {
         <Menu size={20} strokeWidth={1.8} />
       </button>
 
-      {/* Logo */}
-      <div
-        className="flex items-center px-4 py-2 rounded-2xl"
-        style={{ background: 'rgb(255 255 255 / 0.38)', border: '1px solid var(--glass-border)', boxShadow: 'var(--shadow-sm), var(--inner-sheen)' }}
-      >
-        <img src="/logo.svg" alt="Iencinas Analytics" className="h-9 w-auto object-contain" />
+      {/* Logo (solo móvil: en escritorio vive en el menú lateral) */}
+      <img src="/logo.svg" alt="Iencinas Analytics" className="h-9 w-9 lg:hidden mr-auto ml-1" />
+
+      {/* Dónde estoy: módulo › sección */}
+      <div className="hidden lg:flex items-center gap-3 min-w-0">
+        {ModIcon && (
+          <div className="icon-orb !w-10 !h-10">
+            <ModIcon size={19} strokeWidth={1.7} />
+          </div>
+        )}
+        <div className="min-w-0">
+          <p className="text-[15px] font-semibold text-ink leading-tight truncate">
+            {mod ? mod.label : title || 'Mi perfil'}
+          </p>
+          {section && <p className="text-xs text-soft leading-tight mt-0.5">{section.label}</p>}
+        </div>
       </div>
-      {title && <h1 className="text-xl font-bold t-title">{title}</h1>}
 
       <div className="flex items-center gap-3">
         {/* Notificaciones */}

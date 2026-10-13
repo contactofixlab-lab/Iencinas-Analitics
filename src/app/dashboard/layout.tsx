@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import { logout as authLogout } from '@/lib/auth';
 import Sidebar from '@/components/Sidebar';
 import Navbar from '@/components/Navbar';
+import ModuleTabs from '@/components/ModuleTabs';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -30,16 +31,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="min-h-screen w-full">
-      {/* Top bar — full width, fixed across the screen, holds the logo */}
-      <Navbar />
+      {/* Menú lateral alto (solo íconos): ocupa toda la altura, a la izquierda */}
+      <Sidebar />
 
-      {/* Floating sidebar bubble + scrolling content */}
-      <div className="flex items-start">
-        <Sidebar />
-        <main className="flex-1 min-w-0">
-          <div className="pr-4 sm:pr-6 lg:pr-8 pl-2 py-6">
-            {children}
-          </div>
+      {/* Columna derecha: la barra superior ocupa el espacio que deja el menú */}
+      <div className="lg:pl-[92px]">
+        <Navbar />
+        <main className="min-w-0 px-4 py-6">
+          <ModuleTabs />
+          {children}
         </main>
       </div>
     </div>

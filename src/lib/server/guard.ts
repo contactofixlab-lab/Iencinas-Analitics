@@ -11,7 +11,8 @@ export const MODULE_ROLES: Record<ModuleKey, UserRole[]> = {
   finanzas: ['finanzas', 'administrador'],
   comercial: ['comercial', 'administrador'],
   marketing: ['marketing', 'administrador'],
-  'valor-empresa': ['administrador'],
+  general: ['administrador'],
+  constructora: ['administrador'],
 };
 
 /** Rechaza peticiones que cambian datos y vienen de otro sitio web (defensa CSRF adicional a SameSite=Strict). */

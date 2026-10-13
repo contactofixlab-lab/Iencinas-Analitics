@@ -12,7 +12,7 @@ const DEFAULT_ROUTES: Record<string, string> = {
   finanzas: '/dashboard/finanzas',
   comercial: '/dashboard/comercial',
   marketing: '/dashboard/marketing',
-  administrador: '/dashboard/finanzas',
+  administrador: '/dashboard/general',
 };
 
 // Acceso rápido solo en desarrollo local (no contiene contraseñas; en producción no se muestra ni el servidor lo acepta).

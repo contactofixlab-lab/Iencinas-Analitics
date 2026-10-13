@@ -3,7 +3,7 @@ import { MockDataSource } from './mock';
 import { CrmDataSource } from './crm';
 import { config, isCrmConfigured } from '@/lib/config';
 import {
-  FinanzasData, ComercialData, MarketingData, ValorEmpresaData, ReportInfo, ModuleKey, QueryParams,
+  FinanzasData, ComercialData, MarketingData, GeneralData, ConstructoraData, ReportInfo, ModuleKey, QueryParams,
 } from '@/types/domain';
 
 /**
@@ -54,8 +54,10 @@ function withMockFallback(primary: DataSource): DataSource {
       guard('getComercial', () => primary.getComercial(p), () => mock.getComercial()),
     getMarketing: (p?: QueryParams): Promise<MarketingData> =>
       guard('getMarketing', () => primary.getMarketing(p), () => mock.getMarketing()),
-    getValorEmpresa: (p?: QueryParams): Promise<ValorEmpresaData> =>
-      guard('getValorEmpresa', () => primary.getValorEmpresa(p), () => mock.getValorEmpresa()),
+    getGeneral: (p?: QueryParams): Promise<GeneralData> =>
+      guard('getGeneral', () => primary.getGeneral(p), () => mock.getGeneral()),
+    getConstructora: (p?: QueryParams): Promise<ConstructoraData> =>
+      guard('getConstructora', () => primary.getConstructora(p), () => mock.getConstructora()),
     getReportes: (modulo: ModuleKey, params?: QueryParams): Promise<ReportInfo[]> =>
       guard('getReportes', () => primary.getReportes(modulo, params), () => mock.getReportes(modulo)),
   };

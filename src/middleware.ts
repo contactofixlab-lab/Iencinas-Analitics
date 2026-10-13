@@ -5,14 +5,15 @@ const DEFAULT_ROUTES: Record<string, string> = {
   finanzas: '/dashboard/finanzas',
   comercial: '/dashboard/comercial',
   marketing: '/dashboard/marketing',
-  administrador: '/dashboard/finanzas',
+  administrador: '/dashboard/general',
 };
 
 /** Prefijos de página restringidos por rol (el resto de /dashboard solo exige sesión). */
 const PAGE_RULES: { prefix: string; roles: string[] }[] = [
   { prefix: '/dashboard/admin', roles: ['administrador'] },
   { prefix: '/admin', roles: ['administrador'] },
-  { prefix: '/dashboard/valor-empresa', roles: ['administrador'] },
+  { prefix: '/dashboard/general', roles: ['administrador'] },
+  { prefix: '/dashboard/constructora', roles: ['administrador'] },
   { prefix: '/dashboard/finanzas', roles: ['finanzas', 'administrador'] },
   { prefix: '/dashboard/comercial', roles: ['comercial', 'administrador'] },
   { prefix: '/dashboard/marketing', roles: ['marketing', 'administrador'] },

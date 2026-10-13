@@ -19,8 +19,8 @@ const PERMISOS_INICIALES: Permiso[] = [
   { id: '1', nombre: 'Finanzas Completo', descripcion: 'Acceso total al módulo de finanzas y reportes', modulos: ['finanzas', 'reportes'], isPredeterminado: true },
   { id: '2', nombre: 'Comercial Completo', descripcion: 'Acceso total al módulo comercial y reportes', modulos: ['comercial', 'reportes'], isPredeterminado: true },
   { id: '3', nombre: 'Marketing Completo', descripcion: 'Acceso total al módulo de marketing y reportes', modulos: ['marketing', 'reportes'], isPredeterminado: true },
-  { id: '4', nombre: 'Valor Empresa Completo', descripcion: 'Acceso total al módulo de valor empresa', modulos: ['valor-empresa', 'reportes'], isPredeterminado: true },
-  { id: '5', nombre: 'Administrador Total', descripcion: 'Acceso a todos los módulos y funciones', modulos: ['finanzas', 'comercial', 'marketing', 'valor-empresa', 'admin', 'reportes'], isPredeterminado: true },
+  { id: '4', nombre: 'General y Constructora', descripcion: 'Acceso total a los módulos General y Constructora', modulos: ['general', 'constructora', 'reportes'], isPredeterminado: true },
+  { id: '5', nombre: 'Administrador Total', descripcion: 'Acceso a todos los módulos y funciones', modulos: ['general', 'finanzas', 'comercial', 'marketing', 'constructora', 'admin', 'reportes'], isPredeterminado: true },
 ];
 
 export default function PermisosPage() {
@@ -156,7 +156,7 @@ export default function PermisosPage() {
                     <div className="flex flex-wrap gap-1 justify-center">
                       {p.modulos.map(m => (
                         <span key={m} className="chip chip-neutral">
-                          {m === 'valor-empresa' ? 'Valor' : m.charAt(0).toUpperCase() + m.slice(1)}
+                          {m.charAt(0).toUpperCase() + m.slice(1)}
                         </span>
                       ))}
                     </div>
@@ -236,7 +236,7 @@ export default function PermisosPage() {
               <div>
                 <label className="label">Módulos Incluidos</label>
                 <div className="space-y-2">
-                  {['finanzas', 'comercial', 'marketing', 'valor-empresa', 'admin', 'reportes'].map(modulo => (
+                  {['general', 'finanzas', 'comercial', 'marketing', 'constructora', 'admin', 'reportes'].map(modulo => (
                     <label key={modulo} className="flex items-center gap-3 cursor-pointer">
                       <input
                         type="checkbox"
@@ -245,7 +245,7 @@ export default function PermisosPage() {
                         className="w-4 h-4 rounded-md"
                       />
                       <span className="text-ink text-sm font-medium capitalize">
-                        {modulo === 'valor-empresa' ? 'Valor Empresa' : modulo}
+                        {modulo}
                       </span>
                     </label>
                   ))}
@@ -311,7 +311,7 @@ export default function PermisosPage() {
               <div>
                 <label className="label">Módulos Incluidos</label>
                 <div className="space-y-2">
-                  {['finanzas', 'comercial', 'marketing', 'valor-empresa', 'admin', 'reportes'].map(modulo => (
+                  {['general', 'finanzas', 'comercial', 'marketing', 'constructora', 'admin', 'reportes'].map(modulo => (
                     <label key={modulo} className="flex items-center gap-3 cursor-pointer">
                       <input
                         type="checkbox"
@@ -320,7 +320,7 @@ export default function PermisosPage() {
                         className="w-4 h-4 rounded-md"
                       />
                       <span className="text-ink text-sm font-medium capitalize">
-                        {modulo === 'valor-empresa' ? 'Valor Empresa' : modulo}
+                        {modulo}
                       </span>
                     </label>
                   ))}

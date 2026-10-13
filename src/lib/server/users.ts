@@ -23,7 +23,7 @@ const PERMISSIONS_BY_ROLE: Record<UserRole, string[]> = {
   finanzas: ['finanzas', 'reportes'],
   comercial: ['comercial', 'reportes'],
   marketing: ['marketing', 'reportes'],
-  administrador: ['finanzas', 'comercial', 'marketing', 'valor-empresa', 'admin', 'reportes'],
+  administrador: ['general', 'finanzas', 'comercial', 'marketing', 'constructora', 'admin', 'reportes'],
 };
 
 // Cuentas de demostración. Las contraseñas iniciales son de ejemplo: cámbialas antes de producción.

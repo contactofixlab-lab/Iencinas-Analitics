@@ -12,7 +12,8 @@ const MOD_BADGE: Record<string, string> = {
   Finanzas: '59, 130, 246',
   Comercial: '249, 115, 22',
   Marketing: '168, 85, 247',
-  'Valor Empresa': '245, 158, 11',
+  General: '120, 168, 215',
+  Constructora: '245, 158, 11',
   Administración: '34, 197, 94',
 };
 
@@ -177,7 +178,7 @@ export default function CrearUsuarioPage() {
               {form.role === 'administrador' && (
                 <>
                   <Badge label="Finanzas" /><Badge label="Comercial" /><Badge label="Marketing" />
-                  <Badge label="Valor Empresa" /><Badge label="Administración" />
+                  <Badge label="General" /><Badge label="Constructora" /><Badge label="Administración" />
                 </>
               )}
             </div>

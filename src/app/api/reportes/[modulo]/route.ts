@@ -7,7 +7,7 @@ import { ModuleKey } from '@/types/domain';
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-const VALID: ModuleKey[] = ['finanzas', 'comercial', 'marketing', 'valor-empresa'];
+const VALID: ModuleKey[] = ['general', 'finanzas', 'comercial', 'marketing', 'constructora'];
 
 export async function GET(req: NextRequest, { params }: { params: { modulo: string } }) {
   try {

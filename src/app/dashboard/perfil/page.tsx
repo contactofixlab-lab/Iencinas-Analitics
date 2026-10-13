@@ -7,16 +7,17 @@ import { Mail, Phone, MapPin, Calendar, Building2, FileText, Edit2, LogOut, Brie
 import { useState } from 'react';
 import { changePassword } from '@/lib/auth';
 import { ROLE_AVATAR, ROLE_CHIP, ROLE_LABELS } from '@/lib/ui';
+import { modulesForRole } from '@/lib/nav';
 
 function getInitials(nombre: string, apellido1: string) {
   return `${nombre[0]}${apellido1[0]}`.toUpperCase();
 }
 
-const MODULOS = [
-  { name: 'Finanzas',      tint: 'rgb(var(--brand) / 0.28)', fg: 'rgb(var(--brand-deep))' },
-  { name: 'Comercial',     tint: 'rgb(214 150 80 / 0.20)',   fg: 'rgb(150 90 24)' },
-  { name: 'Marketing',     tint: 'rgb(150 128 214 / 0.20)',  fg: 'rgb(96 74 156)' },
-  { name: 'Valor Empresa', tint: 'rgb(52 140 104 / 0.16)',   fg: 'rgb(34 106 76)' },
+const MODULO_TINTS = [
+  { tint: 'rgb(var(--brand) / 0.28)', fg: 'rgb(var(--brand-deep))' },
+  { tint: 'rgb(214 150 80 / 0.20)', fg: 'rgb(150 90 24)' },
+  { tint: 'rgb(150 128 214 / 0.20)', fg: 'rgb(96 74 156)' },
+  { tint: 'rgb(52 140 104 / 0.16)', fg: 'rgb(34 106 76)' },
 ];
 
 function SectionTitle({ icon: Icon, children, tint, fg }: { icon: typeof FileText; children: React.ReactNode; tint: string; fg: string }) {
@@ -103,6 +104,7 @@ export default function PerfilPage() {
     return null;
   }
 
+  const modulos = modulesForRole(user.role).map((m, i) => ({ name: m.label, ...MODULO_TINTS[i % MODULO_TINTS.length] }));
   const fullName = `${user.nombre} ${user.apellido1} ${user.apellido2}`;
   const initials = getInitials(user.nombre, user.apellido1);
 
@@ -238,8 +240,8 @@ export default function PerfilPage() {
         >
           <div className="sheen" />
           <SectionTitle icon={Briefcase} tint="rgb(52 140 104 / 0.16)" fg="rgb(34 106 76)">Módulos Disponibles</SectionTitle>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {MODULOS.map(mod => (
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+            {modulos.map(mod => (
               <div
                 key={mod.name}
                 className="glass-card glass-card--compact glass-card--interactive text-center"

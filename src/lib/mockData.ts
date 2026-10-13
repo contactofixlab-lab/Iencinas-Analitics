@@ -98,23 +98,6 @@ export const marketingCanales = [
   { canal: 'Orgánico', leads: 42, inversion: 0 },
 ];
 
-// Valor Empresa data
-export const valorEmpresaMetrics = [
-  { label: 'Valuación Total', value: '$125M', trend: '+18.2%', up: true, color: 'green' },
-  { label: 'EBITDA', value: '$28.5M', trend: '+12.6%', up: true, color: 'blue' },
-  { label: 'Margen EBITDA', value: '22.1%', trend: '+2.3%', up: true, color: 'purple' },
-  { label: 'ROE', value: '22.7%', trend: '+4.1%', up: true, color: 'green' },
-];
-
-export const valorHistorico = [
-  { year: '2021', valor: 72 },
-  { year: '2022', valor: 85 },
-  { year: '2023', valor: 98 },
-  { year: '2024', valor: 108 },
-  { year: '2025', valor: 118 },
-  { year: '2026', valor: 125 },
-];
-
 export const reportesFinanzas = [
   {
     id: 'f1',
@@ -187,28 +170,17 @@ export const reportesMarketing = [
   },
 ];
 
-export const reportesValorEmpresa = [
-  {
-    id: 'v1',
-    nombre: 'Valuación Empresarial',
-    descripcion: 'Valor actual, proyecciones y benchmarks del mercado',
-    fecha: '2026-06-01',
-    tipo: 'Trimestral',
-  },
-  {
-    id: 'v2',
-    nombre: 'EBITDA y Rentabilidad',
-    descripcion: 'Márgenes, ratios e histórico de 5 años',
-    fecha: '2026-06-01',
-    tipo: 'Trimestral',
-  },
-  {
-    id: 'v3',
-    nombre: 'Indicadores Accionistas',
-    descripcion: 'Dividendos, ROE y múltiplos de valuación',
-    fecha: '2026-06-01',
-    tipo: 'Trimestral',
-  },
+export const reportesGeneral = [
+  { id: 'g1', nombre: 'Resumen Corporativo', descripcion: 'Ingresos, egresos y margen de todas las áreas y proyectos', fecha: '2026-06-01', tipo: 'Mensual' },
+  { id: 'g2', nombre: 'Ranking de Proyectos', descripcion: 'Proyectos ordenados por ingresos, margen y ventas cerradas', fecha: '2026-06-01', tipo: 'Mensual' },
+  { id: 'g3', nombre: 'Embudo Comercial Consolidado', descripcion: 'Leads, etapas de venta y conversión de toda la empresa', fecha: '2026-06-01', tipo: 'Mensual' },
+];
+
+export const reportesConstructora = [
+  { id: 'k1', nombre: 'Avance Físico por Obra', descripcion: 'Avance real vs planificado, SPI y desviaciones por obra', fecha: '2026-10-01', tipo: 'Semanal' },
+  { id: 'k2', nombre: 'Presupuesto vs Costo Real', descripcion: 'Ejecución presupuestaria y CPI por obra', fecha: '2026-10-01', tipo: 'Mensual' },
+  { id: 'k3', nombre: 'Compras y Facturas', descripcion: 'Órdenes de compra por estado y facturas por pagar', fecha: '2026-10-01', tipo: 'Mensual' },
+  { id: 'k4', nombre: 'Incidencias de Obra', descripcion: 'Incidencias abiertas por severidad y obra', fecha: '2026-10-01', tipo: 'Semanal' },
 ];
 
 /* ── Multi-Proyecto Data ────────────────────────────────────────────────── */
