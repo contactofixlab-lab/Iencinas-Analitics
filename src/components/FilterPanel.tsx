@@ -74,7 +74,7 @@ export default function FilterPanel({
     (filters.type && filters.type.length > 0);
 
   const Label = ({ children }: { children: React.ReactNode }) => (
-    <label className="text-[11px] font-semibold text-gray-400 uppercase tracking-[0.08em]">{children}</label>
+    <label className="label !mb-0">{children}</label>
   );
 
   return (
@@ -82,31 +82,24 @@ export default function FilterPanel({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      className="relative rounded-[20px] p-6 overflow-hidden"
-      style={{
-        background: 'linear-gradient(160deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 100%)',
-        backdropFilter: 'blur(22px) saturate(150%)',
-        WebkitBackdropFilter: 'blur(22px) saturate(150%)',
-        border: '1px solid rgba(255,255,255,0.13)',
-        boxShadow: '0 16px 50px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.18)',
-      }}
+      className="glass-card relative"
+      style={{ padding: 'var(--pad-card)' }}
     >
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+      <div className="sheen" />
 
       {/* Header */}
       <div className="flex items-center gap-3 mb-5">
-        <div className="p-2 rounded-xl" style={{ background: 'rgba(74,222,128,0.15)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15)' }}>
-          <Filter size={16} className="text-green-400" />
+        <div className="icon-orb !w-9 !h-9">
+          <Filter size={16} strokeWidth={1.8} />
         </div>
-        <h3 className="text-sm font-semibold text-white">Filtros</h3>
+        <h3 className="text-sm font-semibold text-ink">Filtros</h3>
         <AnimatePresence>
           {hasActive && (
             <motion.span
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              className="px-3 py-1 rounded-full text-[11px] font-bold text-green-300"
-              style={{ background: 'rgba(74,222,128,0.2)', border: '1px solid rgba(74,222,128,0.35)' }}
+              className="chip chip-info"
             >
               Activos
             </motion.span>
@@ -121,8 +114,7 @@ export default function FilterPanel({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 10 }}
                 onClick={clear}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:scale-105"
-                style={{ background: 'rgba(239,68,68,0.18)', border: '1px solid rgba(239,68,68,0.3)', color: '#fca5a5' }}
+                className="btn btn-danger btn-sm"
               >
                 <X size={14} /> Limpiar
               </motion.button>
@@ -137,7 +129,7 @@ export default function FilterPanel({
           <div className="flex flex-col gap-2">
             <Label>Búsqueda</Label>
             <div className="relative">
-              <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+              <Search size={15} strokeWidth={1.8} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-mute pointer-events-none" />
               <input
                 type="text"
                 placeholder="Buscar..."

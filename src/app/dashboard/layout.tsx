@@ -20,10 +20,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{
-        background: 'linear-gradient(135deg, #0f172a 0%, #1a2942 25%, #1e3a5f 50%, #1a2942 75%, #0f172a 100%)'
-      }}>
-        <div className="w-8 h-8 border-4 border-green-500/30 border-t-green-400 rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-brand/40 border-t-brand-hover rounded-full animate-spin" role="status" aria-label="Cargando" />
       </div>
     );
   }

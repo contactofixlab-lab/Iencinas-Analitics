@@ -96,46 +96,36 @@ export default function GlassDatePicker({ value, onChange, placeholder = 'Selecc
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -8, scale: 0.96 }}
         transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          ...pos,
-          background: 'linear-gradient(160deg, rgba(10,18,35,0.97) 0%, rgba(16,28,48,0.95) 100%)',
-          backdropFilter: 'blur(28px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(28px) saturate(150%)',
-          border: '1px solid rgba(74,197,94,0.30)',
-          borderRadius: '18px',
-          boxShadow: '0 30px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.12), 0 0 30px rgba(74,222,128,0.08)',
-          padding: '14px',
-        }}
+        className="menu-panel"
+        style={{ ...pos, padding: '14px', borderRadius: '22px' }}
       >
         {/* Header: month nav */}
         <div className="flex items-center justify-between mb-3">
           <button
+            type="button"
+            aria-label="Mes anterior"
             onClick={() => setView(new Date(year, month - 1, 1))}
-            className="grid place-items-center w-8 h-8 rounded-lg transition-colors"
-            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(74,222,128,0.18)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
+            className="btn btn-ghost btn-icon !w-8 !h-8 !rounded-xl"
           >
-            <ChevronLeft size={16} />
+            <ChevronLeft size={16} strokeWidth={1.8} />
           </button>
-          <span className="text-sm font-semibold text-white tracking-wide">
+          <span className="text-sm font-semibold text-ink tracking-wide">
             {MESES[month]} {year}
           </span>
           <button
+            type="button"
+            aria-label="Mes siguiente"
             onClick={() => setView(new Date(year, month + 1, 1))}
-            className="grid place-items-center w-8 h-8 rounded-lg transition-colors"
-            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(74,222,128,0.18)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
+            className="btn btn-ghost btn-icon !w-8 !h-8 !rounded-xl"
           >
-            <ChevronRight size={16} />
+            <ChevronRight size={16} strokeWidth={1.8} />
           </button>
         </div>
 
         {/* Weekday labels */}
         <div className="grid grid-cols-7 gap-1 mb-1.5">
           {DIAS.map(d => (
-            <span key={d} className="text-center text-[10px] font-bold uppercase tracking-wide" style={{ color: 'rgba(148,163,184,0.7)' }}>
+            <span key={d} className="text-center text-[10px] font-bold uppercase tracking-wide" style={{ color: 'rgb(var(--ink-3))' }}>
               {d}
             </span>
           ))}
@@ -151,19 +141,18 @@ export default function GlassDatePicker({ value, onChange, placeholder = 'Selecc
             return (
               <button
                 key={day}
+                type="button"
                 onClick={() => { onChange(toYMD(cellDate)); setOpen(false); }}
-                className="h-9 rounded-lg text-sm font-medium transition-all"
+                className="h-9 rounded-xl text-sm font-medium"
                 style={{
-                  background: isSelected
-                    ? 'linear-gradient(135deg, #22c55e, #15803d)'
-                    : 'transparent',
-                  color: isSelected ? '#fff' : isToday ? '#4ade80' : '#d1d5db',
-                  border: isSelected
-                    ? '1px solid rgba(74,222,128,0.6)'
-                    : isToday ? '1px solid rgba(74,222,128,0.4)' : '1px solid transparent',
-                  boxShadow: isSelected ? '0 6px 16px rgba(34,197,94,0.4), inset 0 1px 0 rgba(255,255,255,0.25)' : 'none',
+                  background: isSelected ? 'rgb(var(--brand))' : 'transparent',
+                  color: isSelected ? '#fff' : isToday ? 'rgb(var(--brand-deep))' : 'rgb(var(--ink-2))',
+                  border: isSelected ? '1px solid rgb(255 255 255 / 0.6)' : isToday ? '1px solid rgb(var(--brand))' : '1px solid transparent',
+                  boxShadow: isSelected ? 'var(--shadow-brand), inset 0 1px 0 rgb(255 255 255 / 0.4)' : 'none',
+                  fontWeight: isSelected ? 700 : 500,
+                  transition: 'background var(--t), color var(--t)',
                 }}
-                onMouseEnter={e => { if (!isSelected) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.08)'; }}
+                onMouseEnter={e => { if (!isSelected) (e.currentTarget as HTMLElement).style.background = 'rgb(var(--brand-soft) / 0.8)'; }}
                 onMouseLeave={e => { if (!isSelected) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
               >
                 {day}
@@ -173,14 +162,14 @@ export default function GlassDatePicker({ value, onChange, placeholder = 'Selecc
         </div>
 
         {/* Footer: quick today */}
-        <div className="mt-3 pt-3 border-t border-white/10 flex justify-between items-center">
+        <div className="mt-3 pt-3 border-t border-line/25 flex justify-between items-center">
           <button
             onClick={() => { onChange(toYMD(new Date())); setOpen(false); }}
-            className="text-xs font-semibold text-green-400 hover:text-green-300 transition-colors"
+            className="text-xs font-semibold text-brand-deep hover:text-ink transition-colors"
           >
             Hoy
           </button>
-          <span className="text-[11px] text-gray-500">{display}</span>
+          <span className="text-[11px] text-mute">{display}</span>
         </div>
       </motion.div>
     </AnimatePresence>,
@@ -196,10 +185,10 @@ export default function GlassDatePicker({ value, onChange, placeholder = 'Selecc
         className="field w-full flex items-center justify-between"
         style={{ cursor: 'pointer' }}
       >
-        <span style={{ color: display ? '#fff' : 'rgba(255,255,255,0.5)' }}>
+        <span style={{ color: display ? 'rgb(var(--ink))' : 'rgb(var(--ink-3))' }}>
           {display || placeholder}
         </span>
-        <Calendar size={16} className="text-green-400 shrink-0" />
+        <Calendar size={16} strokeWidth={1.8} className="text-soft shrink-0" />
       </button>
       {dd}
     </>

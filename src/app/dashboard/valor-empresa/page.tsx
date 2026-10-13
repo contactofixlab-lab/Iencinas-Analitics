@@ -14,7 +14,7 @@ const ValorEmpresaCharts = dynamic(() => import('@/components/charts/ValorEmpres
   loading: () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" aria-hidden="true">
       {[0, 1].map(i => (
-        <div key={i} className="rounded-2xl h-[330px]" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }} />
+        <div key={i} className="rounded-2xl h-[330px]" style={{ background: 'rgb(255 255 255 / 0.56)', border: '1px solid rgb(var(--line) / 0.30)' }} />
       ))}
     </div>
   ),
@@ -72,8 +72,8 @@ export default function ValorEmpresaPage() {
     <div className="space-y-6 page-enter">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white">Valor Empresa</h1>
-          <p className="text-gray-400 text-sm mt-1">Valuación empresarial, EBITDA e indicadores para accionistas</p>
+          <h1 className="text-3xl font-bold text-ink">Valor Empresa</h1>
+          <p className="text-soft text-sm mt-1">Valuación empresarial, EBITDA e indicadores para accionistas</p>
         </div>
         <ProjectSelector value={proyecto} onChange={handleProyectoChange} />
       </div>
@@ -96,36 +96,30 @@ export default function ValorEmpresaPage() {
 
       <ValorEmpresaCharts data={data} loading={loading} />
 
-      <div className="rounded-2xl overflow-hidden" style={{
-        background: 'rgba(255, 255, 255, 0.08)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
-        boxShadow: '0 16px 48px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
-      }}>
-        <div className="px-6 py-4 border-b border-white/10">
-          <h3 className="text-sm font-semibold text-white">Indicadores Clave vs Benchmark</h3>
+      <div className="table-glass">
+        <div className="px-6 py-4 border-b border-line/25">
+          <h3 className="text-sm font-semibold text-ink">Indicadores Clave vs Benchmark</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-white/5">
+            <thead>
               <tr>
                 {['Indicador', 'Valor Actual', 'Benchmark', 'Estado'].map(h => (
-                  <th key={h} className="text-left px-6 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">{h}</th>
+                  <th key={h} className="text-left px-6 py-3 text-xs font-semibold text-soft uppercase tracking-wider">{h}</th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody>
               {indicadores.map((ind, i) => (
-                <tr key={i} className="hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-3 font-medium text-gray-300">{ind.indicador}</td>
-                  <td className="px-6 py-3 font-semibold text-green-400">{ind.valor}</td>
-                  <td className="px-6 py-3 text-gray-400">{ind.benchmark}</td>
+                <tr key={i} className="">
+                  <td className="px-6 py-3 font-medium text-soft">{ind.indicador}</td>
+                  <td className="px-6 py-3 font-semibold text-ok-ink">{ind.valor}</td>
+                  <td className="px-6 py-3 text-soft">{ind.benchmark}</td>
                   <td className="px-6 py-3">
                     <span className={`px-2.5 py-1 rounded-lg text-xs font-semibold ${
-                      ind.estado === 'Óptimo' || ind.estado === 'Superior' ? 'bg-green-500/20 text-green-400' :
-                      ind.estado === 'Favorable' ? 'bg-blue-500/20 text-blue-400' :
-                      'bg-yellow-500/20 text-yellow-400'
+                      ind.estado === 'Óptimo' || ind.estado === 'Superior' ? 'bg-ok/15 text-ok-ink' :
+                      ind.estado === 'Favorable' ? 'bg-brand/15 text-brand-deep' :
+                      'bg-warn/15 text-warn-ink'
                     }`}>{ind.estado}</span>
                   </td>
                 </tr>

@@ -64,40 +64,23 @@ export default function ProjectSelector({ value, onChange }: ProjectSelectorProp
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -10, scale: 0.96 }}
         transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          ...dropdownStyle,
-          background: 'linear-gradient(135deg, rgba(10,18,35,0.97), rgba(16,28,48,0.95))',
-          backdropFilter: 'blur(24px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(24px) saturate(150%)',
-          border: '1px solid rgba(34, 197, 94, 0.35)',
-          borderRadius: '14px',
-          boxShadow: '0 24px 64px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.10)',
-          overflow: 'hidden',
-          padding: '6px',
-        }}
+        className="menu-panel"
+        style={{ ...dropdownStyle, overflow: 'hidden' }}
       >
         {proyectos.map((p) => {
           const active = value === p.id;
           return (
             <button
               key={p.id}
+              type="button"
               onClick={() => { onChange(p.id); setOpen(false); }}
-              style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                width: '100%', padding: '11px 14px', textAlign: 'left',
-                borderRadius: '10px',
-                background: active ? 'rgba(34,197,94,0.18)' : 'transparent',
-                color: active ? '#4ade80' : '#d1d5db',
-                cursor: 'pointer', transition: 'background 0.15s',
-              }}
-              onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
-              onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+              className={`menu-item ${active ? 'menu-item--active' : ''}`}
             >
               <span>
                 <span style={{ fontWeight: 600, fontSize: '14px', display: 'block' }}>{p.nombre}</span>
-                <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)' }}>{p.ubicacion}</span>
+                <span style={{ fontSize: '11px', color: 'rgb(var(--ink-3))', fontWeight: 400 }}>{p.ubicacion}</span>
               </span>
-              {active && <Check size={15} />}
+              {active && <Check size={15} strokeWidth={2} />}
             </button>
           );
         })}
@@ -108,27 +91,28 @@ export default function ProjectSelector({ value, onChange }: ProjectSelectorProp
 
   return (
     <div className="relative w-full sm:w-72">
-      <motion.button
+      <button
         ref={buttonRef}
+        type="button"
         onClick={handleToggle}
-        whileTap={{ scale: 0.98 }}
-        className="w-full px-4 py-3 rounded-xl flex items-center justify-between transition-all"
+        aria-expanded={open}
+        className="w-full px-4 py-3 rounded-2xl flex items-center justify-between transition-all"
         style={{
-          background: 'linear-gradient(135deg, rgba(34,197,94,0.16), rgba(34,197,94,0.06))',
-          backdropFilter: 'blur(18px)',
-          WebkitBackdropFilter: 'blur(18px)',
-          border: open ? '1px solid rgba(34, 197, 94, 0.55)' : '1px solid rgba(34, 197, 94, 0.3)',
-          boxShadow: open ? '0 0 22px rgba(34,197,94,0.25), inset 0 1px 0 rgba(255,255,255,0.12)' : 'inset 0 1px 0 rgba(255,255,255,0.10)',
+          background: open ? 'rgb(var(--brand-soft) / 0.9)' : 'var(--glass-3)',
+          border: open ? '1px solid rgb(var(--brand-hover))' : '1px solid var(--glass-border)',
+          boxShadow: open ? '0 0 0 4px rgb(var(--brand) / 0.22), var(--shadow-sm)' : 'var(--shadow-sm), var(--inner-sheen)',
+          WebkitBackdropFilter: 'blur(var(--blur-sm))',
+          backdropFilter: 'blur(var(--blur-sm))',
         }}
       >
         <span className="flex items-center gap-2.5 min-w-0">
-          <Building2 size={16} className="text-green-400 shrink-0" />
-          <span className="text-white text-sm font-semibold truncate">
+          <Building2 size={17} strokeWidth={1.8} className="text-brand-deep shrink-0" />
+          <span className="text-ink text-sm font-semibold truncate">
             {loading ? 'Cargando...' : proyecto?.nombre || 'Seleccionar proyecto'}
           </span>
         </span>
-        <ChevronDown size={16} className={`text-green-400 transition-transform duration-200 shrink-0 ${open ? 'rotate-180' : ''}`} />
-      </motion.button>
+        <ChevronDown size={16} strokeWidth={1.8} className={`text-soft transition-transform duration-200 shrink-0 ${open ? 'rotate-180' : ''}`} />
+      </button>
       {dropdown}
     </div>
   );

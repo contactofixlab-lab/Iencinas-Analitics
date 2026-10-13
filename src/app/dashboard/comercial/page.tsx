@@ -14,7 +14,7 @@ const ComercialCharts = dynamic(() => import('@/components/charts/ComercialChart
   loading: () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" aria-hidden="true">
       {[0, 1].map(i => (
-        <div key={i} className="rounded-2xl h-[330px]" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }} />
+        <div key={i} className="rounded-2xl h-[330px]" style={{ background: 'rgb(255 255 255 / 0.56)', border: '1px solid rgb(var(--line) / 0.30)' }} />
       ))}
     </div>
   ),
@@ -37,7 +37,6 @@ const propiedades = [
   { direccion: 'Nueva Costanera 3700, Dpto 5', tipo: 'Departamento', valor: '$290,000', estado: 'Disponible', vendedor: 'Carla Ruiz' },
 ];
 
-const COLORS = ['#15803d', '#16a34a', '#22c55e', '#4ade80', '#86efac'];
 
 export default function ComercialPage() {
   const searchParams = useSearchParams();
@@ -101,8 +100,8 @@ export default function ComercialPage() {
     <div className="space-y-6 page-enter">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white">Comercial</h1>
-          <p className="text-gray-400 text-sm mt-1">Métricas de ventas y cartera de propiedades</p>
+          <h1 className="text-3xl font-bold text-ink">Comercial</h1>
+          <p className="text-soft text-sm mt-1">Métricas de ventas y cartera de propiedades</p>
         </div>
         <ProjectSelector value={proyecto} onChange={handleProyectoChange} />
       </div>
@@ -144,45 +143,39 @@ export default function ComercialPage() {
 
       <ComercialCharts data={data} loading={loading} />
 
-      <div className="rounded-2xl overflow-hidden" style={{
-        background: 'rgba(255, 255, 255, 0.08)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
-        boxShadow: '0 16px 48px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
-      }}>
-        <div className="px-6 py-4 border-b border-white/10">
-          <h3 className="text-sm font-semibold text-white">Propiedades ({filteredPropiedades.length})</h3>
+      <div className="table-glass">
+        <div className="px-6 py-4 border-b border-line/25">
+          <h3 className="text-sm font-semibold text-ink">Propiedades ({filteredPropiedades.length})</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-white/5">
+            <thead>
               <tr>
                 {['Dirección', 'Tipo', 'Valor', 'Estado', 'Vendedor'].map(h => (
-                  <th key={h} className="text-left px-6 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">{h}</th>
+                  <th key={h} className="text-left px-6 py-3 text-xs font-semibold text-soft uppercase tracking-wider">{h}</th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody>
               {filteredPropiedades.length > 0 ? filteredPropiedades.map((p, i) => (
-                <tr key={i} className="hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-3 text-gray-300 font-medium">{p.direccion}</td>
-                  <td className="px-6 py-3 text-gray-400">{p.tipo}</td>
-                  <td className="px-6 py-3 font-semibold text-green-400">{p.valor}</td>
+                <tr key={i} className="">
+                  <td className="px-6 py-3 text-soft font-medium">{p.direccion}</td>
+                  <td className="px-6 py-3 text-soft">{p.tipo}</td>
+                  <td className="px-6 py-3 font-semibold text-ok-ink">{p.valor}</td>
                   <td className="px-6 py-3">
                     <span className={`px-2.5 py-1 rounded-lg text-xs font-semibold ${
-                      p.estado === 'Vendida' ? 'bg-green-500/20 text-green-400' :
-                      p.estado === 'En proceso' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-gray-500/20 text-gray-300'
+                      p.estado === 'Vendida' ? 'bg-ok/15 text-ok-ink' :
+                      p.estado === 'En proceso' ? 'bg-warn/15 text-warn-ink' :
+                      'bg-line/20 text-soft'
                     }`}>
                       {p.estado}
                     </span>
                   </td>
-                  <td className="px-6 py-3 text-gray-400">{p.vendedor}</td>
+                  <td className="px-6 py-3 text-soft">{p.vendedor}</td>
                 </tr>
               )) : (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan={5} className="px-6 py-12 text-center text-mute">
                     No hay propiedades que coincidan con los filtros
                   </td>
                 </tr>

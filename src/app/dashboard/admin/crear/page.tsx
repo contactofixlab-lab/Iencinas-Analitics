@@ -86,40 +86,33 @@ export default function CrearUsuarioPage() {
   return (
     <div className="space-y-6 max-w-2xl page-enter">
       <div className="flex items-center gap-4">
-        <Link href="/dashboard/admin" className="p-2 rounded-xl transition-colors hover:bg-white/10" style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
-          <ArrowLeft size={20} className="text-gray-300" />
+        <Link href="/dashboard/admin" aria-label="Volver" className="btn btn-secondary btn-icon">
+          <ArrowLeft size={20} strokeWidth={1.8} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-white">Crear Nuevo Usuario</h1>
-          <p className="text-gray-400 text-sm mt-0.5">Completa el formulario para agregar un nuevo usuario al sistema</p>
+          <h1 className="text-2xl font-bold text-ink">Crear Nuevo Usuario</h1>
+          <p className="text-soft text-sm mt-0.5">Completa el formulario para agregar un nuevo usuario al sistema</p>
         </div>
       </div>
 
       {success && (
-        <div className="rounded-xl p-4 text-green-300 text-sm font-medium flex items-center gap-2" style={{
-          background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)',
-        }}>
-          <CheckCircle2 size={18} className="text-green-400" />
-          Usuario creado exitosamente. Redirigiendo...
+        <div className="toast" role="status" style={{ background: 'rgb(var(--ok) / 0.12)', borderColor: 'rgb(var(--ok) / 0.30)' }}>
+          <CheckCircle2 size={20} strokeWidth={1.8} className="text-ok-ink shrink-0" />
+          <p className="text-sm font-medium text-ok-ink">Usuario creado exitosamente. Redirigiendo...</p>
         </div>
       )}
 
-      <div className="rounded-[20px] p-6 overflow-hidden" style={{
-        background: 'linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 100%)',
-        backdropFilter: 'blur(24px) saturate(150%)',
-        WebkitBackdropFilter: 'blur(24px) saturate(150%)',
-        border: '1px solid rgba(255,255,255,0.14)',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.18)',
-      }}>
+      <div className="glass-card" style={{ padding: 'calc(var(--pad-card) + 4px)' }}>
+        <div className="sheen" />
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Nombre <span className="text-red-400">*</span></label>
+              <label className="label">Nombre <span className="text-danger-ink">*</span></label>
               <input type="text" value={form.nombre} onChange={e => handleChange('nombre', e.target.value)}
                 placeholder="Ej: Juan" required className={inputClass} style={inputStyle} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Primer Apellido <span className="text-red-400">*</span></label>
+              <label className="label">Primer Apellido <span className="text-danger-ink">*</span></label>
               <input type="text" value={form.apellido1} onChange={e => handleChange('apellido1', e.target.value)}
                 placeholder="Ej: García" required className={inputClass} style={inputStyle} />
             </div>
@@ -127,34 +120,34 @@ export default function CrearUsuarioPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Segundo Apellido</label>
+              <label className="label">Segundo Apellido</label>
               <input type="text" value={form.apellido2} onChange={e => handleChange('apellido2', e.target.value)}
                 placeholder="Ej: López" className={inputClass} style={inputStyle} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Correo Electrónico <span className="text-red-400">*</span></label>
+              <label className="label">Correo Electrónico <span className="text-danger-ink">*</span></label>
               <input type="email" value={form.email} onChange={e => handleChange('email', e.target.value)}
                 placeholder="correo@iencinas.cl" required className={inputClass} style={inputStyle} />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Contraseña <span className="text-red-400">*</span></label>
+            <label className="label">Contraseña <span className="text-danger-ink">*</span></label>
             <div className="relative">
               <input type={showPass ? 'text' : 'password'} value={form.password}
                 onChange={e => handleChange('password', e.target.value)}
-                placeholder="Mínimo 6 caracteres" required minLength={6}
-                className={inputClass + ' pr-10'} style={inputStyle} />
+                placeholder="Mínimo 10 caracteres, con letras y números" required minLength={10}
+                className={inputClass + ' !pr-11'} style={inputStyle} />
               <button type="button" onClick={() => setShowPass(!showPass)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200">
-                {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                aria-label="Mostrar u ocultar contraseña" className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-mute hover:text-ink transition-colors">
+                {showPass ? <EyeOff size={17} strokeWidth={1.8} /> : <Eye size={17} strokeWidth={1.8} />}
               </button>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Perfil / Rol <span className="text-red-400">*</span></label>
+              <label className="label">Perfil / Rol <span className="text-danger-ink">*</span></label>
               <select value={form.role} onChange={e => handleChange('role', e.target.value)}
                 className={inputClass} style={inputStyle}>
                 <option value="finanzas">Finanzas</option>
@@ -164,19 +157,19 @@ export default function CrearUsuarioPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Área / Departamento</label>
+              <label className="label">Área / Departamento</label>
               <input type="text" value={form.departamento} onChange={e => handleChange('departamento', e.target.value)}
                 className={inputClass} style={{ ...inputStyle, opacity: 0.7 }} readOnly />
             </div>
           </div>
 
           {error && (
-            <p className="text-red-300 text-sm px-3 py-2 rounded-lg" style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)' }}>{error}</p>
+            <p role="alert" className="chip chip-danger !rounded-2xl !px-4 !py-2.5 !text-sm">{error}</p>
           )}
 
           {/* Permissions preview */}
-          <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Módulos con acceso</p>
+          <div className="glass-card glass-card--muted glass-card--compact" style={{ padding: '16px 18px' }}>
+            <p className="label">Módulos con acceso</p>
             <div className="flex flex-wrap gap-2">
               {form.role === 'finanzas' && <Badge label="Finanzas" />}
               {form.role === 'comercial' && <Badge label="Comercial" />}
@@ -191,15 +184,11 @@ export default function CrearUsuarioPage() {
           </div>
 
           <div className="flex gap-3 pt-2">
-            <Link href="/dashboard/admin"
-              className="flex-1 py-3 rounded-xl text-sm font-medium text-gray-300 transition-colors hover:bg-white/10 text-center"
-              style={{ border: '1px solid rgba(255,255,255,0.15)' }}>
+            <Link href="/dashboard/admin" className="btn btn-secondary flex-1">
               Cancelar
             </Link>
-            <button type="submit"
-              className="shimmer-host flex-1 py-3 rounded-xl text-sm font-semibold text-white flex items-center justify-center gap-2 transition-transform hover:scale-[1.01]"
-              style={{ background: 'linear-gradient(135deg, #22c55e, #15803d)', boxShadow: '0 8px 24px rgba(34,197,94,0.35)' }}>
-              <UserPlus size={16} />Crear Usuario
+            <button type="submit" className="btn btn-primary flex-1">
+              <UserPlus size={17} strokeWidth={1.8} />Crear Usuario
             </button>
           </div>
         </form>

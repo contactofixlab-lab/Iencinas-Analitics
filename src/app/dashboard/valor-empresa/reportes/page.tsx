@@ -11,7 +11,7 @@ const ACCENT = {
   rgb: '245, 158, 11',
   solid: '#f59e0b',
   light: '#fbbf24',
-  text: 'text-amber-400',
+  text: 'text-warn-ink',
 };
 
 export default function ValorEmpresaReportesPage() {
@@ -34,8 +34,8 @@ const handleSelectReport = (reportType: string) => {    console.log('Selected pr
     <div className="space-y-6 page-enter">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white">Reportes — Valor Empresa</h1>
-          <p className="text-gray-400 text-sm mt-1">Crea reportes personalizados seleccionando los atributos que necesitas</p>
+          <h1 className="text-3xl font-bold text-ink">Reportes — Valor Empresa</h1>
+          <p className="text-soft text-sm mt-1">Crea reportes personalizados seleccionando los atributos que necesitas</p>
         </div>
         <ProjectSelector value={proyecto} onChange={handleProyectoChange} />
       </div>

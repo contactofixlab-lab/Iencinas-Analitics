@@ -10,8 +10,8 @@ import { m as motion } from 'framer-motion';
 const ACCENT = {
   rgb: '168, 85, 247',
   solid: '#a855f7',
-  light: '#c084fc',
-  text: 'text-purple-400',
+  light: 'rgb(var(--violet-ink))',
+  text: 'text-violet-ink',
 };
 
 export default function MarketingReportesPage() {
@@ -34,8 +34,8 @@ const handleSelectReport = (reportType: string) => {    console.log('Selected pr
     <div className="space-y-6 page-enter">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white">Reportes — Marketing</h1>
-          <p className="text-gray-400 text-sm mt-1">Crea reportes personalizados seleccionando los atributos que necesitas</p>
+          <h1 className="text-3xl font-bold text-ink">Reportes — Marketing</h1>
+          <p className="text-soft text-sm mt-1">Crea reportes personalizados seleccionando los atributos que necesitas</p>
         </div>
         <ProjectSelector value={proyecto} onChange={handleProyectoChange} />
       </div>

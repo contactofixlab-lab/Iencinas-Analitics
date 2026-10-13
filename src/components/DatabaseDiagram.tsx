@@ -25,12 +25,12 @@ export default function DatabaseDiagram() {
         animate={{ opacity: 1, y: 0 }}
         className="flex items-center gap-3"
       >
-        <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600">
-          <Database size={24} className="text-white" />
+        <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-[#9CC4E8] to-[#6FA0D2]">
+          <Database size={24} className="text-ink" />
         </div>
         <div>
-          <h2 className="text-3xl font-bold text-white">Modelo de Base de Datos</h2>
-          <p className="text-gray-400 text-sm">Estructura relacional de Iencinas Analytics</p>
+          <h2 className="text-3xl font-bold text-ink">Modelo de Base de Datos</h2>
+          <p className="text-soft text-sm">Estructura relacional de Iencinas Analytics</p>
         </div>
       </motion.div>
 
@@ -44,26 +44,26 @@ export default function DatabaseDiagram() {
         {/* TABLA: PROYECTOS */}
         <motion.div
           variants={itemVariants}
-          className="lg:col-span-1 rounded-[20px] p-6 border-2 border-green-500/50 bg-green-500/10"
+          className="lg:col-span-1 glass-card glass-card--compact bg-[rgba(152,211,186,0.30)]"
           style={{
-            background: 'linear-gradient(160deg, rgba(34,197,94,0.15) 0%, rgba(34,197,94,0.05) 100%)',
+            background: 'linear-gradient(160deg, rgba(143,185,224,0.13) 0%, rgba(143,185,224,0.08) 100%)',
             backdropFilter: 'blur(12px)',
           }}
         >
           <div className="flex items-center gap-2 mb-4">
-            <Key size={16} className="text-green-400" />
-            <h3 className="font-bold text-white text-sm uppercase tracking-wider">Proyectos</h3>
+            <Key size={16} className="text-ok-ink" />
+            <h3 className="font-bold text-ink text-sm uppercase tracking-wider">Proyectos</h3>
           </div>
           <div className="space-y-2 text-xs">
-            <div className="text-green-400 font-semibold">🔑 id</div>
-            <div className="text-gray-300">nombre</div>
-            <div className="text-gray-300">ubicacion</div>
-            <div className="text-gray-300">estado</div>
-            <div className="text-gray-300">fechaInicio</div>
-            <div className="text-gray-300">fechaFin?</div>
+            <div className="text-ok-ink font-semibold">PK id</div>
+            <div className="text-soft">nombre</div>
+            <div className="text-soft">ubicacion</div>
+            <div className="text-soft">estado</div>
+            <div className="text-soft">fechaInicio</div>
+            <div className="text-soft">fechaFin?</div>
           </div>
-          <div className="mt-4 pt-4 border-t border-green-500/30">
-            <p className="text-gray-400 text-xs">13 registros</p>
+          <div className="mt-4 pt-4 border-t border-ok/40">
+            <p className="text-soft text-xs">13 registros</p>
           </div>
         </motion.div>
 
@@ -71,16 +71,16 @@ export default function DatabaseDiagram() {
         <motion.div variants={itemVariants} className="lg:col-span-1 flex flex-col justify-center items-center">
           <div className="space-y-8 w-full">
             <div className="flex items-center gap-2">
-              <div className="w-full h-1 bg-gradient-to-r from-green-500 to-blue-500"></div>
-              <Link2 size={16} className="text-blue-400 flex-shrink-0" />
+              <div className="w-full h-1 bg-gradient-to-r from-[#98D3BA] to-[#6DB899]"></div>
+              <Link2 size={16} className="text-brand-deep flex-shrink-0" />
             </div>
-            <div className="text-center text-xs text-gray-400">
+            <div className="text-center text-xs text-soft">
               <p>1:N</p>
-              <p className="text-gray-500 mt-1">One to Many</p>
+              <p className="text-mute mt-1">One to Many</p>
             </div>
             <div className="flex items-center gap-2">
-              <Link2 size={16} className="text-blue-400 flex-shrink-0" />
-              <div className="w-full h-1 bg-gradient-to-r from-blue-500 to-orange-500"></div>
+              <Link2 size={16} className="text-brand-deep flex-shrink-0" />
+              <div className="w-full h-1 bg-gradient-to-r from-[#9CC4E8] to-[#6FA0D2]"></div>
             </div>
           </div>
         </motion.div>
@@ -88,26 +88,26 @@ export default function DatabaseDiagram() {
         {/* TABLA: TRANSACCIONES */}
         <motion.div
           variants={itemVariants}
-          className="lg:col-span-1 rounded-[20px] p-6 border-2 border-blue-500/50 bg-blue-500/10"
+          className="lg:col-span-1 glass-card glass-card--compact bg-[rgba(156,196,232,0.30)]"
           style={{
-            background: 'linear-gradient(160deg, rgba(59,130,246,0.15) 0%, rgba(59,130,246,0.05) 100%)',
+            background: 'linear-gradient(160deg, rgba(120,168,215,0.13) 0%, rgba(120,168,215,0.08) 100%)',
             backdropFilter: 'blur(12px)',
           }}
         >
           <div className="flex items-center gap-2 mb-4">
-            <Key size={16} className="text-blue-400" />
-            <h3 className="font-bold text-white text-sm uppercase tracking-wider">Transacciones</h3>
+            <Key size={16} className="text-brand-deep" />
+            <h3 className="font-bold text-ink text-sm uppercase tracking-wider">Transacciones</h3>
           </div>
           <div className="space-y-2 text-xs">
-            <div className="text-blue-400 font-semibold">🔑 id</div>
-            <div className="text-blue-400 font-semibold">🔗 proyectoId</div>
-            <div className="text-gray-300">concepto</div>
-            <div className="text-gray-300">tipo (Ingreso/Egreso)</div>
-            <div className="text-gray-300">monto</div>
-            <div className="text-gray-300">fecha</div>
+            <div className="text-brand-deep font-semibold">PK id</div>
+            <div className="text-brand-deep font-semibold">FK proyectoId</div>
+            <div className="text-soft">concepto</div>
+            <div className="text-soft">tipo (Ingreso/Egreso)</div>
+            <div className="text-soft">monto</div>
+            <div className="text-soft">fecha</div>
           </div>
-          <div className="mt-4 pt-4 border-t border-blue-500/30">
-            <p className="text-gray-400 text-xs">60+ registros</p>
+          <div className="mt-4 pt-4 border-t border-brand/40">
+            <p className="text-soft text-xs">60+ registros</p>
           </div>
         </motion.div>
 
@@ -115,16 +115,16 @@ export default function DatabaseDiagram() {
         <motion.div variants={itemVariants} className="lg:col-span-1 flex flex-col justify-center items-center">
           <div className="space-y-8 w-full">
             <div className="flex items-center gap-2">
-              <div className="w-full h-1 bg-gradient-to-r from-orange-500 to-purple-500"></div>
-              <Link2 size={16} className="text-purple-400 flex-shrink-0" />
+              <div className="w-full h-1 bg-gradient-to-r from-[#F5C9A3] to-[#E4A67C]"></div>
+              <Link2 size={16} className="text-violet-ink flex-shrink-0" />
             </div>
-            <div className="text-center text-xs text-gray-400">
+            <div className="text-center text-xs text-soft">
               <p>1:N</p>
-              <p className="text-gray-500 mt-1">One to Many</p>
+              <p className="text-mute mt-1">One to Many</p>
             </div>
             <div className="flex items-center gap-2">
-              <Link2 size={16} className="text-purple-400 flex-shrink-0" />
-              <div className="w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+              <Link2 size={16} className="text-violet-ink flex-shrink-0" />
+              <div className="w-full h-1 bg-gradient-to-r from-[#C3B3EA] to-[#9D89D8]"></div>
             </div>
           </div>
         </motion.div>
@@ -132,26 +132,26 @@ export default function DatabaseDiagram() {
         {/* TABLA: VENTAS */}
         <motion.div
           variants={itemVariants}
-          className="lg:col-span-1 rounded-[20px] p-6 border-2 border-orange-500/50 bg-orange-500/10"
+          className="lg:col-span-1 glass-card glass-card--compact bg-[rgba(245,201,163,0.32)]"
           style={{
-            background: 'linear-gradient(160deg, rgba(249,115,22,0.15) 0%, rgba(249,115,22,0.05) 100%)',
+            background: 'linear-gradient(160deg, rgba(214,150,80,0.13) 0%, rgba(214,150,80,0.08) 100%)',
             backdropFilter: 'blur(12px)',
           }}
         >
           <div className="flex items-center gap-2 mb-4">
-            <Key size={16} className="text-orange-400" />
-            <h3 className="font-bold text-white text-sm uppercase tracking-wider">Ventas</h3>
+            <Key size={16} className="text-warn-ink" />
+            <h3 className="font-bold text-ink text-sm uppercase tracking-wider">Ventas</h3>
           </div>
           <div className="space-y-2 text-xs">
-            <div className="text-orange-400 font-semibold">🔑 id</div>
-            <div className="text-orange-400 font-semibold">🔗 proyectoId</div>
-            <div className="text-gray-300">propiedad</div>
-            <div className="text-gray-300">etapa</div>
-            <div className="text-gray-300">valor</div>
-            <div className="text-gray-300">fecha</div>
+            <div className="text-warn-ink font-semibold">PK id</div>
+            <div className="text-warn-ink font-semibold">FK proyectoId</div>
+            <div className="text-soft">propiedad</div>
+            <div className="text-soft">etapa</div>
+            <div className="text-soft">valor</div>
+            <div className="text-soft">fecha</div>
           </div>
-          <div className="mt-4 pt-4 border-t border-orange-500/30">
-            <p className="text-gray-400 text-xs">50+ registros</p>
+          <div className="mt-4 pt-4 border-t border-warn/40">
+            <p className="text-soft text-xs">50+ registros</p>
           </div>
         </motion.div>
       </motion.div>
@@ -166,76 +166,76 @@ export default function DatabaseDiagram() {
         {/* TABLA: LEADS */}
         <motion.div
           variants={itemVariants}
-          className="lg:col-span-2 rounded-[20px] p-6 border-2 border-purple-500/50 bg-purple-500/10"
+          className="lg:col-span-2 glass-card glass-card--compact bg-[rgba(195,179,234,0.28)]"
           style={{
-            background: 'linear-gradient(160deg, rgba(168,85,247,0.15) 0%, rgba(168,85,247,0.05) 100%)',
+            background: 'linear-gradient(160deg, rgba(150,128,214,0.13) 0%, rgba(150,128,214,0.08) 100%)',
             backdropFilter: 'blur(12px)',
           }}
         >
           <div className="flex items-center gap-2 mb-4">
-            <Key size={16} className="text-purple-400" />
-            <h3 className="font-bold text-white text-sm uppercase tracking-wider">Leads</h3>
+            <Key size={16} className="text-violet-ink" />
+            <h3 className="font-bold text-ink text-sm uppercase tracking-wider">Leads</h3>
           </div>
           <div className="space-y-2 text-xs">
-            <div className="text-purple-400 font-semibold">🔑 id</div>
-            <div className="text-purple-400 font-semibold">🔗 proyectoId</div>
-            <div className="text-gray-300">nombre, email, telefono</div>
-            <div className="text-gray-300">canal (Web, Email, Evento, etc)</div>
-            <div className="text-gray-300">costo, estado</div>
-            <div className="text-gray-300">fecha</div>
+            <div className="text-violet-ink font-semibold">PK id</div>
+            <div className="text-violet-ink font-semibold">FK proyectoId</div>
+            <div className="text-soft">nombre, email, telefono</div>
+            <div className="text-soft">canal (Web, Email, Evento, etc)</div>
+            <div className="text-soft">costo, estado</div>
+            <div className="text-soft">fecha</div>
           </div>
-          <div className="mt-4 pt-4 border-t border-purple-500/30">
-            <p className="text-gray-400 text-xs">55+ registros</p>
+          <div className="mt-4 pt-4 border-t border-violet/40">
+            <p className="text-soft text-xs">55+ registros</p>
           </div>
         </motion.div>
 
         {/* TABLA: VALUACIONES */}
         <motion.div
           variants={itemVariants}
-          className="lg:col-span-2 rounded-[20px] p-6 border-2 border-amber-500/50 bg-amber-500/10"
+          className="lg:col-span-2 glass-card glass-card--compact bg-[rgba(245,201,163,0.32)]"
           style={{
-            background: 'linear-gradient(160deg, rgba(245,158,11,0.15) 0%, rgba(245,158,11,0.05) 100%)',
+            background: 'linear-gradient(160deg, rgba(214,150,80,0.13) 0%, rgba(214,150,80,0.08) 100%)',
             backdropFilter: 'blur(12px)',
           }}
         >
           <div className="flex items-center gap-2 mb-4">
-            <Key size={16} className="text-amber-400" />
-            <h3 className="font-bold text-white text-sm uppercase tracking-wider">Valuaciones</h3>
+            <Key size={16} className="text-warn-ink" />
+            <h3 className="font-bold text-ink text-sm uppercase tracking-wider">Valuaciones</h3>
           </div>
           <div className="space-y-2 text-xs">
-            <div className="text-amber-400 font-semibold">🔑 id</div>
-            <div className="text-amber-400 font-semibold">🔗 proyectoId</div>
-            <div className="text-gray-300">anio, valor, crecimiento</div>
-            <div className="text-gray-300">fecha, metodologia</div>
-            <div className="text-gray-300">DCF, Comparables</div>
+            <div className="text-warn-ink font-semibold">PK id</div>
+            <div className="text-warn-ink font-semibold">FK proyectoId</div>
+            <div className="text-soft">anio, valor, crecimiento</div>
+            <div className="text-soft">fecha, metodologia</div>
+            <div className="text-soft">DCF, Comparables</div>
           </div>
-          <div className="mt-4 pt-4 border-t border-amber-500/30">
-            <p className="text-gray-400 text-xs">55+ registros</p>
+          <div className="mt-4 pt-4 border-t border-warn/40">
+            <p className="text-soft text-xs">55+ registros</p>
           </div>
         </motion.div>
 
         {/* Leyenda */}
         <motion.div
           variants={itemVariants}
-          className="lg:col-span-1 rounded-[20px] p-6 border border-gray-500/30 bg-gray-900/50"
+          className="lg:col-span-1 glass-card glass-card--compact"
         >
-          <h4 className="font-bold text-white text-sm mb-4">Leyenda</h4>
+          <h4 className="font-bold text-ink text-sm mb-4">Leyenda</h4>
           <div className="space-y-3 text-xs">
             <div className="flex items-center gap-2">
-              <Key size={14} className="text-yellow-400" />
-              <span className="text-gray-300">Primary Key</span>
+              <Key size={14} className="text-warn-ink" />
+              <span className="text-soft">Primary Key</span>
             </div>
             <div className="flex items-center gap-2">
-              <Link2 size={14} className="text-blue-400" />
-              <span className="text-gray-300">Foreign Key</span>
+              <Link2 size={14} className="text-brand-deep" />
+              <span className="text-soft">Foreign Key</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              <span className="text-gray-300">1:N Relation</span>
+              <div className="w-3 h-3 rounded-full bg-ok"></div>
+              <span className="text-soft">1:N Relation</span>
             </div>
-            <div className="mt-4 pt-4 border-t border-gray-500/20">
-              <p className="text-gray-500 text-xs">Total: 275+ registros</p>
-              <p className="text-gray-500 text-xs">5 entidades</p>
+            <div className="mt-4 pt-4 border-t border-line/30">
+              <p className="text-mute text-xs">Total: 275+ registros</p>
+              <p className="text-mute text-xs">5 entidades</p>
             </div>
           </div>
         </motion.div>
@@ -249,35 +249,35 @@ export default function DatabaseDiagram() {
         className="grid grid-cols-1 md:grid-cols-3 gap-4"
       >
         <div
-          className="rounded-[20px] p-6 border border-gray-500/30"
+          className="glass-card glass-card--compact"
           style={{
-            background: 'linear-gradient(160deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)',
+            background: 'linear-gradient(160deg, rgb(255 255 255 / 0.66) 0%, rgb(255 255 255 / 0.46) 100%)',
           }}
         >
-          <h4 className="font-bold text-white mb-2 text-sm">Integridad Referencial</h4>
-          <p className="text-gray-400 text-xs">
+          <h4 className="font-bold text-ink mb-2 text-sm">Integridad Referencial</h4>
+          <p className="text-soft text-xs">
             Todas las tablas relacionales mantienen FK a proyectos. Garantiza consistencia de datos.
           </p>
         </div>
         <div
-          className="rounded-[20px] p-6 border border-gray-500/30"
+          className="glass-card glass-card--compact"
           style={{
-            background: 'linear-gradient(160deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)',
+            background: 'linear-gradient(160deg, rgb(255 255 255 / 0.66) 0%, rgb(255 255 255 / 0.46) 100%)',
           }}
         >
-          <h4 className="font-bold text-white mb-2 text-sm">Escalabilidad</h4>
-          <p className="text-gray-400 text-xs">
+          <h4 className="font-bold text-ink mb-2 text-sm">Escalabilidad</h4>
+          <p className="text-soft text-xs">
             Estructura permite crecimiento sin límite. 13 proyectos, 275+ registros de prueba.
           </p>
         </div>
         <div
-          className="rounded-[20px] p-6 border border-gray-500/30"
+          className="glass-card glass-card--compact"
           style={{
-            background: 'linear-gradient(160deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)',
+            background: 'linear-gradient(160deg, rgb(255 255 255 / 0.66) 0%, rgb(255 255 255 / 0.46) 100%)',
           }}
         >
-          <h4 className="font-bold text-white mb-2 text-sm">Flexibilidad</h4>
-          <p className="text-gray-400 text-xs">
+          <h4 className="font-bold text-ink mb-2 text-sm">Flexibilidad</h4>
+          <p className="text-soft text-xs">
             Fácil de adaptar a múltiples proyectos inmobiliarios con diferentes características.
           </p>
         </div>

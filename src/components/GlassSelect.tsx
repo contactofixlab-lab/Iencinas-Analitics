@@ -63,38 +63,20 @@ export default function GlassSelect({
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -8, scale: 0.97 }}
         transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          ...pos,
-          background: 'linear-gradient(135deg, rgba(10,18,35,0.97), rgba(16,28,48,0.95))',
-          backdropFilter: 'blur(24px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(24px) saturate(150%)',
-          border: '1px solid rgba(74,197,94,0.32)',
-          borderRadius: '14px',
-          boxShadow: '0 24px 64px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.10)',
-          overflow: 'hidden',
-          padding: '6px',
-        }}
+        className="menu-panel"
+        style={{ ...pos, overflow: 'hidden' }}
       >
         {allOptions.map(opt => {
           const active = opt.value === value;
           return (
             <button
               key={opt.value || '__all'}
+              type="button"
               onClick={() => { onChange(opt.value); setOpen(false); }}
-              style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                width: '100%', padding: '10px 12px', textAlign: 'left',
-                borderRadius: '10px',
-                background: active ? 'rgba(74,222,128,0.18)' : 'transparent',
-                color: active ? '#4ade80' : '#d1d5db',
-                fontSize: '14px', fontWeight: active ? 600 : 400,
-                cursor: 'pointer', transition: 'background 0.15s',
-              }}
-              onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
-              onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+              className={`menu-item ${active ? 'menu-item--active' : ''}`}
             >
               {opt.label}
-              {active && <Check size={15} />}
+              {active && <Check size={15} strokeWidth={2} />}
             </button>
           );
         })}
@@ -107,14 +89,15 @@ export default function GlassSelect({
     <>
       <button
         ref={btnRef}
+        type="button"
         onClick={toggle}
         className="field w-full flex items-center justify-between"
         style={{ cursor: 'pointer' }}
       >
-        <span style={{ color: selected && selected.value ? '#fff' : 'rgba(255,255,255,0.55)' }}>
+        <span style={{ color: selected && selected.value ? 'rgb(var(--ink))' : 'rgb(var(--ink-3))' }}>
           {selected ? selected.label : placeholder}
         </span>
-        <ChevronDown size={16} className={`text-green-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown size={16} strokeWidth={1.8} className={`text-soft transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
       </button>
       {dd}
     </>

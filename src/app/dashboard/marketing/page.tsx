@@ -14,7 +14,7 @@ const MarketingCharts = dynamic(() => import('@/components/charts/MarketingChart
   loading: () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" aria-hidden="true">
       {[0, 1].map(i => (
-        <div key={i} className="rounded-2xl h-[330px]" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }} />
+        <div key={i} className="rounded-2xl h-[330px]" style={{ background: 'rgb(255 255 255 / 0.56)', border: '1px solid rgb(var(--line) / 0.30)' }} />
       ))}
     </div>
   ),
@@ -76,8 +76,8 @@ export default function MarketingPage() {
     <div className="space-y-6 page-enter">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white">Marketing</h1>
-          <p className="text-gray-400 text-sm mt-1">Métricas de leads, campañas y ROI</p>
+          <h1 className="text-3xl font-bold text-ink">Marketing</h1>
+          <p className="text-soft text-sm mt-1">Métricas de leads, campañas y ROI</p>
         </div>
         <ProjectSelector value={proyecto} onChange={handleProyectoChange} />
       </div>
@@ -100,43 +100,37 @@ export default function MarketingPage() {
 
       <MarketingCharts data={data} loading={loading} />
 
-      <div className="rounded-2xl overflow-hidden" style={{
-        background: 'rgba(255, 255, 255, 0.08)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
-        boxShadow: '0 16px 48px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
-      }}>
-        <div className="px-6 py-4 border-b border-white/10">
-          <h3 className="text-sm font-semibold text-white">Rendimiento por Canal ({filteredCanales.length})</h3>
+      <div className="table-glass">
+        <div className="px-6 py-4 border-b border-line/25">
+          <h3 className="text-sm font-semibold text-ink">Rendimiento por Canal ({filteredCanales.length})</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-white/5">
+            <thead>
               <tr>
                 {['Canal', 'Leads', 'Inversión', 'Costo/Lead', 'ROI'].map(h => (
-                  <th key={h} className="text-left px-6 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">{h}</th>
+                  <th key={h} className="text-left px-6 py-3 text-xs font-semibold text-soft uppercase tracking-wider">{h}</th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody>
               {filteredCanales.length > 0 ? filteredCanales.map((c, i) => {
                 const cpl = c.inversion > 0 ? `$${Math.round(c.inversion / c.leads)}` : 'Orgánico';
                 const roi = c.inversion > 0 ? `${Math.round((c.leads * 1000 / c.inversion) * 100)}%` : 'N/A';
                 return (
-                  <tr key={i} className="hover:bg-white/5 transition-colors">
-                    <td className="px-6 py-3 font-medium text-gray-300">{c.canal}</td>
-                    <td className="px-6 py-3 text-gray-400">{c.leads}</td>
-                    <td className="px-6 py-3 text-gray-400">{c.inversion > 0 ? `$${c.inversion.toLocaleString()}` : '-'}</td>
-                    <td className="px-6 py-3 text-gray-400">{cpl}</td>
+                  <tr key={i} className="">
+                    <td className="px-6 py-3 font-medium text-soft">{c.canal}</td>
+                    <td className="px-6 py-3 text-soft">{c.leads}</td>
+                    <td className="px-6 py-3 text-soft">{c.inversion > 0 ? `$${c.inversion.toLocaleString()}` : '-'}</td>
+                    <td className="px-6 py-3 text-soft">{cpl}</td>
                     <td className="px-6 py-3">
-                      <span className="text-green-400 font-semibold">{roi}</span>
+                      <span className="text-ok-ink font-semibold">{roi}</span>
                     </td>
                   </tr>
                 );
               }) : (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan={5} className="px-6 py-12 text-center text-mute">
                     No hay canales que coincidan con la búsqueda
                   </td>
                 </tr>

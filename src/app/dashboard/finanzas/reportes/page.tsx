@@ -10,9 +10,9 @@ import { m as motion } from 'framer-motion';
 
 const ACCENT = {
   rgb: '34, 197, 94',
-  solid: '#22c55e',
-  light: '#4ade80',
-  text: 'text-green-400',
+  solid: 'rgb(var(--brand-deep))',
+  light: 'rgb(var(--brand-deep))',
+  text: 'text-ok-ink',
 };
 
 export default function FinanzasReportesPage() {
@@ -40,8 +40,8 @@ export default function FinanzasReportesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white">Reportes — Finanzas</h1>
-          <p className="text-gray-400 text-sm mt-1">Crea reportes personalizados o elige uno de los prehechos</p>
+          <h1 className="text-3xl font-bold text-ink">Reportes — Finanzas</h1>
+          <p className="text-soft text-sm mt-1">Crea reportes personalizados o elige uno de los prehechos</p>
         </div>
         <ProjectSelector value={proyecto} onChange={handleProyectoChange} />
       </div>

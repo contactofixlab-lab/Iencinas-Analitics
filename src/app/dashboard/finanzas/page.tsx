@@ -14,7 +14,7 @@ const FinanzasCharts = dynamic(() => import('@/components/charts/FinanzasCharts'
   loading: () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" aria-hidden="true">
       {[0, 1].map(i => (
-        <div key={i} className="rounded-2xl h-[330px]" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }} />
+        <div key={i} className="rounded-2xl h-[330px]" style={{ background: 'rgb(255 255 255 / 0.56)', border: '1px solid rgb(var(--line) / 0.30)' }} />
       ))}
     </div>
   ),
@@ -115,8 +115,8 @@ export default function FinanzasPage() {
     <div className="space-y-6 page-enter">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white">Finanzas</h1>
-          <p className="text-gray-400 text-sm mt-1">Resumen financiero del período actual</p>
+          <h1 className="text-3xl font-bold text-ink">Finanzas</h1>
+          <p className="text-soft text-sm mt-1">Resumen financiero del período actual</p>
         </div>
         <ProjectSelector value={proyecto} onChange={handleProyectoChange} />
       </div>
@@ -150,41 +150,35 @@ export default function FinanzasPage() {
 
       <FinanzasCharts data={data} loading={loading} combined={combined} />
 
-      <div className="rounded-2xl overflow-hidden" style={{
-        background: 'rgba(255, 255, 255, 0.08)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
-        boxShadow: '0 16px 48px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
-      }}>
-        <div className="px-6 py-4 border-b border-white/10">
-          <h3 className="text-sm font-semibold text-white">Últimas Transacciones ({filteredTransacciones.length})</h3>
+      <div className="table-glass">
+        <div className="px-6 py-4 border-b border-line/25">
+          <h3 className="text-sm font-semibold text-ink">Últimas Transacciones ({filteredTransacciones.length})</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-white/5">
+            <thead>
               <tr>
                 {['ID', 'Concepto', 'Tipo', 'Monto', 'Fecha'].map(h => (
-                  <th key={h} className="text-left px-6 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">{h}</th>
+                  <th key={h} className="text-left px-6 py-3 text-xs font-semibold text-soft uppercase tracking-wider">{h}</th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody>
               {filteredTransacciones.length > 0 ? filteredTransacciones.map(t => (
-                <tr key={t.id} className="hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-3 font-mono text-gray-500 text-xs">{t.id}</td>
-                  <td className="px-6 py-3 text-gray-300 font-medium">{t.concepto}</td>
+                <tr key={t.id} className="">
+                  <td className="px-6 py-3 font-mono text-mute text-xs">{t.id}</td>
+                  <td className="px-6 py-3 text-soft font-medium">{t.concepto}</td>
                   <td className="px-6 py-3">
-                    <span className={`px-2.5 py-1 rounded-lg text-xs font-semibold ${t.tipo === 'Ingreso' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                    <span className={`px-2.5 py-1 rounded-lg text-xs font-semibold ${t.tipo === 'Ingreso' ? 'bg-ok/15 text-ok-ink' : 'bg-danger/15 text-danger-ink'}`}>
                       {t.tipo}
                     </span>
                   </td>
-                  <td className={`px-6 py-3 font-semibold ${t.tipo === 'Ingreso' ? 'text-green-400' : 'text-red-400'}`}>{t.monto}</td>
-                  <td className="px-6 py-3 text-gray-500">{t.fecha}</td>
+                  <td className={`px-6 py-3 font-semibold ${t.tipo === 'Ingreso' ? 'text-ok-ink' : 'text-danger-ink'}`}>{t.monto}</td>
+                  <td className="px-6 py-3 text-mute">{t.fecha}</td>
                 </tr>
               )) : (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan={5} className="px-6 py-12 text-center text-mute">
                     No hay transacciones que coincidan con los filtros
                   </td>
                 </tr>

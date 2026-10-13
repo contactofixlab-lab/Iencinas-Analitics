@@ -4,21 +4,8 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import { AnimatePresence, m as motion } from 'framer-motion';
-import { Bell, LogOut, User as UserIcon, ChevronDown } from 'lucide-react';
-
-const ROLE_LABELS: Record<string, string> = {
-  finanzas: 'Gerente de Finanzas',
-  comercial: 'Director Comercial',
-  marketing: 'Jefe de Marketing',
-  administrador: 'Administrador',
-};
-
-const ROLE_COLORS: Record<string, { bg: string; text: string }> = {
-  finanzas: { bg: 'from-blue-500 to-blue-600', text: 'text-blue-300' },
-  comercial: { bg: 'from-orange-500 to-orange-600', text: 'text-orange-300' },
-  marketing: { bg: 'from-purple-500 to-purple-600', text: 'text-purple-300' },
-  administrador: { bg: 'from-green-500 to-green-600', text: 'text-green-300' },
-};
+import { Bell, LogOut, Menu, User as UserIcon, ChevronDown } from 'lucide-react';
+import { ROLE_AVATAR, ROLE_CHIP, ROLE_LABELS } from '@/lib/ui';
 
 function getInitials(nombre: string, apellido1: string) {
   return `${nombre[0]}${apellido1[0]}`.toUpperCase();
@@ -47,147 +34,108 @@ export default function Navbar({ title }: { title?: string }) {
 
   const initials = getInitials(user.nombre, user.apellido1);
   const fullName = `${user.nombre} ${user.apellido1} ${user.apellido2}`;
-  const roleColor = ROLE_COLORS[user.role];
 
   return (
     <motion.header
       initial={{ opacity: 0, y: -16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="sticky z-40 flex items-center justify-between"
-      style={{
-        top: 16,
-        margin: 16,
-        marginBottom: 0,
-        padding: '12px 18px',
-        borderRadius: 26,
-        background: 'linear-gradient(180deg, rgba(13,24,40,0.82) 0%, rgba(10,18,32,0.86) 100%)',
-        backdropFilter: 'blur(28px) saturate(150%)',
-        WebkitBackdropFilter: 'blur(28px) saturate(150%)',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
-        boxShadow: '0 28px 70px rgba(0,0,0,0.50), inset 0 1px 0 rgba(255,255,255,0.14), 0 0 30px rgba(74,222,128,0.06)',
-      }}
+      className="glass-nav sticky z-40 flex items-center justify-between"
+      style={{ top: 16, margin: 16, marginBottom: 0, padding: '10px 16px', borderRadius: 'var(--r-panel)' }}
     >
-      {/* Logo — marca prominente con vidrio oscuro */}
-      <motion.div
-        whileHover={{ scale: 1.05 }}
-        className="flex items-center px-5 py-3 rounded-2xl transition-all"
-        style={{
-          background: 'linear-gradient(160deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)',
-          border: '1px solid rgba(74,222,128,0.25)',
-          boxShadow: '0 8px 28px rgba(74,222,128,0.12), inset 0 1px 0 rgba(255,255,255,0.08)',
-          backdropFilter: 'blur(12px)',
-        }}
+      <button
+        type="button"
+        aria-label="Abrir menú"
+        className="btn btn-secondary btn-icon lg:hidden mr-2"
+        onClick={() => window.dispatchEvent(new Event('iencinas:toggle-menu'))}
       >
-        <img
-          src="/logo.svg"
-          alt="Iencinas Analytics"
-          className="h-10 w-auto object-contain"
-        />
-      </motion.div>
-      {title && <h1 className="text-xl font-bold text-white">{title}</h1>}
+        <Menu size={20} strokeWidth={1.8} />
+      </button>
 
-      <div className="flex items-center gap-4">
-        {/* Notifications */}
-        <motion.button
-          whileHover={{ scale: 1.06, y: -2 }}
-          whileTap={{ scale: 0.95 }}
-          className="relative p-2.5 rounded-xl transition-all duration-200"
-          style={{
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03))',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            color: '#cbd5e1',
-            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)',
-          }}
+      {/* Logo */}
+      <div
+        className="flex items-center px-4 py-2 rounded-2xl"
+        style={{ background: 'rgb(255 255 255 / 0.65)', border: '1px solid var(--glass-border)', boxShadow: 'var(--shadow-sm), var(--inner-sheen)' }}
+      >
+        <img src="/logo.svg" alt="Iencinas Analytics" className="h-9 w-auto object-contain" />
+      </div>
+      {title && <h1 className="text-xl font-bold t-title">{title}</h1>}
+
+      <div className="flex items-center gap-3">
+        {/* Notificaciones */}
+        <button
+          type="button"
+          aria-label="Notificaciones"
+          className="btn btn-secondary btn-icon relative"
         >
-          <Bell size={20} />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-green-400 rounded-full"
-            style={{ boxShadow: '0 0 8px rgba(74,222,128,0.8)' }} />
-        </motion.button>
+          <Bell size={19} strokeWidth={1.8} />
+          <span className="absolute top-2 right-2.5 w-2 h-2 rounded-full" style={{ background: 'rgb(var(--brand-hover))', boxShadow: '0 0 0 3px rgb(255 255 255 / 0.9)' }} />
+        </button>
 
-        {/* User menu */}
+        {/* Menú de usuario */}
         <div className="relative" ref={ref}>
-          <motion.button
-            whileTap={{ scale: 0.98 }}
+          <button
+            type="button"
             onClick={() => setOpen(!open)}
-            className="flex items-center gap-3 pl-2 pr-3 py-2 rounded-xl transition-all duration-200"
+            aria-expanded={open}
+            className="flex items-center gap-3 pl-2 pr-3 py-1.5 rounded-2xl transition-all"
             style={{
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03))',
-              border: open ? '1px solid rgba(74,222,128,0.4)' : '1px solid rgba(255, 255, 255, 0.1)',
-              boxShadow: open ? '0 0 18px rgba(74,222,128,0.2)' : 'inset 0 1px 0 rgba(255,255,255,0.08)',
+              background: open ? 'rgb(var(--brand-soft) / 0.85)' : 'rgb(255 255 255 / 0.65)',
+              border: open ? '1px solid rgb(var(--brand))' : '1px solid var(--glass-border)',
+              boxShadow: 'var(--shadow-sm), var(--inner-sheen)',
             }}
           >
-            <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${roleColor.bg} flex items-center justify-center text-white font-bold text-sm`}
-              style={{ boxShadow: '0 6px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.25)' }}>
+            <div
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm"
+              style={{ background: ROLE_AVATAR[user.role], boxShadow: '0 4px 12px -4px rgb(92 124 158 / 0.5), inset 0 1px 0 rgb(255 255 255 / 0.5)', textShadow: '0 1px 2px rgb(52 73 94 / 0.25)' }}
+            >
               {initials}
             </div>
             <div className="text-left hidden sm:block">
-              <p className="text-sm font-semibold text-white leading-tight">{fullName}</p>
-              <p className="text-xs text-gray-400">{ROLE_LABELS[user.role]}</p>
+              <p className="text-sm font-semibold text-ink leading-tight">{fullName}</p>
+              <p className="text-xs text-soft">{ROLE_LABELS[user.role]}</p>
             </div>
-            <ChevronDown size={16} className={`text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`} />
-          </motion.button>
+            <ChevronDown size={16} className={`text-soft transition-transform ${open ? 'rotate-180' : ''}`} />
+          </button>
 
           <AnimatePresence>
             {open && (
               <motion.div
-                initial={{ opacity: 0, y: -10, scale: 0.96 }}
+                initial={{ opacity: 0, y: -8, scale: 0.97 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -10, scale: 0.96 }}
+                exit={{ opacity: 0, y: -8, scale: 0.97 }}
                 transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute right-0 top-full mt-2 w-72 rounded-2xl z-50 overflow-hidden"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(10,18,35,0.96), rgba(16,28,48,0.94))',
-                  backdropFilter: 'blur(28px) saturate(150%)',
-                  WebkitBackdropFilter: 'blur(28px) saturate(150%)',
-                  border: '1px solid rgba(74, 222, 128, 0.3)',
-                  boxShadow: '0 24px 64px rgba(0,0,0,0.55), inset 0 1px 0 rgba(74, 222, 128, 0.2)',
-                }}
+                className="glass-strong absolute right-0 top-full mt-3 w-72 z-50 overflow-hidden"
+                style={{ background: 'rgb(255 255 255 / 0.97)' }}
               >
-                {/* Header */}
-                <div className="px-5 py-4 border-b border-white/10">
+                <div className="px-5 py-4 border-b border-line/25">
                   <div className="flex items-center gap-3">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${roleColor.bg} flex items-center justify-center text-white font-bold text-lg`}
-                      style={{ boxShadow: '0 8px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.25)' }}>
+                    <div
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center text-white font-bold text-lg"
+                      style={{ background: ROLE_AVATAR[user.role], boxShadow: '0 6px 16px -6px rgb(92 124 158 / 0.55), inset 0 1px 0 rgb(255 255 255 / 0.5)', textShadow: '0 1px 2px rgb(52 73 94 / 0.25)' }}
+                    >
                       {initials}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-bold text-white truncate">{fullName}</p>
-                      <p className="text-xs text-gray-300 truncate">{user.email}</p>
+                      <p className="text-sm font-bold text-ink truncate">{fullName}</p>
+                      <p className="text-xs text-soft truncate">{user.email}</p>
                     </div>
                   </div>
                   <div className="mt-3">
-                    <span className={`text-xs px-3 py-1.5 rounded-lg font-bold ${roleColor.text} inline-block`}
-                      style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}>
-                      {ROLE_LABELS[user.role]}
-                    </span>
+                    <span className={ROLE_CHIP[user.role]}>{ROLE_LABELS[user.role]}</span>
                   </div>
                 </div>
 
-                {/* Menu items */}
-                <div className="px-4 py-3 space-y-2">
+                <div className="p-3 space-y-1.5">
                   <button
-                    onClick={() => {
-                      router.push('/dashboard/perfil');
-                      setOpen(false);
-                    }}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-white rounded-xl transition-all duration-200 font-medium"
-                    style={{ background: 'rgba(34, 197, 94, 0.18)', border: '1px solid rgba(34,197,94,0.3)' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(34, 197, 94, 0.3)'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(34, 197, 94, 0.18)'; }}
+                    type="button"
+                    onClick={() => { router.push('/dashboard/perfil'); setOpen(false); }}
+                    className="menu-item"
                   >
-                    <UserIcon size={18} className="text-green-300" />
-                    <span>Mi Perfil</span>
+                    <span className="flex items-center gap-3"><UserIcon size={18} strokeWidth={1.8} className="text-brand-deep" />Mi Perfil</span>
                   </button>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-300 rounded-xl transition-all duration-200 font-medium"
-                    style={{ background: 'rgba(239, 68, 68, 0.18)', border: '1px solid rgba(239,68,68,0.3)' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(239, 68, 68, 0.3)'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(239, 68, 68, 0.18)'; }}
-                  >
-                    <LogOut size={18} className="text-red-400" />
-                    <span>Cerrar Sesión</span>
+                  <button type="button" onClick={handleLogout} className="menu-item" style={{ color: 'rgb(160 52 64)' }}>
+                    <span className="flex items-center gap-3"><LogOut size={18} strokeWidth={1.8} />Cerrar Sesión</span>
                   </button>
                 </div>
               </motion.div>

@@ -105,72 +105,64 @@ export default function PermisosPage() {
     <div className="space-y-6 page-enter">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{
-            background: 'rgba(34, 197, 94, 0.2)',
-            border: '1px solid rgba(34, 197, 94, 0.4)',
-          }}>
-            <Shield size={20} className="text-green-400" />
+          <div className="icon-orb">
+            <Shield size={20} strokeWidth={1.8} />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white">Gestión de Permisos</h1>
-            <p className="text-gray-400 text-sm mt-0.5">Crea y administra permisos personalizados para usuarios</p>
+            <h1 className="text-3xl font-bold text-ink">Gestión de Permisos</h1>
+            <p className="text-soft text-sm mt-0.5">Crea y administra permisos personalizados para usuarios</p>
           </div>
         </div>
         <button
+          type="button"
           onClick={() => {
             setEditingId(null);
             setFormData({ nombre: '', descripcion: '', modulos: [] });
             setShowCreateModal(true);
           }}
-          className="shimmer-host flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-transform hover:scale-[1.03]"
-          style={{ background: 'linear-gradient(135deg, #22c55e, #15803d)', boxShadow: '0 8px 24px rgba(34,197,94,0.35)' }}
+          className="btn btn-primary"
         >
-          <Plus size={17} />
+          <Plus size={17} strokeWidth={1.8} />
           Nuevo Permiso
         </button>
       </div>
 
       {/* Tabla de Permisos */}
-      <div className="rounded-[20px] overflow-hidden" style={{
-        background: 'linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 100%)',
-        backdropFilter: 'blur(24px) saturate(150%)',
-        border: '1px solid rgba(255, 255, 255, 0.14)',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.18)',
-      }}>
+      <div className="table-glass">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-white/5">
-              <tr className="border-b border-white/10">
-                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Nombre</th>
-                <th className="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Descripción</th>
-                <th className="text-center px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Módulos</th>
-                <th className="text-center px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Usuarios</th>
-                <th className="text-center px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Acciones</th>
+            <thead>
+              <tr className="border-b border-line/25">
+                <th className="text-left px-6 py-4 text-xs font-semibold text-soft uppercase tracking-wider">Nombre</th>
+                <th className="text-left px-6 py-4 text-xs font-semibold text-soft uppercase tracking-wider">Descripción</th>
+                <th className="text-center px-6 py-4 text-xs font-semibold text-soft uppercase tracking-wider">Módulos</th>
+                <th className="text-center px-6 py-4 text-xs font-semibold text-soft uppercase tracking-wider">Usuarios</th>
+                <th className="text-center px-6 py-4 text-xs font-semibold text-soft uppercase tracking-wider">Acciones</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody>
               {permisos.map((p) => (
-                <tr key={p.id} className="hover:bg-white/5 transition-colors">
+                <tr key={p.id}>
                   <td className="px-6 py-3">
                     <div>
-                      <p className="text-white font-semibold">{p.nombre}</p>
+                      <p className="text-ink font-semibold">{p.nombre}</p>
                       {p.isPredeterminado && (
-                        <p className="text-xs text-green-400 mt-0.5">Predeterminado</p>
+                        <p className="text-xs text-ok-ink mt-0.5">Predeterminado</p>
                       )}
                     </div>
                   </td>
-                  <td className="px-6 py-3 text-gray-400">{p.descripcion}</td>
+                  <td className="px-6 py-3 text-soft">{p.descripcion}</td>
                   <td className="px-6 py-3 text-center">
                     <div className="flex flex-wrap gap-1 justify-center">
                       {p.modulos.map(m => (
-                        <span key={m} className="px-2 py-1 rounded text-xs bg-white/10 text-gray-300">
+                        <span key={m} className="chip chip-neutral">
                           {m === 'valor-empresa' ? 'Valor' : m.charAt(0).toUpperCase() + m.slice(1)}
                         </span>
                       ))}
                     </div>
                   </td>
                   <td className="px-6 py-3 text-center">
-                    <span className="px-3 py-1 rounded-lg bg-blue-500/20 text-blue-400 text-sm font-semibold">
+                    <span className="chip chip-info">
                       {getUsuariosConPermiso(p.id)}
                     </span>
                   </td>
@@ -180,17 +172,17 @@ export default function PermisosPage() {
                         <>
                           <button
                             onClick={() => startEdit(p)}
-                            className="p-1.5 rounded-lg text-blue-400 hover:bg-blue-500/20 transition-colors"
+                            className="btn btn-ghost btn-icon !w-9 !h-9 text-brand-deep"
                             title="Editar"
                           >
-                            <Pencil size={16} />
+                            <Pencil size={16} strokeWidth={1.8} />
                           </button>
                           <button
                             onClick={() => deletePermiso(p.id)}
-                            className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/20 transition-colors"
+                            className="btn btn-ghost btn-icon !w-9 !h-9 text-danger-ink"
                             title="Eliminar"
                           >
-                            <Trash2 size={16} />
+                            <Trash2 size={16} strokeWidth={1.8} />
                           </button>
                         </>
                       )}
@@ -205,27 +197,22 @@ export default function PermisosPage() {
 
       {/* Modal para crear permiso */}
       {showCreateModal && !showEditModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 p-4"
-          style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}>
-          <div className="rounded-[20px] w-full max-w-md overflow-hidden" style={{
-            background: 'linear-gradient(160deg, rgba(13,24,40,0.97), rgba(16,28,48,0.95))',
-            backdropFilter: 'blur(28px) saturate(150%)',
-            border: '1px solid rgba(74, 222, 128, 0.3)',
-            boxShadow: '0 30px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12)',
-          }}>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
-              <h2 className="text-xl font-bold text-white">Crear Permiso Personalizado</h2>
+        <div className="modal-overlay fixed inset-0 flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true">
+          <div className="modal-panel w-full max-w-md overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-line/25">
+              <h2 className="text-xl font-bold text-ink">Crear Permiso Personalizado</h2>
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="p-2 rounded-lg text-gray-400 hover:bg-white/10 transition-colors"
+                aria-label="Cerrar"
+                className="btn btn-ghost btn-icon"
               >
-                <X size={20} />
+                <X size={20} strokeWidth={1.8} />
               </button>
             </div>
 
             <div className="p-6 space-y-4">
               <div>
-                <label className="text-sm font-semibold text-white block mb-2">Nombre del Permiso</label>
+                <label className="label">Nombre del Permiso</label>
                 <input
                   type="text"
                   placeholder="Ej: Reportes Operacionales"
@@ -236,7 +223,7 @@ export default function PermisosPage() {
               </div>
 
               <div>
-                <label className="text-sm font-semibold text-white block mb-2">Descripción</label>
+                <label className="label">Descripción</label>
                 <input
                   type="text"
                   placeholder="Ej: Acceso a reportes operacionales avanzados"
@@ -247,7 +234,7 @@ export default function PermisosPage() {
               </div>
 
               <div>
-                <label className="text-sm font-semibold text-white block mb-3">Módulos Incluidos</label>
+                <label className="label">Módulos Incluidos</label>
                 <div className="space-y-2">
                   {['finanzas', 'comercial', 'marketing', 'valor-empresa', 'admin', 'reportes'].map(modulo => (
                     <label key={modulo} className="flex items-center gap-3 cursor-pointer">
@@ -255,9 +242,9 @@ export default function PermisosPage() {
                         type="checkbox"
                         checked={formData.modulos.includes(modulo)}
                         onChange={() => toggleModulo(modulo)}
-                        className="w-4 h-4 rounded-md accent-green-500"
+                        className="w-4 h-4 rounded-md"
                       />
-                      <span className="text-white text-sm font-medium capitalize">
+                      <span className="text-ink text-sm font-medium capitalize">
                         {modulo === 'valor-empresa' ? 'Valor Empresa' : modulo}
                       </span>
                     </label>
@@ -266,17 +253,17 @@ export default function PermisosPage() {
               </div>
             </div>
 
-            <div className="flex gap-3 px-6 py-4 border-t border-white/10">
+            <div className="flex gap-3 px-6 py-4 border-t border-line/25">
               <button
+                type="button"
                 onClick={() => setShowCreateModal(false)}
-                className="flex-1 py-2.5 rounded-xl border border-white/20 text-sm font-medium text-white hover:bg-white/10 transition-colors"
+                className="btn btn-secondary flex-1"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleCreatePermiso}
-                className="flex-1 py-2.5 rounded-xl text-sm font-medium text-white transition-colors"
-                style={{ backgroundColor: '#15803d' }}
+                className="btn btn-primary flex-1"
               >
                 Crear Permiso
               </button>
@@ -287,27 +274,22 @@ export default function PermisosPage() {
 
       {/* Modal para editar permiso */}
       {showEditModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 p-4"
-          style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}>
-          <div className="rounded-[20px] w-full max-w-md overflow-hidden" style={{
-            background: 'linear-gradient(160deg, rgba(13,24,40,0.97), rgba(16,28,48,0.95))',
-            backdropFilter: 'blur(28px) saturate(150%)',
-            border: '1px solid rgba(74, 222, 128, 0.3)',
-            boxShadow: '0 30px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12)',
-          }}>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
-              <h2 className="text-xl font-bold text-white">Editar Permiso</h2>
+        <div className="modal-overlay fixed inset-0 flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true">
+          <div className="modal-panel w-full max-w-md overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-line/25">
+              <h2 className="text-xl font-bold text-ink">Editar Permiso</h2>
               <button
                 onClick={() => setShowEditModal(false)}
-                className="p-2 rounded-lg text-gray-400 hover:bg-white/10 transition-colors"
+                aria-label="Cerrar"
+                className="btn btn-ghost btn-icon"
               >
-                <X size={20} />
+                <X size={20} strokeWidth={1.8} />
               </button>
             </div>
 
             <div className="p-6 space-y-4">
               <div>
-                <label className="text-sm font-semibold text-white block mb-2">Nombre del Permiso</label>
+                <label className="label">Nombre del Permiso</label>
                 <input
                   type="text"
                   value={formData.nombre}
@@ -317,7 +299,7 @@ export default function PermisosPage() {
               </div>
 
               <div>
-                <label className="text-sm font-semibold text-white block mb-2">Descripción</label>
+                <label className="label">Descripción</label>
                 <input
                   type="text"
                   value={formData.descripcion}
@@ -327,7 +309,7 @@ export default function PermisosPage() {
               </div>
 
               <div>
-                <label className="text-sm font-semibold text-white block mb-3">Módulos Incluidos</label>
+                <label className="label">Módulos Incluidos</label>
                 <div className="space-y-2">
                   {['finanzas', 'comercial', 'marketing', 'valor-empresa', 'admin', 'reportes'].map(modulo => (
                     <label key={modulo} className="flex items-center gap-3 cursor-pointer">
@@ -335,9 +317,9 @@ export default function PermisosPage() {
                         type="checkbox"
                         checked={formData.modulos.includes(modulo)}
                         onChange={() => toggleModulo(modulo)}
-                        className="w-4 h-4 rounded-md accent-green-500"
+                        className="w-4 h-4 rounded-md"
                       />
-                      <span className="text-white text-sm font-medium capitalize">
+                      <span className="text-ink text-sm font-medium capitalize">
                         {modulo === 'valor-empresa' ? 'Valor Empresa' : modulo}
                       </span>
                     </label>
@@ -346,17 +328,16 @@ export default function PermisosPage() {
               </div>
             </div>
 
-            <div className="flex gap-3 px-6 py-4 border-t border-white/10">
+            <div className="flex gap-3 px-6 py-4 border-t border-line/25">
               <button
                 onClick={() => setShowEditModal(false)}
-                className="flex-1 py-2.5 rounded-xl border border-white/20 text-sm font-medium text-white hover:bg-white/10 transition-colors"
+                className="btn btn-secondary flex-1"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleEditPermiso}
-                className="flex-1 py-2.5 rounded-xl text-sm font-medium text-white transition-colors"
-                style={{ backgroundColor: '#15803d' }}
+                className="btn btn-primary flex-1"
               >
                 Guardar Cambios
               </button>

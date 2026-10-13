@@ -80,7 +80,7 @@ interface AdvancedReportBuilderProps {
 }
 
 export default function AdvancedReportBuilder({
-  accentColor = { rgb: '34, 197, 94', solid: '#22c55e', text: 'text-green-400' },
+  accentColor = { rgb: '34, 197, 94', solid: 'rgb(var(--brand-deep))', text: 'text-ok-ink' },
   onGenerate,
 }: AdvancedReportBuilderProps) {
   const { user } = useAuth();
@@ -211,25 +211,21 @@ export default function AdvancedReportBuilder({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* COLUMNA IZQUIERDA: Previsualizador GRANDE */}
         <div className="lg:col-span-2 space-y-4">
-          {/* Previsualizador - Tabla */}
-          {previewData.length > 0 && (
+          {previewData.length > 0 ? (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="rounded-[20px] p-6 overflow-hidden"
-              style={{
-                background: 'linear-gradient(160deg, rgba(34,197,94,0.12) 0%, rgba(34,197,94,0.03) 100%)',
-                backdropFilter: 'blur(24px)',
-                border: '1px solid rgba(34,197,94,0.25)',
-              }}
+              className="table-glass"
             >
-              <h3 className="text-white font-semibold mb-4 text-sm">Previsualizador ({previewData.length} registros)</h3>
+              <div className="px-6 py-4 border-b border-line/25">
+                <h3 className="text-ink font-semibold text-sm">Previsualizador ({previewData.length} registros)</h3>
+              </div>
               <div className="overflow-x-auto max-h-96">
                 <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-white/10 sticky top-0 bg-black/20">
+                  <thead className="sticky top-0">
+                    <tr>
                       {columns.map((col) => (
-                        <th key={col} className="px-4 py-2 text-left text-gray-300 font-medium whitespace-nowrap">
+                        <th key={col} className="px-4 py-3 text-left whitespace-nowrap">
                           {col}
                         </th>
                       ))}
@@ -237,9 +233,9 @@ export default function AdvancedReportBuilder({
                   </thead>
                   <tbody>
                     {previewData.map((row, idx) => (
-                      <tr key={idx} className="border-b border-white/5 hover:bg-white/5">
+                      <tr key={idx}>
                         {columns.map((col) => (
-                          <td key={`${idx}-${col}`} className="px-4 py-2 text-gray-300 whitespace-nowrap">
+                          <td key={`${idx}-${col}`} className="px-4 py-2.5 whitespace-nowrap">
                             {String(row[col] || '-').slice(0, 30)}
                           </td>
                         ))}
@@ -249,59 +245,59 @@ export default function AdvancedReportBuilder({
                 </table>
               </div>
             </motion.div>
+          ) : (
+            <div className="glass-card glass-card--muted empty-state" style={{ minHeight: 260 }}>
+              <div className="icon-orb !w-14 !h-14">
+                <Database size={24} strokeWidth={1.6} />
+              </div>
+              <p className="font-semibold text-ink">Tu previsualización aparecerá aquí</p>
+              <p className="text-sm text-soft max-w-sm">
+                Elige atributos en el panel de la derecha o usa uno de los reportes prehechos del sistema.
+              </p>
+            </div>
           )}
 
           {/* Botón Generar Reporte - Debajo del Previsualizador */}
-          <motion.button
+          <button
+            type="button"
             onClick={handleGenerate}
             disabled={selectedAttributes.length === 0 || generating}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full py-4 rounded-xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            style={{
-              background: `linear-gradient(135deg, ${accentColor.solid}, rgb(${accentColor.rgb}))`,
-              color: 'white',
-            }}
+            className="btn btn-primary w-full !h-14 !text-base"
           >
-            <Play size={18} />
+            <Play size={18} strokeWidth={1.8} />
             {generating ? 'Generando...' : 'Generar Reporte'}
-          </motion.button>
+          </button>
         </div>
 
-        {/* COLUMNA DERECHA: Selector de Atributos PEQUEÑO */}
-        <div className="rounded-[20px] p-6 overflow-hidden h-fit" style={{
-          background: 'linear-gradient(160deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.04) 100%)',
-          backdropFilter: 'blur(24px) saturate(150%)',
-          border: '1px solid rgba(255, 255, 255, 0.14)',
-        }}>
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{
-              background: `rgba(${accentColor.rgb}, 0.18)`,
-              border: `1px solid rgba(${accentColor.rgb}, 0.4)`,
-            }}>
-              <Database size={16} className={accentColor.text} />
+        {/* COLUMNA DERECHA: Selector de Atributos */}
+        <div className="glass-card h-fit" style={{ padding: 'var(--pad-card)' }}>
+          <div className="sheen" />
+          <div className="flex items-center gap-3 mb-4">
+            <div className="icon-orb !w-9 !h-9">
+              <Database size={16} strokeWidth={1.8} />
             </div>
-            <h2 className="font-semibold text-white text-sm">Atributos</h2>
+            <h2 className="font-semibold text-ink text-sm">Atributos</h2>
           </div>
 
           {/* Entidades Expandibles */}
-          <div className="space-y-2 max-h-96 overflow-y-auto">
+          <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
             {Object.entries(ENTITIES).filter(([entityKey]) => isAdmin || entityKey !== 'valuaciones').map(([entityKey, entity]) => (
               <div key={entityKey}>
-                <motion.button
+                <button
+                  type="button"
                   onClick={() => setExpandedEntity(expandedEntity === entityKey ? null : entityKey)}
-                  className="w-full flex items-center justify-between p-2 rounded-lg transition-all"
+                  aria-expanded={expandedEntity === entityKey}
+                  className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-colors"
                   style={{
-                    background: 'rgba(255,255,255,0.04)',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    background: expandedEntity === entityKey ? 'rgb(var(--brand-soft) / 0.85)' : 'rgb(255 255 255 / 0.62)',
+                    border: '1px solid rgb(var(--line) / 0.30)',
                   }}
-                  whileHover={{ background: 'rgba(255,255,255,0.08)' }}
                 >
-                  <span className="text-white font-medium text-xs">{entity.label}</span>
+                  <span className="text-ink font-medium text-xs">{entity.label}</span>
                   <motion.div animate={{ rotate: expandedEntity === entityKey ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                    <ChevronDown size={14} className="text-gray-400" />
+                    <ChevronDown size={14} strokeWidth={1.8} className="text-soft" />
                   </motion.div>
-                </motion.button>
+                </button>
 
                 <AnimatePresence>
                   {expandedEntity === entityKey && (
@@ -311,31 +307,33 @@ export default function AdvancedReportBuilder({
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden"
                     >
-                      <div className="p-2 space-y-1 bg-black/20 rounded-lg mt-1">
+                      <div className="p-1.5 space-y-0.5 mt-1">
                         {entity.attributes.map((attr) => {
                           const isSelected = selectedAttributes.some((s) => s.entity === entityKey && s.key === attr.key);
                           return (
-                            <motion.button
+                            <button
+                              type="button"
                               key={attr.key}
                               onClick={() => !isSelected && addAttribute(entityKey, attr)}
                               disabled={isSelected}
-                              className={`w-full flex items-center gap-2 p-1.5 rounded text-left text-xs transition-all ${
-                                isSelected
-                                  ? 'bg-green-500/20 cursor-default'
-                                  : 'hover:bg-white/5'
+                              className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left text-xs transition-colors ${
+                                isSelected ? 'cursor-default' : 'hover:bg-brand-soft/60'
                               }`}
+                              style={isSelected ? { background: 'rgb(var(--brand-soft) / 0.7)' } : undefined}
                             >
-                              <div className={`w-3 h-3 rounded border flex items-center justify-center ${
-                                isSelected
-                                  ? 'bg-green-500 border-green-400'
-                                  : 'border-gray-400'
-                              }`}>
-                                {isSelected && <CheckCircle2 size={8} className="text-white" />}
+                              <div
+                                className="w-4 h-4 rounded-md flex items-center justify-center shrink-0"
+                                style={{
+                                  background: isSelected ? 'rgb(var(--brand-hover))' : '#fff',
+                                  border: isSelected ? '1px solid rgb(var(--brand-hover))' : '1px solid rgb(var(--line) / 0.55)',
+                                }}
+                              >
+                                {isSelected && <CheckCircle2 size={10} strokeWidth={3} className="text-white" />}
                               </div>
-                              <span className={isSelected ? 'text-green-400' : 'text-gray-300'}>
+                              <span className={isSelected ? 'text-brand-deep font-medium' : 'text-soft'}>
                                 {attr.label}
                               </span>
-                            </motion.button>
+                            </button>
                           );
                         })}
                       </div>
@@ -347,38 +345,34 @@ export default function AdvancedReportBuilder({
           </div>
 
           {/* Filtros de Fecha */}
-          <div className="mt-4 space-y-2 border-t border-white/10 pt-4">
-            <label className="text-xs font-medium text-gray-300">Fechas</label>
+          <div className="mt-4 space-y-2 border-t border-line/25 pt-4">
+            <label className="label">Fechas</label>
             <GlassDatePicker value={fechaInicio} onChange={setFechaInicio} />
             <GlassDatePicker value={fechaFin} onChange={setFechaFin} />
           </div>
 
           {/* Atributos Seleccionados */}
           {selectedAttributes.length > 0 && (
-            <div className="mt-4 border-t border-white/10 pt-4">
-              <p className="text-xs font-medium text-gray-300 mb-2">Seleccionados ({selectedAttributes.length})</p>
-              <div className="space-y-1 max-h-32 overflow-y-auto">
+            <div className="mt-4 border-t border-line/25 pt-4">
+              <p className="label">Seleccionados ({selectedAttributes.length})</p>
+              <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto">
                 {selectedAttributes.map((attr) => (
-                  <motion.div
+                  <motion.span
                     key={`${attr.entity}-${attr.key}`}
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="flex items-center justify-between gap-1 p-1 rounded-lg text-xs"
-                    style={{
-                      background: `rgba(${accentColor.rgb}, 0.15)`,
-                      border: `1px solid rgba(${accentColor.rgb}, 0.3)`,
-                    }}
+                    className="chip chip-info !pr-1.5"
                   >
-                    <span className="text-gray-300 truncate">{attr.label}</span>
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
+                    <span className="truncate max-w-[120px]">{attr.label}</span>
+                    <button
+                      type="button"
                       onClick={() => removeAttribute(attr.entity, attr.key)}
-                      className="p-0.5 rounded hover:bg-red-500/30 transition-colors flex-shrink-0"
+                      aria-label={`Quitar ${attr.label}`}
+                      className="p-0.5 rounded-full hover:bg-white/70 transition-colors shrink-0"
                     >
-                      <Trash2 size={10} className="text-red-400" />
-                    </motion.button>
-                  </motion.div>
+                      <Trash2 size={11} strokeWidth={1.8} />
+                    </button>
+                  </motion.span>
                 ))}
               </div>
             </div>
@@ -386,18 +380,10 @@ export default function AdvancedReportBuilder({
 
           {/* Botón Descargar */}
           {previewData.length > 0 && (
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              className="w-full py-2 rounded-xl font-medium transition-all flex items-center justify-center gap-2 mt-4"
-              style={{
-                background: 'rgba(255,255,255,0.08)',
-                border: '1px solid rgba(255,255,255,0.15)',
-                color: 'white',
-              }}
-            >
-              <Download size={14} />
+            <button type="button" className="btn btn-secondary btn-sm w-full mt-4">
+              <Download size={14} strokeWidth={1.8} />
               Descargar
-            </motion.button>
+            </button>
           )}
         </div>
       </div>

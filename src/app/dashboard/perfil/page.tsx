@@ -3,26 +3,31 @@
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { m as motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Calendar, Building2, FileText, Edit2, LogOut, Briefcase, KeyRound } from 'lucide-react';
+import { Mail, Phone, MapPin, Calendar, Building2, FileText, Edit2, LogOut, Briefcase, KeyRound, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 import { changePassword } from '@/lib/auth';
-
-const ROLE_LABELS: Record<string, string> = {
-  finanzas: 'Gerente de Finanzas',
-  comercial: 'Director Comercial',
-  marketing: 'Jefe de Marketing',
-  administrador: 'Administrador del Sistema',
-};
-
-const ROLE_COLORS: Record<string, { gradient: string; badge: string }> = {
-  finanzas: { gradient: 'from-blue-500 to-blue-600', badge: 'bg-blue-500/20 text-blue-300 border-blue-500/30' },
-  comercial: { gradient: 'from-orange-500 to-orange-600', badge: 'bg-orange-500/20 text-orange-300 border-orange-500/30' },
-  marketing: { gradient: 'from-purple-500 to-purple-600', badge: 'bg-purple-500/20 text-purple-300 border-purple-500/30' },
-  administrador: { gradient: 'from-green-500 to-green-600', badge: 'bg-green-500/20 text-green-300 border-green-500/30' },
-};
+import { ROLE_AVATAR, ROLE_CHIP, ROLE_LABELS } from '@/lib/ui';
 
 function getInitials(nombre: string, apellido1: string) {
   return `${nombre[0]}${apellido1[0]}`.toUpperCase();
+}
+
+const MODULOS = [
+  { name: 'Finanzas',      tint: 'rgb(var(--brand) / 0.28)', fg: 'rgb(var(--brand-deep))' },
+  { name: 'Comercial',     tint: 'rgb(214 150 80 / 0.20)',   fg: 'rgb(150 90 24)' },
+  { name: 'Marketing',     tint: 'rgb(150 128 214 / 0.20)',  fg: 'rgb(96 74 156)' },
+  { name: 'Valor Empresa', tint: 'rgb(52 140 104 / 0.16)',   fg: 'rgb(34 106 76)' },
+];
+
+function SectionTitle({ icon: Icon, children, tint, fg }: { icon: typeof FileText; children: React.ReactNode; tint: string; fg: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-5">
+      <div className="w-11 h-11 rounded-full grid place-items-center" style={{ background: tint, color: fg, border: '1px solid var(--glass-border)', boxShadow: 'var(--inner-sheen)' }}>
+        <Icon size={20} strokeWidth={1.8} />
+      </div>
+      <h3 className="text-xl font-semibold text-ink">{children}</h3>
+    </div>
+  );
 }
 
 function ChangePasswordCard() {
@@ -53,44 +58,35 @@ function ChangePasswordCard() {
     }
   }
 
-  const inputCls = 'w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-400 outline-none border border-white/15 focus:border-green-400/60';
-  const inputStyle = { background: 'rgba(255, 255, 255, 0.08)' };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.55 }}
-      className="rounded-3xl p-8 backdrop-blur-xl border border-white/10"
-      style={{
-        background: 'linear-gradient(135deg, rgba(10,18,35,0.8), rgba(16,28,48,0.8))',
-        boxShadow: '0 24px 64px rgba(0,0,0,0.3), inset 0 1px 0 rgba(74, 222, 128, 0.1)',
-      }}
+      transition={{ duration: 0.5, delay: 0.4 }}
+      className="glass-card"
+      style={{ padding: 'calc(var(--pad-card) + 6px)' }}
     >
-      <div className="flex items-center gap-3 mb-2">
-        <div className="p-3 rounded-xl bg-gradient-to-br from-yellow-500/20 to-orange-500/20">
-          <KeyRound size={24} className="text-yellow-400" />
-        </div>
-        <h3 className="text-2xl font-bold text-white">Seguridad de la cuenta</h3>
-      </div>
-      <p className="text-gray-400 text-sm mb-5">
+      <div className="sheen" />
+      <SectionTitle icon={KeyRound} tint="rgb(214 150 80 / 0.20)" fg="rgb(150 90 24)">Seguridad de la cuenta</SectionTitle>
+      <p className="text-soft text-sm -mt-2 mb-5">
         Cambia tu contraseña periódicamente. Mínimo 10 caracteres, combinando letras y números. No la compartas con nadie.
       </p>
       <form onSubmit={submit} className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <input type="password" autoComplete="current-password" required placeholder="Contraseña actual"
-          value={current} onChange={e => setCurrent(e.target.value)} className={inputCls} style={inputStyle} />
-        <input type="password" autoComplete="new-password" required placeholder="Nueva contraseña"
-          value={next} onChange={e => setNext(e.target.value)} className={inputCls} style={inputStyle} />
-        <input type="password" autoComplete="new-password" required placeholder="Repite la nueva contraseña"
-          value={confirm} onChange={e => setConfirm(e.target.value)} className={inputCls} style={inputStyle} />
+        <input type="password" autoComplete="current-password" required placeholder="Contraseña actual" aria-label="Contraseña actual"
+          value={current} onChange={e => setCurrent(e.target.value)} className="field" />
+        <input type="password" autoComplete="new-password" required placeholder="Nueva contraseña" aria-label="Nueva contraseña"
+          value={next} onChange={e => setNext(e.target.value)} className="field" />
+        <input type="password" autoComplete="new-password" required placeholder="Repite la nueva contraseña" aria-label="Repite la nueva contraseña"
+          value={confirm} onChange={e => setConfirm(e.target.value)} className="field" />
         <div className="md:col-span-3 flex items-center gap-4 flex-wrap">
-          <button type="submit" disabled={busy}
-            className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white disabled:opacity-60 transition-all"
-            style={{ background: 'rgba(34,197,94,0.25)', border: '1px solid rgba(34,197,94,0.4)' }}>
+          <button type="submit" disabled={busy} className="btn btn-primary">
             {busy ? 'Guardando...' : 'Cambiar contraseña'}
           </button>
           {msg && (
-            <span className={`text-sm ${msg.type === 'ok' ? 'text-green-300' : 'text-red-300'}`} role="status">{msg.text}</span>
+            <span role="status" className={`chip ${msg.type === 'ok' ? 'chip-ok' : 'chip-danger'}`} style={{ fontSize: 13 }}>
+              {msg.type === 'ok' && <CheckCircle2 size={15} strokeWidth={2} />}
+              {msg.text}
+            </span>
           )}
         </div>
       </form>
@@ -108,7 +104,6 @@ export default function PerfilPage() {
   }
 
   const fullName = `${user.nombre} ${user.apellido1} ${user.apellido2}`;
-  const roleColor = ROLE_COLORS[user.role];
   const initials = getInitials(user.nombre, user.apellido1);
 
   const profileData = {
@@ -126,118 +121,92 @@ export default function PerfilPage() {
   }
 
   const infoItems = [
-    { icon: Mail, color: 'text-cyan-400', label: 'Email', value: user.email },
-    { icon: Phone, color: 'text-emerald-400', label: 'Teléfono', value: profileData.telefono },
-    { icon: MapPin, color: 'text-orange-400', label: 'Ubicación', value: profileData.ubicacion },
-    { icon: Building2, color: 'text-purple-400', label: 'Departamento', value: user.departamento },
-    { icon: Calendar, color: 'text-blue-400', label: 'Ingreso', value: profileData.fechaIngreso },
-    { icon: Briefcase, color: 'text-yellow-400', label: 'Experiencia', value: profileData.tiempoExperiencia },
+    { icon: Mail,      tint: 'rgb(var(--brand) / 0.28)', fg: 'rgb(var(--brand-deep))', label: 'Email', value: user.email },
+    { icon: Phone,     tint: 'rgb(52 140 104 / 0.16)',   fg: 'rgb(34 106 76)',         label: 'Teléfono', value: profileData.telefono },
+    { icon: MapPin,    tint: 'rgb(214 150 80 / 0.20)',   fg: 'rgb(150 90 24)',         label: 'Ubicación', value: profileData.ubicacion },
+    { icon: Building2, tint: 'rgb(150 128 214 / 0.20)',  fg: 'rgb(96 74 156)',         label: 'Departamento', value: user.departamento },
+    { icon: Calendar,  tint: 'rgb(var(--brand) / 0.28)', fg: 'rgb(var(--brand-deep))', label: 'Ingreso', value: profileData.fechaIngreso },
+    { icon: Briefcase, tint: 'rgb(224 138 150 / 0.20)',  fg: 'rgb(160 52 64)',         label: 'Experiencia', value: profileData.tiempoExperiencia },
   ];
 
   return (
-    <div className="min-h-screen p-6 lg:p-8">
+    <div className="p-2 lg:p-4">
       <div className="max-w-5xl mx-auto space-y-8">
-        {/* Header */}
+        {/* Encabezado */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center justify-between"
+          transition={{ duration: 0.45 }}
+          className="flex items-center justify-between gap-4"
         >
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-green-300 to-cyan-300 bg-clip-text text-transparent">Mi Perfil</h1>
-            <p className="text-gray-400 mt-1">Gestiona tu información personal y acceso</p>
+            <h1 className="text-3xl font-bold t-title">Mi Perfil</h1>
+            <p className="text-soft mt-1">Gestiona tu información personal y acceso</p>
           </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => router.push('/dashboard')}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-white transition-all duration-200"
-            style={{
-              background: 'rgba(34, 197, 94, 0.18)',
-              border: '1px solid rgba(34,197,94,0.3)',
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(34, 197, 94, 0.3)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(34, 197, 94, 0.18)'; }}
-          >
-            <Edit2 size={18} className="text-green-300" />
-            <span>Editar</span>
-          </motion.button>
+          <button type="button" onClick={() => router.push('/dashboard')} className="btn btn-secondary">
+            <Edit2 size={17} strokeWidth={1.8} />
+            Editar
+          </button>
         </motion.div>
 
-        {/* Main Section con Avatar Flotante */}
+        {/* Tarjeta principal con avatar flotante fuera del cuadro */}
         <div className="relative pt-20">
-          {/* Avatar Flotante - Fuera del cuadro */}
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="absolute top-0 left-0 z-10"
+            transition={{ duration: 0.55, delay: 0.1 }}
+            className="absolute top-0 left-6 sm:left-8 z-10"
           >
-            <motion.div
-              whileHover={{ scale: 1.08, rotate: 5 }}
-              className={`w-40 h-40 rounded-3xl bg-gradient-to-br ${roleColor.gradient} flex items-center justify-center text-white font-bold text-6xl`}
+            <div
+              className="w-36 h-36 sm:w-40 sm:h-40 rounded-[2rem] flex items-center justify-center text-white font-bold text-5xl sm:text-6xl"
               style={{
-                boxShadow: '0 20px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.25)',
+                background: ROLE_AVATAR[user.role],
+                border: '4px solid rgb(255 255 255 / 0.9)',
+                boxShadow: '0 24px 50px -16px rgb(92 124 158 / 0.55), inset 0 1px 0 rgb(255 255 255 / 0.5)',
+                textShadow: '0 2px 6px rgb(52 73 94 / 0.25)',
               }}
             >
               {initials}
-            </motion.div>
-            <div
-              style={{ animation: 'bobSoft 3s ease-in-out infinite' }}
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/20 text-green-300 text-xs font-semibold border border-green-500/30 mt-4 ml-2"
-            >
-              <div className="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse"></div>
+            </div>
+            <div className="chip chip-ok mt-4 ml-2" style={{ animation: 'bobSoft 3s ease-in-out infinite' }}>
+              <span className="w-2 h-2 rounded-full" style={{ background: 'rgb(var(--ok))' }} />
               {profileData.estadoDispositivo}
             </div>
           </motion.div>
 
-          {/* Content Card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="rounded-3xl p-8 backdrop-blur-xl border border-white/10 pt-24 lg:pl-56"
-            style={{
-              background: 'linear-gradient(135deg, rgba(10,18,35,0.8), rgba(16,28,48,0.8))',
-              boxShadow: '0 24px 64px rgba(0,0,0,0.3), inset 0 1px 0 rgba(74, 222, 128, 0.1)',
-            }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="glass-card glass-card--featured pt-24 sm:pt-12 sm:pl-64 pb-8 px-6 sm:pr-8"
           >
-            {/* Name & Title */}
-            <div className="mb-6">
-              <h2 className="text-4xl font-bold text-white mb-3">{fullName}</h2>
-              <div className="inline-flex items-center gap-2">
-                <span className={`text-sm px-4 py-2 rounded-xl font-semibold border ${roleColor.badge}`}>
-                  {ROLE_LABELS[user.role]}
-                </span>
-                <span className="text-xs text-gray-400 font-medium">Nivel: {user.role.charAt(0).toUpperCase() + user.role.slice(1)}</span>
+            <div className="sheen" />
+            <div className="mb-7">
+              <h2 className="text-3xl sm:text-4xl font-bold text-ink tracking-tight mb-3">{fullName}</h2>
+              <div className="flex items-center gap-3 flex-wrap">
+                <span className={ROLE_CHIP[user.role]} style={{ fontSize: 13 }}>{ROLE_LABELS[user.role]}</span>
+                <span className="text-xs text-mute font-medium">Nivel: {user.role.charAt(0).toUpperCase() + user.role.slice(1)}</span>
               </div>
             </div>
 
-            {/* Info Grid - Moderno */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {infoItems.map((item, idx) => {
                 const Icon = item.icon;
                 return (
                   <motion.div
                     key={item.label}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.3 + idx * 0.05 }}
-                    whileHover={{ y: -4 }}
-                    className="group p-5 rounded-2xl backdrop-blur-lg border border-white/10 transition-all duration-300 cursor-pointer"
-                    style={{
-                      background: 'linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))',
-                    }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.25 + idx * 0.05 }}
+                    className="glass-card glass-card--compact flex items-center gap-4"
+                    style={{ padding: '16px 18px', background: 'rgb(255 255 255 / 0.62)' }}
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 rounded-xl bg-white/5 group-hover:bg-white/10 transition-colors">
-                        <Icon size={24} className={`${item.color}`} />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">{item.label}</p>
-                        <p className="text-white font-semibold text-sm mt-2 truncate group-hover:text-green-300 transition-colors">{item.value}</p>
-                      </div>
+                    <div className="w-11 h-11 rounded-full grid place-items-center shrink-0" style={{ background: item.tint, color: item.fg, border: '1px solid var(--glass-border)', boxShadow: 'var(--inner-sheen)' }}>
+                      <Icon size={20} strokeWidth={1.8} />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[11px] text-mute font-semibold uppercase tracking-wider">{item.label}</p>
+                      <p className="text-ink font-semibold text-sm mt-1 truncate" title={item.value}>{item.value}</p>
                     </div>
                   </motion.div>
                 );
@@ -246,90 +215,54 @@ export default function PerfilPage() {
           </motion.div>
         </div>
 
-        {/* About Section */}
+        {/* Sobre mí */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="rounded-3xl p-8 backdrop-blur-xl border border-white/10"
-          style={{
-            background: 'linear-gradient(135deg, rgba(10,18,35,0.8), rgba(16,28,48,0.8))',
-            boxShadow: '0 24px 64px rgba(0,0,0,0.3), inset 0 1px 0 rgba(74, 222, 128, 0.1)',
-          }}
+          transition={{ duration: 0.5, delay: 0.25 }}
+          className="glass-card"
+          style={{ padding: 'calc(var(--pad-card) + 6px)' }}
         >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-blue-500/20">
-              <FileText size={24} className="text-purple-400" />
-            </div>
-            <h3 className="text-2xl font-bold text-white">Sobre mí</h3>
-          </div>
-          <p className="text-gray-300 leading-relaxed text-lg">{profileData.bio}</p>
+          <div className="sheen" />
+          <SectionTitle icon={FileText} tint="rgb(150 128 214 / 0.20)" fg="rgb(96 74 156)">Sobre mí</SectionTitle>
+          <p className="text-soft leading-relaxed text-lg -mt-1">{profileData.bio}</p>
         </motion.div>
 
-        {/* Modules & Access */}
+        {/* Módulos */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="rounded-3xl p-8 backdrop-blur-xl border border-white/10"
-          style={{
-            background: 'linear-gradient(135deg, rgba(10,18,35,0.8), rgba(16,28,48,0.8))',
-            boxShadow: '0 24px 64px rgba(0,0,0,0.3), inset 0 1px 0 rgba(74, 222, 128, 0.1)',
-          }}
+          transition={{ duration: 0.5, delay: 0.32 }}
+          className="glass-card"
+          style={{ padding: 'calc(var(--pad-card) + 6px)' }}
         >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-3 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20">
-              <Briefcase size={24} className="text-green-400" />
-            </div>
-            <h3 className="text-2xl font-bold text-white">Módulos Disponibles</h3>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[
-              { name: 'Finanzas', color: 'from-blue-500 to-cyan-500' },
-              { name: 'Comercial', color: 'from-orange-500 to-red-500' },
-              { name: 'Marketing', color: 'from-purple-500 to-pink-500' },
-              { name: 'Valor Empresa', color: 'from-green-500 to-emerald-500' },
-            ].map((modulo) => (
-              <motion.div
-                key={modulo.name}
-                whileHover={{ y: -6 }}
-                className={`p-5 rounded-2xl bg-gradient-to-br ${modulo.color} bg-opacity-10 border border-white/20 text-center backdrop-blur-lg`}
+          <div className="sheen" />
+          <SectionTitle icon={Briefcase} tint="rgb(52 140 104 / 0.16)" fg="rgb(34 106 76)">Módulos Disponibles</SectionTitle>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {MODULOS.map(mod => (
+              <div
+                key={mod.name}
+                className="glass-card glass-card--compact glass-card--interactive text-center"
+                style={{ padding: '20px 14px', background: mod.tint }}
               >
-                <p className="text-white font-semibold">{modulo.name}</p>
-                <p className="text-xs text-green-300 font-bold mt-3 flex items-center justify-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-green-400"></span>
+                <p className="font-semibold" style={{ color: mod.fg }}>{mod.name}</p>
+                <p className="text-xs font-semibold mt-2.5 inline-flex items-center justify-center gap-1.5 text-ok-ink">
+                  <span className="w-2 h-2 rounded-full" style={{ background: 'rgb(var(--ok))' }} />
                   Acceso
                 </p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </motion.div>
 
         <ChangePasswordCard />
 
-        {/* Logout Button */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="flex justify-center pt-4"
-        >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleLogout}
-            className="flex items-center gap-2 px-8 py-3 rounded-xl font-semibold text-red-300 transition-all duration-200"
-            style={{
-              background: 'rgba(239, 68, 68, 0.18)',
-              border: '1px solid rgba(239,68,68,0.3)',
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(239, 68, 68, 0.3)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(239, 68, 68, 0.18)'; }}
-          >
-            <LogOut size={20} />
-            <span>Cerrar Sesión</span>
-          </motion.button>
-        </motion.div>
+        <div className="flex justify-center pt-2 pb-6">
+          <button type="button" onClick={handleLogout} className="btn btn-danger">
+            <LogOut size={18} strokeWidth={1.8} />
+            Cerrar Sesión
+          </button>
+        </div>
       </div>
     </div>
   );
