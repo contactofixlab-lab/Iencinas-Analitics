@@ -46,3 +46,6 @@ Thumbs.db
 # Datos locales de usuarios (contienen hashes de contraseña)
 .data/
 *.tsbuildinfo
+
+.vercel
+.env*
