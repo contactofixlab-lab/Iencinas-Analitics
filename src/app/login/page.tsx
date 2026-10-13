@@ -60,11 +60,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center xl:justify-end xl:pr-[5vw] relative overflow-hidden px-4 py-10">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 py-10">
       {/* Imagen de fondo del ingreso */}
       <div aria-hidden="true" className="login-bg absolute inset-0 pointer-events-none" />
 
-      <div className="glass-strong relative w-full max-w-md" style={{ borderRadius: 28, zIndex: 10 }}>
+      <div className="login-card relative w-full max-w-md" style={{ borderRadius: 28, zIndex: 10 }}>
         <div className="sheen" />
         <div className="p-8 sm:p-10">
           {/* Logotipo */}

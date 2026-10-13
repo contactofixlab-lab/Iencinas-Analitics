@@ -475,3 +475,19 @@ main { position: relative; }
     mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);
   }
 }
+
+/* Tarjeta de ingreso: vidrio muy transparente con poco desenfoque, para que el fondo (y su ícono central) se vea a través. */
+.login-card {
+  background: linear-gradient(155deg, rgb(255 255 255 / 0.34) 0%, rgb(255 255 255 / 0.12) 100%);
+  -webkit-backdrop-filter: blur(2px) saturate(150%);
+  backdrop-filter: blur(2px) saturate(150%);
+  border: 1px solid rgb(255 255 255 / 0.75);
+  box-shadow:
+    0 30px 70px -24px rgb(70 120 180 / 0.40),
+    0 2px 0 0 rgb(255 255 255 / 0.6) inset,
+    0 -1px 0 0 rgb(255 255 255 / 0.25) inset;
+  color: rgb(var(--ink));
+}
+.login-card .field { background: rgb(255 255 255 / 0.30); border-color: rgb(255 255 255 / 0.85); }
+.login-card .field:focus { background: rgb(255 255 255 / 0.62); }
+.login-card .glass-sm { background: rgb(255 255 255 / 0.32); }
