@@ -60,7 +60,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 py-10">
+    <div className="min-h-screen flex items-center justify-center xl:justify-end xl:pr-[5vw] relative overflow-hidden px-4 py-10">
       {/* Imagen de fondo del ingreso */}
       <div aria-hidden="true" className="login-bg absolute inset-0 pointer-events-none" />
 
