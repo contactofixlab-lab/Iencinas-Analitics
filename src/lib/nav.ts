@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Database,
   ClipboardList,
+  SlidersHorizontal,
   type LucideIcon,
 } from 'lucide-react';
 import { UserRole } from '@/types';
@@ -92,6 +93,7 @@ export const NAV_MODULES: NavModule[] = [
     sections: [
       { label: 'Usuarios', path: '/dashboard/admin', icon: Users },
       { label: 'Permisos', path: '/dashboard/admin/permisos', icon: ShieldCheck },
+      { label: 'Filtros', path: '/dashboard/admin/filtros', icon: SlidersHorizontal },
       { label: 'BBDD', path: '/dashboard/admin/bbdd', icon: Database },
       { label: 'Auditoría', path: '/dashboard/admin/auditoria', icon: ClipboardList },
     ],

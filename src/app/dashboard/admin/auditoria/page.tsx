@@ -24,6 +24,8 @@ const TYPE_LABELS: Record<string, string> = {
   'user.create': 'Usuario creado',
   'user.update': 'Usuario modificado',
   'user.delete': 'Usuario eliminado',
+  'filtro.create': 'Opción de filtro agregada',
+  'filtro.delete': 'Opción de filtro quitada',
 };
 
 const OUTCOME_STYLE: Record<AuditEvent['outcome'], { label: string; cls: string }> = {

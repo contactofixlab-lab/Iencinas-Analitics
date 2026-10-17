@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import MetricCard from '@/components/MetricCard';
 import ProjectSelector from '@/components/ProjectSelector';
 import FilterPanel, { FilterConfig } from '@/components/FilterPanel';
+import { useFiltros } from '@/lib/filtros-client';
 import { ComercialData } from '@/types/domain';
 import { Home, TrendingUp, Package, Star } from 'lucide-react';
 
@@ -40,6 +41,7 @@ const propiedades = [
 
 export default function ComercialPage() {
   const searchParams = useSearchParams();
+  const { opciones } = useFiltros();
   const [proyecto, setProyecto] = useState('proj-001');
   const [data, setData] = useState<ComercialData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -113,16 +115,8 @@ export default function ComercialPage() {
         showSearch={true}
         showStatus={true}
         showType={true}
-        statusOptions={[
-          { label: 'Vendida', value: 'Vendida' },
-          { label: 'En proceso', value: 'En proceso' },
-          { label: 'Disponible', value: 'Disponible' },
-        ]}
-        typeOptions={[
-          { label: 'Departamento', value: 'Departamento' },
-          { label: 'Casa', value: 'Casa' },
-          { label: 'Loft', value: 'Loft' },
-        ]}
+        statusOptions={opciones('estado_propiedad')}
+        typeOptions={opciones('tipo_propiedad')}
         statusLabel="Estado"
         typeLabel="Tipo de Propiedad"
       />

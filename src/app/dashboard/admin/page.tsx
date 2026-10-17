@@ -6,18 +6,20 @@ import { useRouter } from 'next/navigation';
 import { getUsers, deleteUser, createUser, updateUser } from '@/lib/auth';
 import { User, UserRole } from '@/types';
 import { Proyecto } from '@/types/domain';
-import { UserPlus, Pencil, Trash2, X, Search, Check } from 'lucide-react';
+import { UserPlus, Pencil, Trash2, X, Check } from 'lucide-react';
 import { ROLE_AVATAR, ROLE_CHIP, ROLE_SHORT as ROLE_LABELS } from '@/lib/ui';
 import FilterPanel, { FilterConfig } from '@/components/FilterPanel';
+import { useFiltros } from '@/lib/filtros-client';
 
-const AREAS = ['Finanzas', 'Comercial', 'Marketing', 'Operaciones', 'Tecnología'];
+const AREA_INICIAL = 'Finanzas';
 
 export default function AdminPage() {
   const { user } = useAuth();
   const router = useRouter();
+  const { opciones } = useFiltros();
+  const areaOptions = opciones('area');
   const [users, setUsers] = useState<User[]>([]);
   const [proyectos, setProyectos] = useState<Proyecto[]>([]);
-  const [search, setSearch] = useState('');
   const [filters, setFilters] = useState<FilterConfig>({});
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
@@ -38,7 +40,7 @@ export default function AdminPage() {
     apellido2: '',
     email: '',
     password: '',
-    area: AREAS[0],
+    area: AREA_INICIAL,
     role: 'finanzas',
     proyectos: [],
   });
@@ -83,7 +85,7 @@ export default function AdminPage() {
       apellido2: '',
       email: '',
       password: '',
-      area: AREAS[0],
+      area: AREA_INICIAL,
       role: 'finanzas',
       proyectos: [],
     });
@@ -166,9 +168,7 @@ export default function AdminPage() {
   }
 
   useEffect(() => {
-    let filtered = users.filter(u =>
-      `${u.nombre} ${u.apellido1} ${u.apellido2} ${u.email}`.toLowerCase().includes(search.toLowerCase())
-    );
+    let filtered = users;
 
     if (filters.search) {
       const searchLower = filters.search.toLowerCase();
@@ -186,7 +186,7 @@ export default function AdminPage() {
     }
 
     setFilteredUsers(filtered);
-  }, [users, search, filters]);
+  }, [users, filters]);
 
   const handleFilterChange = (newFilters: FilterConfig) => {
     setFilters(newFilters);
@@ -205,36 +205,25 @@ export default function AdminPage() {
         </button>
       </div>
 
-      {/* Stats */}
-      <div className="scene-3d grid grid-cols-2 sm:grid-cols-4 gap-4 stagger-grid">
-        {(['finanzas', 'comercial', 'marketing', 'administrador'] as const).map(role => (
-          <div key={role} className="glass-card glass-card--compact lift" style={{ padding: 'var(--pad-card)' }}>
-            <div className="sheen" />
-            <p className="text-xs text-soft font-semibold uppercase tracking-wider">{ROLE_LABELS[role]}</p>
-            <p className="text-3xl font-semibold text-ink mt-1.5">
-              {users.filter(u => u.role === role).length}
-            </p>
-            <p className="text-xs text-mute mt-0.5">usuarios</p>
-          </div>
-        ))}
-      </div>
+      {/* Filtros */}
+      <FilterPanel
+        onFilterChange={handleFilterChange}
+        showDateRange={false}
+        showSearch={true}
+        showStatus={true}
+        showType={true}
+        statusOptions={Object.entries(ROLE_LABELS).map(([value, label]) => ({ value, label }))}
+        typeOptions={areaOptions}
+        statusLabel="Perfil"
+        typeLabel="Área"
+      />
 
-      {/* Search + Table */}
+      {/* Tabla */}
       <div className="table-glass">
         <div className="px-5 py-4 border-b border-line/25 flex flex-wrap items-center justify-between gap-4">
           <h3 className="text-sm font-semibold text-ink">
             Todos los usuarios ({filteredUsers.length})
           </h3>
-          <div className="search-pill !h-11 w-full sm:w-64">
-            <Search size={16} strokeWidth={1.8} className="text-mute shrink-0" />
-            <input
-              type="text"
-              placeholder="Buscar usuario..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              aria-label="Buscar usuario"
-            />
-          </div>
         </div>
 
         <div className="overflow-x-auto">
@@ -415,7 +404,7 @@ export default function AdminPage() {
                     onChange={e => setFormData({...formData, area: e.target.value})}
                     className="field"
                   >
-                    {AREAS.map(area => (
+                    {[...areaOptions.map(o => o.value), ...(areaOptions.some(o => o.value === formData.area) ? [] : [formData.area])].map(area => (
                       <option key={area} value={area}>{area}</option>
                     ))}
                   </select>

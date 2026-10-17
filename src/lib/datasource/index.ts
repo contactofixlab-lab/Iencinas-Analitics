@@ -57,7 +57,7 @@ function withMockFallback(primary: DataSource): DataSource {
     getGeneral: (p?: QueryParams): Promise<GeneralData> =>
       guard('getGeneral', () => primary.getGeneral(p), () => mock.getGeneral()),
     getConstructora: (p?: QueryParams): Promise<ConstructoraData> =>
-      guard('getConstructora', () => primary.getConstructora(p), () => mock.getConstructora()),
+      guard('getConstructora', () => primary.getConstructora(p), () => mock.getConstructora(p)),
     getReportes: (modulo: ModuleKey, params?: QueryParams): Promise<ReportInfo[]> =>
       guard('getReportes', () => primary.getReportes(modulo, params), () => mock.getReportes(modulo)),
   };

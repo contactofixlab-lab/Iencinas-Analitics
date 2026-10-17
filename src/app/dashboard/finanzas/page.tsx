@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import MetricCard from '@/components/MetricCard';
 import ProjectSelector from '@/components/ProjectSelector';
 import FilterPanel, { FilterConfig } from '@/components/FilterPanel';
+import { useFiltros } from '@/lib/filtros-client';
 import { FinanzasData, Metric } from '@/types/domain';
 import { BarChart2, DollarSign, TrendingUp, Wallet } from 'lucide-react';
 
@@ -40,6 +41,7 @@ const transacciones = [
 
 export default function FinanzasPage() {
   const searchParams = useSearchParams();
+  const { opciones } = useFiltros();
   const [proyecto, setProyecto] = useState('proj-001');
   const [data, setData] = useState<FinanzasData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -127,10 +129,7 @@ export default function FinanzasPage() {
         showDateRange={true}
         showSearch={true}
         showStatus={true}
-        statusOptions={[
-          { label: 'Ingreso', value: 'Ingreso' },
-          { label: 'Egreso', value: 'Egreso' },
-        ]}
+        statusOptions={opciones('tipo_transaccion')}
         statusLabel="Tipo de Transacción"
       />
 

@@ -99,8 +99,23 @@ export interface ObraResumen {
   incidenciasAbiertas: number;
 }
 
+/** Filtros del resumen de Constructora (todos opcionales; vacío = sin filtrar). */
+export interface ConstructoraFiltros {
+  obra?: string;
+  estado?: string;                       // estado de la obra
+  cronograma?: 'en_plazo' | 'atraso';    // según SPI
+  oc?: string;                           // estado de la orden de compra
+  severidad?: 'alta' | 'media' | 'baja'; // severidad de las incidencias
+  mesDesde?: number;                     // 1..12
+  mesHasta?: number;                     // 1..12
+}
+
 export interface ConstructoraData {
   metrics: Metric[];
+  /** Todas las obras de la cartera (para poblar el filtro aunque haya otro filtro aplicado). */
+  obrasDisponibles: string[];
+  /** Avisos sobre qué datos no se desglosan con los filtros aplicados. */
+  avisos: string[];
   obras: ObraResumen[];
   curvaS: { mes: string; plan: number; real: number | null }[];
   comprasMensuales: { mes: string; monto: number }[];

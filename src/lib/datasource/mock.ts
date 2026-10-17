@@ -18,7 +18,7 @@ import {
 import { PROYECTOS } from '@/lib/mockDatabase';
 import { Metric } from '@/types/domain';
 import { buildGeneral } from './general';
-import { buildConstructora } from './constructora';
+import { buildConstructora, filtrosDesdeParams } from './constructora';
 
 /** mockData uses loose `color: string`; assert it into the typed union. */
 const m = (arr: { label: string; value: string; trend: string; up: boolean; color: string }[]): Metric[] =>
@@ -216,8 +216,8 @@ export class MockDataSource implements DataSource {
     return buildGeneral();
   }
 
-  async getConstructora(_params?: QueryParams): Promise<ConstructoraData> {
-    return buildConstructora();
+  async getConstructora(params?: QueryParams): Promise<ConstructoraData> {
+    return buildConstructora(filtrosDesdeParams(params));
   }
 
   async getReportes(modulo: ModuleKey, params?: QueryParams): Promise<ReportInfo[]> {
