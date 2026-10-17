@@ -72,6 +72,8 @@ export const FILTRO_MAX_OPCIONES = 40;
 export interface FiltroOpcionDTO {
   valor: string;
   predeterminada: boolean;
+  /** Si está inactiva no aparece en la lista desplegable, pero sigue en el listado de administración. */
+  activa: boolean;
 }
 export interface FiltroCategoriaDTO {
   id: string;
@@ -80,3 +82,26 @@ export interface FiltroCategoriaDTO {
   descripcion: string;
   opciones: FiltroOpcionDTO[];
 }
+
+/**
+ * Listas desplegables de la aplicación que NO se administran desde el catálogo (sus valores los define el sistema
+ * o vienen de los datos). Se muestran en el listado de Administración › Filtros solo para consulta.
+ */
+export interface FiltroSistema {
+  id: string;
+  label: string;
+  modulo: string;
+  opciones: string[];
+}
+
+export const FILTROS_SISTEMA: FiltroSistema[] = [
+  { id: 'perfil', label: 'Perfil de acceso', modulo: 'Administración', opciones: ['Finanzas', 'Comercial', 'Marketing', 'Administrador'] },
+  { id: 'cronograma', label: 'Cronograma de la obra', modulo: 'Constructora', opciones: ['En plazo (SPI ≥ 1)', 'Con atraso (SPI < 1)'] },
+  { id: 'severidad', label: 'Severidad de incidencias', modulo: 'Constructora', opciones: ['Alta', 'Media', 'Baja'] },
+  {
+    id: 'mes',
+    label: 'Mes (Desde / Hasta)',
+    modulo: 'Constructora',
+    opciones: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+  },
+];

@@ -25,6 +25,7 @@ const TYPE_LABELS: Record<string, string> = {
   'user.update': 'Usuario modificado',
   'user.delete': 'Usuario eliminado',
   'filtro.create': 'Opción de filtro agregada',
+  'filtro.update': 'Opción de filtro activada/desactivada',
   'filtro.delete': 'Opción de filtro quitada',
 };
 

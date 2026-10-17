@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { fail, readJson } from '@/lib/api/server';
 import { clientIp, requireAdmin, requireUser } from '@/lib/server/guard';
 import { audit } from '@/lib/server/audit';
-import { addFiltro, listFiltros, removeFiltro } from '@/lib/server/filtros';
+import { addFiltro, listFiltros, removeFiltro, setFiltroActivo } from '@/lib/server/filtros';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -23,13 +23,25 @@ export async function GET(req: NextRequest) {
   }
 }
 
-/** Solo administradores: agregar una opción a una categoría. */
+/** Solo administradores: agregar una opción a una categoría (con su estado activo/inactivo). */
 export async function POST(req: NextRequest) {
   try {
     const admin = await requireAdmin(req);
     const r = addFiltro(await readJson(req));
-    audit({ type: 'filtro.create', outcome: 'ok', actor: admin.id, target: r.categoria, ip: clientIp(req), detail: `opción «${r.valor}»` });
+    audit({ type: 'filtro.create', outcome: 'ok', actor: admin.id, target: r.categoria, ip: clientIp(req), detail: `opción «${r.valor}» (${r.activa ? 'activa' : 'inactiva'})` });
     return json({ ok: true, data: listFiltros() }, 201);
+  } catch (err) {
+    return fail(err);
+  }
+}
+
+/** Solo administradores: activar o desactivar una opción (también las predeterminadas). */
+export async function PATCH(req: NextRequest) {
+  try {
+    const admin = await requireAdmin(req);
+    const r = setFiltroActivo(await readJson(req));
+    audit({ type: 'filtro.update', outcome: 'ok', actor: admin.id, target: r.categoria, ip: clientIp(req), detail: `opción «${r.valor}» ${r.activa ? 'activada' : 'desactivada'}` });
+    return json({ ok: true, data: listFiltros() });
   } catch (err) {
     return fail(err);
   }

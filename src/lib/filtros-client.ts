@@ -14,7 +14,7 @@ const DEFAULTS: FiltroCategoriaDTO[] = FILTRO_CATEGORIAS.map(c => ({
   label: c.label,
   modulo: c.modulo,
   descripcion: c.descripcion,
-  opciones: c.predeterminadas.map(valor => ({ valor, predeterminada: true })),
+  opciones: c.predeterminadas.map(valor => ({ valor, predeterminada: true, activa: true })),
 }));
 
 let cache: FiltroCategoriaDTO[] | null = null;
@@ -39,7 +39,7 @@ export function setCatalogoFiltros(data: FiltroCategoriaDTO[]) {
 }
 
 /**
- * Catálogo de opciones de los filtros. `opciones('tipo_propiedad')` devuelve la lista lista para un select.
+ * Catálogo de opciones de los filtros. `opciones('tipo_propiedad')` devuelve las opciones ACTIVAS listas para un select.
  * Se descarga una vez por sesión de navegación y se comparte entre pantallas.
  */
 export function useFiltros() {
@@ -71,7 +71,7 @@ export function useFiltros() {
 
   const opciones = useCallback(
     (id: string): OpcionSelect[] =>
-      (categorias.find(c => c.id === id)?.opciones ?? []).map(o => ({ label: o.valor, value: o.valor })),
+      (categorias.find(c => c.id === id)?.opciones ?? []).filter(o => o.activa).map(o => ({ label: o.valor, value: o.valor })),
     [categorias],
   );
 

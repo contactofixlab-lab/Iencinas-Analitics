@@ -19,6 +19,13 @@ interface FilterOption {
   value: string;
 }
 
+export interface ExtraFilterField {
+  key: string;
+  label: string;
+  options: FilterOption[];
+  allLabel?: string;
+}
+
 interface FilterPanelProps {
   onFilterChange: (filters: FilterConfig) => void;
   showDateRange?: boolean;
@@ -29,6 +36,8 @@ interface FilterPanelProps {
   typeOptions?: FilterOption[];
   typeLabel?: string;
   statusLabel?: string;
+  /** Listas desplegables adicionales; su valor queda en filters[key]. */
+  extraFields?: ExtraFilterField[];
 }
 
 export default function FilterPanel({
@@ -41,6 +50,7 @@ export default function FilterPanel({
   typeOptions = [],
   typeLabel = 'Tipo',
   statusLabel = 'Estado',
+  extraFields = [],
 }: FilterPanelProps) {
   const [filters, setFilters] = useState<FilterConfig>({
     dateRange: { from: '2026-01-01', to: '2026-12-31' },
@@ -63,7 +73,8 @@ export default function FilterPanel({
   };
 
   const clear = () => {
-    const cleared = { dateRange: { from: '2026-01-01', to: '2026-12-31' }, search: '', status: '', type: '' };
+    const cleared: FilterConfig = { dateRange: { from: '2026-01-01', to: '2026-12-31' }, search: '', status: '', type: '' };
+    extraFields.forEach(f => { cleared[f.key] = ''; });
     setFilters(cleared);
     onFilterChange(cleared);
   };
@@ -71,7 +82,8 @@ export default function FilterPanel({
   const hasActive =
     (filters.search && filters.search.length > 0) ||
     (filters.status && filters.status.length > 0) ||
-    (filters.type && filters.type.length > 0);
+    (filters.type && filters.type.length > 0) ||
+    extraFields.some(f => !!filters[f.key]);
 
   const Label = ({ children }: { children: React.ReactNode }) => (
     <label className="label !mb-0">{children}</label>
@@ -185,6 +197,18 @@ export default function FilterPanel({
             />
           </div>
         )}
+
+        {extraFields.map(f => (
+          <div key={f.key} className="flex flex-col gap-2">
+            <Label>{f.label}</Label>
+            <GlassSelect
+              value={filters[f.key] || ''}
+              options={f.options}
+              onChange={v => update(f.key, v)}
+              allLabel={f.allLabel}
+            />
+          </div>
+        ))}
       </div>
     </motion.div>
   );
