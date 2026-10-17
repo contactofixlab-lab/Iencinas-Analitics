@@ -1,27 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import MetricCard from '@/components/MetricCard';
+import DashboardCanvas from '@/components/bi/DashboardCanvas';
 import ProjectSelector from '@/components/ProjectSelector';
 import FilterPanel, { FilterConfig } from '@/components/FilterPanel';
 import { useFiltros } from '@/lib/filtros-client';
 import { FinanzasData, Metric } from '@/types/domain';
 import { BarChart2, DollarSign, TrendingUp, Wallet } from 'lucide-react';
-
-const FinanzasCharts = dynamic(() => import('@/components/charts/FinanzasCharts'), {
-  ssr: false,
-  loading: () => (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" aria-hidden="true">
-      {[0, 1].map(i => (
-        <div key={i} className="rounded-2xl h-[330px]" style={{ background: 'rgb(255 255 255 / 0.32)', border: '1px solid rgb(var(--line) / 0.30)' }} />
-      ))}
-    </div>
-  ),
-});
-// Empieza a descargar los gráficos de inmediato, en paralelo con la carga de datos.
-if (typeof window !== 'undefined') void import('@/components/charts/FinanzasCharts');
 
 const icons = [
   <DollarSign size={22} key="dollar" />,
@@ -104,15 +91,6 @@ export default function FinanzasPage() {
 
   if (!data && !loading) return null;
 
-  const combined = (data?.ingresos || []).map((d, i) => {
-    const gastoValue = (Array.isArray(data?.gastos) && data.gastos[i]) ? data.gastos[i].valor : 0;
-    return {
-      mes: d.mes,
-      ingresos: d.valor / 1000000,
-      gastos: gastoValue / 1000000,
-    };
-  });
-
   return (
     <div className="space-y-6 page-enter">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -147,7 +125,7 @@ export default function FinanzasPage() {
         ))}
       </div>
 
-      <FinanzasCharts data={data} loading={loading} combined={combined} />
+      <DashboardCanvas modulo="finanzas" ctx={{ proyecto }}/>
 
       <div className="table-glass">
         <div className="px-6 py-4 border-b border-line/25">
@@ -186,6 +164,7 @@ export default function FinanzasPage() {
           </table>
         </div>
       </div>
+
     </div>
   );
 }

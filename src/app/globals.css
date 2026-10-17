@@ -491,3 +491,28 @@ main { position: relative; }
 .login-card .field { background: rgb(255 255 255 / 0.30); border-color: rgb(255 255 255 / 0.85); }
 .login-card .field:focus { background: rgb(255 255 255 / 0.62); }
 .login-card .glass-sm { background: rgb(255 255 255 / 0.32); }
+
+/* Diseñador: cuadrícula de gráficos que se arrastran y se redimensionan */
+.bi-grid .react-grid-item.react-grid-placeholder {
+  background: rgb(var(--brand) / 0.26);
+  border-radius: 22px;
+  opacity: 1;
+}
+.bi-grid--editing .react-grid-item:not(.react-grid-placeholder) {
+  outline: 2px dashed rgb(var(--brand) / 0.55);
+  outline-offset: 2px;
+  border-radius: 22px;
+}
+.bi-grid .react-grid-item.react-draggable-dragging,
+.bi-grid .react-grid-item.resizing {
+  z-index: 30;
+  box-shadow: 0 24px 60px -20px rgb(70 120 180 / 0.45);
+}
+.bi-grid .react-grid-item > .react-resizable-handle::after {
+  right: 8px;
+  bottom: 8px;
+  width: 9px;
+  height: 9px;
+  border-right: 2.5px solid rgb(var(--brand));
+  border-bottom: 2.5px solid rgb(var(--brand));
+}

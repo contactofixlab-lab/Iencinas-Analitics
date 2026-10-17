@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SESSION_COOKIE, verifySession } from '@/lib/server/session';
+import { DESIGNER_ROLES } from '@/lib/bi/permissions';
 
 const DEFAULT_ROUTES: Record<string, string> = {
   finanzas: '/dashboard/finanzas',
@@ -14,6 +15,7 @@ const PAGE_RULES: { prefix: string; roles: string[] }[] = [
   { prefix: '/admin', roles: ['administrador'] },
   { prefix: '/dashboard/general', roles: ['administrador'] },
   { prefix: '/dashboard/constructora', roles: ['administrador'] },
+  { prefix: '/dashboard/disenador', roles: DESIGNER_ROLES },
   { prefix: '/dashboard/finanzas', roles: ['finanzas', 'administrador'] },
   { prefix: '/dashboard/comercial', roles: ['comercial', 'administrador'] },
   { prefix: '/dashboard/marketing', roles: ['marketing', 'administrador'] },

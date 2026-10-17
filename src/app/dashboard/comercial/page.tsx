@@ -1,27 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import MetricCard from '@/components/MetricCard';
+import DashboardCanvas from '@/components/bi/DashboardCanvas';
 import ProjectSelector from '@/components/ProjectSelector';
 import FilterPanel, { FilterConfig } from '@/components/FilterPanel';
 import { useFiltros } from '@/lib/filtros-client';
 import { ComercialData } from '@/types/domain';
 import { Home, TrendingUp, Package, Star } from 'lucide-react';
-
-const ComercialCharts = dynamic(() => import('@/components/charts/ComercialCharts'), {
-  ssr: false,
-  loading: () => (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" aria-hidden="true">
-      {[0, 1].map(i => (
-        <div key={i} className="rounded-2xl h-[330px]" style={{ background: 'rgb(255 255 255 / 0.32)', border: '1px solid rgb(var(--line) / 0.30)' }} />
-      ))}
-    </div>
-  ),
-});
-// Empieza a descargar los gráficos de inmediato, en paralelo con la carga de datos.
-if (typeof window !== 'undefined') void import('@/components/charts/ComercialCharts');
 
 const icons = [
   <Home size={22} key="home" />,
@@ -135,7 +122,7 @@ export default function ComercialPage() {
         ))}
       </div>
 
-      <ComercialCharts data={data} loading={loading} />
+      <DashboardCanvas modulo="comercial" ctx={{ proyecto }}/>
 
       <div className="table-glass">
         <div className="px-6 py-4 border-b border-line/25">
@@ -178,6 +165,7 @@ export default function ComercialPage() {
           </table>
         </div>
       </div>
+
     </div>
   );
 }

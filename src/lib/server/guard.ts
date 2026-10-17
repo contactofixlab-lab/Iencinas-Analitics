@@ -5,6 +5,7 @@ import { UserRole } from '@/types';
 import { SESSION_COOKIE, verifySession } from './session';
 import { findById, StoredUser } from './users';
 import { audit } from './audit';
+import { DESIGNER_ROLES } from '@/lib/bi/permissions';
 
 /** Qué roles pueden consultar cada módulo (misma regla que el menú lateral). */
 export const MODULE_ROLES: Record<ModuleKey, UserRole[]> = {
@@ -44,6 +45,16 @@ export async function requireAdmin(req: NextRequest): Promise<StoredUser> {
   const user = await requireUser(req);
   if (user.role !== 'administrador') {
     audit({ type: 'access.denied', outcome: 'denied', actor: user.id, ip: clientIp(req), detail: `${req.method} ${req.nextUrl.pathname} (requiere administrador)` });
+    throw new ApiError(403, 'No tienes permiso para esta acción.');
+  }
+  return user;
+}
+
+/** Quien puede diseñar gráficos (ver DESIGNER_ROLES). */
+export async function requireDesigner(req: NextRequest): Promise<StoredUser> {
+  const user = await requireUser(req);
+  if (!DESIGNER_ROLES.includes(user.role)) {
+    audit({ type: 'access.denied', outcome: 'denied', actor: user.id, ip: clientIp(req), detail: `${req.method} ${req.nextUrl.pathname} (requiere acceso al Diseñador)` });
     throw new ApiError(403, 'No tienes permiso para esta acción.');
   }
   return user;

@@ -12,9 +12,13 @@ import {
   Database,
   ClipboardList,
   SlidersHorizontal,
+  PencilRuler,
+  LayoutGrid,
+  Plus,
   type LucideIcon,
 } from 'lucide-react';
 import { UserRole } from '@/types';
+import { DESIGNER_ROLES } from '@/lib/bi/permissions';
 
 /**
  * Fuente única de la navegación: la leen el menú lateral (solo íconos),
@@ -83,6 +87,17 @@ export const NAV_MODULES: NavModule[] = [
     sections: [
       { label: 'Resumen', path: '/dashboard/constructora', icon: PieChart },
       { label: 'Reportes', path: '/dashboard/constructora/reportes', icon: FileText },
+    ],
+  },
+  {
+    id: 'disenador',
+    label: 'Diseñador',
+    icon: PencilRuler,
+    roles: DESIGNER_ROLES,
+    sections: [
+      { label: 'Gráficos', path: '/dashboard/disenador', icon: LayoutGrid },
+      { label: 'Nuevo gráfico', path: '/dashboard/disenador/nuevo', icon: Plus },
+      { label: 'Fuentes de datos', path: '/dashboard/disenador/fuentes', icon: Database },
     ],
   },
   {

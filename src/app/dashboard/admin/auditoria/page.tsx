@@ -27,6 +27,13 @@ const TYPE_LABELS: Record<string, string> = {
   'filtro.create': 'Opción de filtro agregada',
   'filtro.update': 'Opción de filtro activada/desactivada',
   'filtro.delete': 'Opción de filtro quitada',
+  'bi.chart.create': 'Gráfico creado',
+  'bi.chart.update': 'Gráfico modificado',
+  'bi.chart.delete': 'Gráfico eliminado',
+  'bi.publish': 'Gráfico publicado/retirado',
+  'bi.layout': 'Diseño de la vista modificado',
+  'bi.chart.toggle': 'Gráfico activado/desactivado',
+  'bi.restore': 'Gráficos del sistema restaurados',
 };
 
 const OUTCOME_STYLE: Record<AuditEvent['outcome'], { label: string; cls: string }> = {

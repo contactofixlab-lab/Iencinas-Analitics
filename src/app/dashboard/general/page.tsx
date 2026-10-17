@@ -1,20 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
 import MetricCard from '@/components/MetricCard';
+import DashboardCanvas from '@/components/bi/DashboardCanvas';
 import { GeneralData } from '@/types/domain';
 import { DollarSign, Wallet, TrendingUp, CheckCircle2, Layers, Users, Percent, Building2 } from 'lucide-react';
-
-const GeneralCharts = dynamic(() => import('@/components/charts/GeneralCharts'), {
-  ssr: false,
-  loading: () => (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" aria-hidden="true">
-      {[0, 1, 2, 3].map(i => <div key={i} className="skeleton h-[330px]" />)}
-    </div>
-  ),
-});
-if (typeof window !== 'undefined') void import('@/components/charts/GeneralCharts');
 
 const icons = [
   <DollarSign size={22} key="i" />, <Wallet size={22} key="e" />, <TrendingUp size={22} key="m" />, <CheckCircle2 size={22} key="v" />,
@@ -57,7 +47,7 @@ export default function GeneralPage() {
           ))}
       </div>
 
-      <GeneralCharts data={data} loading={loading} />
+      <DashboardCanvas modulo="general" />
 
       <div className="table-glass">
         <div className="px-6 py-4 border-b border-line/25">
@@ -95,6 +85,7 @@ export default function GeneralPage() {
           </table>
         </div>
       </div>
+
     </div>
   );
 }

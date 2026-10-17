@@ -1,22 +1,12 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import dynamic from 'next/dynamic';
 import MetricCard from '@/components/MetricCard';
+import DashboardCanvas from '@/components/bi/DashboardCanvas';
 import SelectFilterPanel from '@/components/SelectFilterPanel';
 import { useFiltros } from '@/lib/filtros-client';
 import { ConstructoraData } from '@/types/domain';
 import { Gauge, Timer, Coins, PiggyBank, ShoppingCart, FileText, PackageX, AlertTriangle, Info } from 'lucide-react';
-
-const ConstructoraCharts = dynamic(() => import('@/components/charts/ConstructoraCharts'), {
-  ssr: false,
-  loading: () => (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" aria-hidden="true">
-      {[0, 1, 2, 3, 4, 5].map(i => <div key={i} className="skeleton h-[330px]" />)}
-    </div>
-  ),
-});
-if (typeof window !== 'undefined') void import('@/components/charts/ConstructoraCharts');
 
 const icons = [
   <Gauge size={22} key="a" />, <Timer size={22} key="s" />, <Coins size={22} key="c" />, <PiggyBank size={22} key="p" />,
@@ -80,6 +70,9 @@ export default function ConstructoraPage() {
       });
   }, [query]);
 
+  // Filtros que se envían a los gráficos del módulo (solo los que tienen valor).
+  const ctx = useMemo(() => Object.fromEntries(Object.entries(filtros).filter(([, v]) => v)), [filtros]);
+
   const fields = [
     { key: 'obra', label: 'Obra', value: filtros.obra, options: obrasDisp.map(o => ({ label: o, value: o })), allLabel: 'Todas las obras' },
     { key: 'estado', label: 'Estado de la obra', value: filtros.estado, options: opciones('estado_obra') },
@@ -122,7 +115,7 @@ export default function ConstructoraPage() {
             ))}
         </div>
 
-        <ConstructoraCharts data={data} loading={loading} />
+        <DashboardCanvas modulo="constructora" ctx={ctx}/>
 
         <div className="table-glass">
           <div className="px-6 py-4 border-b border-line/25">
@@ -160,6 +153,7 @@ export default function ConstructoraPage() {
           </div>
         </div>
       </div>
+
     </div>
   );
 }
